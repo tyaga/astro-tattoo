@@ -1,0 +1,240 @@
+[
+  {
+    "id": "pleiades",
+    "name": "Плеяды",
+    "subtitle": "M45 · рассеянное скопление",
+    "source": "gaia",
+    "center": { "ra": 56.75, "dec": 24.1167 },
+    "radiusArcmin": 120,
+    "fetchMagLimit": 14,
+    "maxRows": 5000,
+    "defaultMagLimit": 6.1,
+    "photo": true,
+    "named": [
+      { "name": "Альциона", "ra": 56.871152, "dec": 24.105136, "mag": 2.87 },
+      { "name": "Атлас", "ra": 57.290597, "dec": 24.053417, "mag": 3.62 },
+      { "name": "Электра", "ra": 56.218904, "dec": 24.113336, "mag": 3.70 },
+      { "name": "Майя", "ra": 56.456695, "dec": 24.36775, "mag": 3.86 },
+      { "name": "Меропа", "ra": 56.581553, "dec": 23.948348, "mag": 4.17 },
+      { "name": "Тайгета", "ra": 56.302063, "dec": 24.46727, "mag": 4.26 },
+      { "name": "Плейона", "ra": 57.296738, "dec": 24.13671, "mag": 5.05 },
+      { "name": "Келено", "ra": 56.200893, "dec": 24.289468, "mag": 5.44 },
+      { "name": "Астеропа", "ra": 56.476987, "dec": 24.554512, "mag": 5.75 }
+    ]
+  },
+  {
+    "id": "orion-belt",
+    "name": "Пояс Ориона",
+    "subtitle": "Три Волхва · астеризм",
+    "source": "hipparcos",
+    "center": { "ra": 84.1, "dec": -1.15 },
+    "radiusArcmin": 240,
+    "fetchMagLimit": 7.0,
+    "maxRows": 3000,
+    "defaultMagLimit": 5.0,
+    "named": [
+      { "name": "Альнитак", "ra": 85.18969, "dec": -1.94257, "mag": 1.77 },
+      { "name": "Альнилам", "ra": 84.05339, "dec": -1.20192, "mag": 1.69 },
+      { "name": "Минтака", "ra": 83.00167, "dec": -0.29909, "mag": 2.25 }
+    ]
+  },
+  {
+    "id": "orion",
+    "name": "Орион",
+    "subtitle": "Созвездие целиком",
+    "source": "hipparcos",
+    "center": { "ra": 83.5, "dec": 1.0 },
+    "radiusArcmin": 780,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.0,
+    "named": [
+      { "name": "Бетельгейзе", "ra": 88.79294, "dec": 7.40706, "mag": 0.45 },
+      { "name": "Ригель", "ra": 78.63447, "dec": -8.20164, "mag": 0.18 },
+      { "name": "Беллатрикс", "ra": 81.28276, "dec": 6.34970, "mag": 1.64 },
+      { "name": "Саиф", "ra": 86.93912, "dec": -9.66961, "mag": 2.06 },
+      { "name": "Альнитак", "ra": 85.18969, "dec": -1.94257, "mag": 1.77 },
+      { "name": "Альнилам", "ra": 84.05339, "dec": -1.20192, "mag": 1.69 },
+      { "name": "Минтака", "ra": 83.00167, "dec": -0.29909, "mag": 2.25 },
+      { "name": "Меисса", "ra": 83.78451, "dec": 9.93417, "mag": 3.39 }
+    ]
+  },
+  {
+    "id": "big-dipper",
+    "name": "Большая Медведица",
+    "subtitle": "Ковш · астеризм",
+    "source": "hipparcos",
+    "center": { "ra": 186.0, "dec": 55.5 },
+    "radiusArcmin": 900,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.0,
+    "named": [
+      { "name": "Дубхе", "ra": 165.93196, "dec": 61.75103, "mag": 1.79 },
+      { "name": "Мерак", "ra": 165.46032, "dec": 56.38243, "mag": 2.37 },
+      { "name": "Фекда", "ra": 178.45768, "dec": 53.69476, "mag": 2.44 },
+      { "name": "Мегрец", "ra": 183.85650, "dec": 57.03258, "mag": 3.32 },
+      { "name": "Алиот", "ra": 193.50729, "dec": 55.95982, "mag": 1.77 },
+      { "name": "Мицар", "ra": 200.98142, "dec": 54.92536, "mag": 2.23 },
+      { "name": "Алькаид", "ra": 206.88516, "dec": 49.31327, "mag": 1.86 }
+    ]
+  },
+  {
+    "id": "cassiopeia",
+    "name": "Кассиопея",
+    "subtitle": "Небесная W · созвездие",
+    "source": "hipparcos",
+    "center": { "ra": 15.0, "dec": 60.0 },
+    "radiusArcmin": 660,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.0,
+    "named": [
+      { "name": "Шедар", "ra": 10.12684, "dec": 56.53733, "mag": 2.24 },
+      { "name": "Каф", "ra": 2.29452, "dec": 59.14978, "mag": 2.28 },
+      { "name": "Цих", "ra": 14.17721, "dec": 60.71674, "mag": 2.47 },
+      { "name": "Рукба", "ra": 21.45397, "dec": 60.23528, "mag": 2.68 },
+      { "name": "Сегин", "ra": 28.59880, "dec": 63.67012, "mag": 3.38 }
+    ]
+  },
+  {
+    "id": "southern-cross",
+    "name": "Южный Крест",
+    "subtitle": "Crux · созвездие",
+    "source": "hipparcos",
+    "center": { "ra": 187.0, "dec": -60.0 },
+    "radiusArcmin": 330,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.5,
+    "named": [
+      { "name": "Акрукс", "ra": 186.64957, "dec": -63.09909, "mag": 0.77 },
+      { "name": "Мимоза", "ra": 191.93029, "dec": -59.68877, "mag": 1.25 },
+      { "name": "Гакрукс", "ra": 187.79151, "dec": -57.11321, "mag": 1.63 },
+      { "name": "Имаи", "ra": 183.78632, "dec": -58.74890, "mag": 2.79 },
+      { "name": "Джинан", "ra": 185.34000, "dec": -60.40111, "mag": 3.59 }
+    ]
+  },
+  {
+    "id": "lyra",
+    "name": "Лира",
+    "subtitle": "С Вегой · созвездие",
+    "source": "hipparcos",
+    "center": { "ra": 282.0, "dec": 36.0 },
+    "radiusArcmin": 360,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.5,
+    "named": [
+      { "name": "Вега", "ra": 279.23474, "dec": 38.78369, "mag": 0.03 },
+      { "name": "Шелиак", "ra": 282.52000, "dec": 33.36278, "mag": 3.52 },
+      { "name": "Сулафат", "ra": 284.73594, "dec": 32.68955, "mag": 3.24 },
+      { "name": "Дельта Лиры", "ra": 283.62625, "dec": 36.89864, "mag": 4.30 },
+      { "name": "Дзета Лиры", "ra": 281.19333, "dec": 37.60505, "mag": 4.36 }
+    ]
+  },
+  {
+    "id": "cygnus",
+    "name": "Лебедь",
+    "subtitle": "Северный Крест · созвездие",
+    "source": "hipparcos",
+    "center": { "ra": 302.0, "dec": 38.0 },
+    "radiusArcmin": 780,
+    "fetchMagLimit": 6.0,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.0,
+    "named": [
+      { "name": "Денеб", "ra": 310.35798, "dec": 45.28034, "mag": 1.25 },
+      { "name": "Садр", "ra": 305.55708, "dec": 40.25668, "mag": 2.23 },
+      { "name": "Дженах", "ra": 311.55291, "dec": 33.97026, "mag": 2.48 },
+      { "name": "Дельта Лебедя", "ra": 296.24377, "dec": 45.13081, "mag": 2.87 },
+      { "name": "Альбирео", "ra": 292.68034, "dec": 27.95968, "mag": 3.05 }
+    ]
+  },
+  {
+    "id": "corona-borealis",
+    "name": "Северная Корона",
+    "subtitle": "Полукруг · созвездие",
+    "source": "hipparcos",
+    "center": { "ra": 236.0, "dec": 28.5 },
+    "radiusArcmin": 330,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 5.0,
+    "named": [
+      { "name": "Альфекка", "ra": 233.67207, "dec": 26.71469, "mag": 2.22 },
+      { "name": "Нусакан", "ra": 231.95712, "dec": 29.10581, "mag": 3.66 },
+      { "name": "Гамма", "ra": 235.68580, "dec": 26.29563, "mag": 3.81 },
+      { "name": "Дельта", "ra": 237.39832, "dec": 26.06827, "mag": 4.59 },
+      { "name": "Эпсилон", "ra": 239.39672, "dec": 26.87781, "mag": 4.14 },
+      { "name": "Тета", "ra": 233.23250, "dec": 31.35917, "mag": 4.14 }
+    ]
+  },
+  {
+    "id": "delphinus",
+    "name": "Дельфин",
+    "subtitle": "Ромб Иова · созвездие",
+    "source": "hipparcos",
+    "center": { "ra": 310.0, "dec": 14.5 },
+    "radiusArcmin": 300,
+    "fetchMagLimit": 6.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 5.0,
+    "named": [
+      { "name": "Ротанев", "ra": 309.38708, "dec": 14.59520, "mag": 3.63 },
+      { "name": "Суалоцин", "ra": 309.90958, "dec": 15.91194, "mag": 3.77 },
+      { "name": "Гамма", "ra": 311.66458, "dec": 16.12417, "mag": 4.27 },
+      { "name": "Дельта", "ra": 310.86500, "dec": 15.07444, "mag": 4.43 },
+      { "name": "Эпсилон", "ra": 308.30333, "dec": 11.30333, "mag": 4.03 }
+    ]
+  },
+  {
+    "id": "little-dipper",
+    "name": "Малая Медведица",
+    "subtitle": "С Полярной звездой · астеризм",
+    "source": "hipparcos",
+    "center": { "ra": 240.0, "dec": 80.0 },
+    "radiusArcmin": 840,
+    "fetchMagLimit": 6.0,
+    "maxRows": 3000,
+    "defaultMagLimit": 5.0,
+    "named": [
+      { "name": "Полярная", "ra": 37.95456, "dec": 89.26411, "mag": 1.97 },
+      { "name": "Кохаб", "ra": 222.67636, "dec": 74.15550, "mag": 2.08 },
+      { "name": "Феркад", "ra": 230.18208, "dec": 71.83397, "mag": 3.05 },
+      { "name": "Йильдун", "ra": 263.05417, "dec": 86.58642, "mag": 4.36 }
+    ]
+  },
+  {
+    "id": "hyades",
+    "name": "Гиады",
+    "subtitle": "V-образное скопление с Альдебараном",
+    "source": "hipparcos",
+    "center": { "ra": 67.0, "dec": 16.5 },
+    "radiusArcmin": 420,
+    "fetchMagLimit": 7.5,
+    "maxRows": 3000,
+    "defaultMagLimit": 5.5,
+    "named": [
+      { "name": "Альдебаран", "ra": 68.98016, "dec": 16.50930, "mag": 0.87 },
+      { "name": "Тета² Тельца", "ra": 67.16542, "dec": 15.87083, "mag": 3.40 },
+      { "name": "Гамма Тельца", "ra": 64.94833, "dec": 15.62778, "mag": 3.65 },
+      { "name": "Дельта Тельца", "ra": 65.73375, "dec": 17.54250, "mag": 3.76 },
+      { "name": "Эпсилон Тельца", "ra": 67.15417, "dec": 19.18028, "mag": 3.53 }
+    ]
+  },
+  {
+    "id": "beehive",
+    "name": "Ясли",
+    "subtitle": "M44 · рассеянное скопление",
+    "source": "gaia",
+    "center": { "ra": 130.1, "dec": 19.667 },
+    "radiusArcmin": 70,
+    "fetchMagLimit": 13.5,
+    "maxRows": 5000,
+    "defaultMagLimit": 8.0,
+    "named": [
+      { "name": "Эпсилон Рака", "ra": 130.15375, "dec": 19.84028, "mag": 6.29 }
+    ]
+  }
+]

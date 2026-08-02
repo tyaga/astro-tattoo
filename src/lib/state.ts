@@ -1,12 +1,18 @@
-import type { Settings, WristImage } from './types';
+import type { Preset, Settings, WristImage } from './types';
 
-const STORAGE_KEY = 'pleiades-v3';
-const WRIST_KEY = 'pleiades-wrist-image';
+const SETTINGS_KEY = 'astro-tattoo-settings';
+const WRIST_KEY = 'astro-tattoo-wrist';
+const PRESETS_KEY = 'astro-tattoo-presets';
+
+// проект раньше назывался pleiades — переносим настройки и фото со старых ключей
+const LEGACY_SETTINGS_KEY = 'pleiades-v3';
+const LEGACY_WRIST_KEY = 'pleiades-wrist-image';
 
 // Дефолты соответствуют «примерочной» компоновке: полотно под весь кадр
 // запястья, фото повёрнуто на 90° (рука горизонтально), масштаб кадра
 // откалиброван по сантиметровой ленте на снимке (16.3 × 21.7 см)
 export const DEFAULTS: Settings = {
+    targetId: 'pleiades',
     magLimit: 6.1,
     widthCm: 21.5,
     heightCm: 16.5,
@@ -41,55 +47,70 @@ export const DEFAULTS: Settings = {
     wristOpacity: 0.75,
 };
 
-export function loadSettings(): Settings {
+function readJson<T>(key: string): T | null {
     try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-            const saved = JSON.parse(raw);
-            // ключи с null/undefined не должны затирать дефолты:
-            // сохранённое состояние может быть от версии без части полей
-            const clean = Object.fromEntries(
-                Object.entries(saved ?? {}).filter(([, v]) => v !== null && v !== undefined),
-            );
-            return { ...DEFAULTS, ...clean };
-        }
+        const raw = localStorage.getItem(key);
+        return raw ? (JSON.parse(raw) as T) : null;
     } catch {
-        // повреждённое состояние — остаёмся на дефолтах
+        return null;
     }
-    return { ...DEFAULTS };
+}
+
+/** Ключи с null/undefined не должны затирать дефолты: сохранённое состояние
+ *  может быть от версии, где части полей ещё не было */
+export function mergeSettings(saved: unknown): Settings {
+    const clean = Object.fromEntries(
+        Object.entries((saved ?? {}) as Record<string, unknown>)
+            .filter(([, v]) => v !== null && v !== undefined),
+    );
+    return { ...DEFAULTS, ...clean } as Settings;
+}
+
+export function loadSettings(): Settings {
+    const saved =
+        readJson<unknown>(SETTINGS_KEY) ?? readJson<unknown>(LEGACY_SETTINGS_KEY);
+    return mergeSettings(saved);
 }
 
 export function saveSettings(settings: Settings): void {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
 export function clearSettings(): void {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(SETTINGS_KEY);
+    localStorage.removeItem(LEGACY_SETTINGS_KEY);
 }
 
 export function loadWrist(): WristImage | null {
-    try {
-        const raw = localStorage.getItem(WRIST_KEY);
-        if (raw) {
-            const img = JSON.parse(raw);
-            if (img && typeof img.url === 'string' && typeof img.aspect === 'number') {
-                return img;
-            }
-        }
-    } catch {
-        // повреждённые данные — считаем, что фото нет
-    }
-    return null;
+    const img =
+        readJson<WristImage>(WRIST_KEY) ?? readJson<WristImage>(LEGACY_WRIST_KEY);
+    return img && typeof img.url === 'string' && typeof img.aspect === 'number'
+        ? img
+        : null;
 }
 
 export function saveWrist(img: WristImage | null): void {
     if (!img) {
         localStorage.removeItem(WRIST_KEY);
+        localStorage.removeItem(LEGACY_WRIST_KEY);
         return;
     }
     try {
         localStorage.setItem(WRIST_KEY, JSON.stringify(img));
     } catch {
-        // не влезло в квоту localStorage — фото живёт только в памяти сессии
+        // не влезло в квоту localStorage — фото живёт только до перезагрузки
+    }
+}
+
+export function loadPresets(): Preset[] {
+    const presets = readJson<Preset[]>(PRESETS_KEY);
+    return Array.isArray(presets) ? presets : [];
+}
+
+export function savePresets(presets: Preset[]): void {
+    try {
+        localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+    } catch {
+        // квота исчерпана — скорее всего из-за фото запястья
     }
 }

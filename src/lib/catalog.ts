@@ -1,44 +1,74 @@
-import rawStars from '../data/stars.json';
+import targetsJson from '../data/targets.json';
+
+export interface NamedStar {
+    name: string;
+    ra: number;
+    dec: number;
+    mag: number;
+}
+
+export interface Target {
+    id: string;
+    name: string;
+    subtitle: string;
+    /** Каталог-источник: Gaia DR3 для скоплений, Hipparcos для ярких созвездий */
+    source: 'gaia' | 'hipparcos';
+    center: { ra: number; dec: number };
+    radiusArcmin: number;
+    fetchMagLimit: number;
+    maxRows: number;
+    defaultMagLimit: number;
+    /** Есть ли снимок объекта для сравнения */
+    photo?: boolean;
+    named: NamedStar[];
+}
 
 export interface CatalogStar {
     ra: number;
     dec: number;
     mag: number;
     name: string | null;
-    /** Гномоническая проекция: тангенс-единицы, на восток */
+    /** Гномоническая проекция: тангенс-единицы, u — на восток, v — на север */
     u: number;
-    /** Гномоническая проекция: тангенс-единицы, на север */
     v: number;
 }
 
-/** Девять именованных звёзд Плеяд (J2000). Имена привязываются
- *  к ближайшим источникам Gaia DR3 по координатам. */
-const NAMED_STARS = [
-    { name: 'Альциона', ra: 56.871152, dec: 24.105136 },
-    { name: 'Атлас', ra: 57.290597, dec: 24.053417 },
-    { name: 'Электра', ra: 56.218904, dec: 24.113336 },
-    { name: 'Майя', ra: 56.456695, dec: 24.367750 },
-    { name: 'Меропа', ra: 56.581553, dec: 23.948348 },
-    { name: 'Тайгета', ra: 56.302063, dec: 24.467270 },
-    { name: 'Плейона', ra: 57.296738, dec: 24.136710 },
-    { name: 'Келено', ra: 56.200893, dec: 24.289468 },
-    { name: 'Астеропа', ra: 56.476987, dec: 24.554512 },
-];
+interface RawStar {
+    ra: number;
+    dec: number;
+    mag: number;
+    name?: string;
+}
+
+export const TARGETS = targetsJson as Target[];
 
 export const rad = (deg: number): number => (deg * Math.PI) / 180;
 
-/** Центр поля — центроид именованных звёзд */
-export const CENTER = {
-    ra: NAMED_STARS.reduce((s, n) => s + n.ra, 0) / NAMED_STARS.length,
-    dec: NAMED_STARS.reduce((s, n) => s + n.dec, 0) / NAMED_STARS.length,
-};
+// Каталоги выгружаются скриптом scripts/fetch-catalogs.mjs и в репозиторий
+// не коммитятся, поэтому подхватываются по маске, а не поимённо
+const catalogFiles = import.meta.glob<RawStar[]>('../data/catalogs/*.json', {
+    eager: true,
+    import: 'default',
+});
 
-/** Гномоническая (тангенциальная) проекция с центром в CENTER */
-function gnomonic(raDeg: number, decDeg: number): { u: number; v: number } {
+function rawStars(id: string): RawStar[] {
+    return catalogFiles[`../data/catalogs/${id}.json`] ?? [];
+}
+
+export function getTarget(id: string): Target {
+    return TARGETS.find(t => t.id === id) ?? TARGETS[0];
+}
+
+/** Гномоническая (тангенциальная) проекция с центром в заданной точке */
+function gnomonic(
+    raDeg: number,
+    decDeg: number,
+    center: { ra: number; dec: number },
+): { u: number; v: number } {
     const a = rad(raDeg);
     const d = rad(decDeg);
-    const a0 = rad(CENTER.ra);
-    const d0 = rad(CENTER.dec);
+    const a0 = rad(center.ra);
+    const d0 = rad(center.dec);
     const cosc =
         Math.sin(d0) * Math.sin(d) + Math.cos(d0) * Math.cos(d) * Math.cos(a - a0);
     return {
@@ -50,45 +80,38 @@ function gnomonic(raDeg: number, decDeg: number): { u: number; v: number } {
     };
 }
 
-/** Каталог Gaia DR3 с подставленными именами, отсортирован по яркости */
-export const CATALOG: CatalogStar[] = (() => {
-    const stars: CatalogStar[] = rawStars.map(s => ({
-        ra: s.ra,
-        dec: s.dec,
-        mag: s.magnitude,
-        name: null,
-        u: 0,
-        v: 0,
-    }));
+const cache = new Map<string, CatalogStar[]>();
 
-    const MATCH_RADIUS = 30 / 3600; // 30 угловых секунд
-    for (const named of NAMED_STARS) {
-        let best: CatalogStar | null = null;
-        let bestD2 = Infinity;
-        for (const s of stars) {
-            const dra = (s.ra - named.ra) * Math.cos(rad(named.dec));
-            const dde = s.dec - named.dec;
-            const d2 = dra * dra + dde * dde;
-            if (d2 < bestD2) {
-                bestD2 = d2;
-                best = s;
-            }
+/** Каталог объекта: отсортирован по яркости, спроецирован вокруг его центра */
+export function getCatalog(id: string): CatalogStar[] {
+    const cached = cache.get(id);
+    if (cached) return cached;
+
+    const target = getTarget(id);
+    // центр проекции — центроид именованных звёзд, иначе центр запроса
+    const center = target.named.length
+        ? {
+            ra: target.named.reduce((s, n) => s + n.ra, 0) / target.named.length,
+            dec: target.named.reduce((s, n) => s + n.dec, 0) / target.named.length,
         }
-        if (best && Math.sqrt(bestD2) < MATCH_RADIUS) best.name = named.name;
-    }
+        : target.center;
 
-    stars.sort((a, b) => a.mag - b.mag);
-    for (const s of stars) {
-        const p = gnomonic(s.ra, s.dec);
-        s.u = p.u;
-        s.v = p.v;
-    }
+    const stars: CatalogStar[] = rawStars(target.id)
+        .map(s => {
+            const p = gnomonic(s.ra, s.dec, center);
+            return { ra: s.ra, dec: s.dec, mag: s.mag, name: s.name ?? null, u: p.u, v: p.v };
+        })
+        .sort((a, b) => a.mag - b.mag);
+
+    cache.set(id, stars);
     return stars;
-})();
+}
 
-/** Порог яркости, при котором видны N ярчайших звёзд каталога
- *  (с округлением вверх до шага слайдера 0.05, чтобы N-я не выпадала) */
-export function magForCount(n: number): number {
-    const i = Math.min(n, CATALOG.length) - 1;
-    return Math.ceil(CATALOG[i].mag / 0.05) * 0.05;
+/** Порог яркости, при котором видны N ярчайших звёзд объекта
+ *  (округление вверх до шага слайдера, чтобы N-я не выпадала) */
+export function magForCount(id: string, n: number): number {
+    const catalog = getCatalog(id);
+    if (catalog.length === 0) return 6;
+    const i = Math.min(n, catalog.length) - 1;
+    return Math.ceil(catalog[i].mag / 0.05) * 0.05;
 }

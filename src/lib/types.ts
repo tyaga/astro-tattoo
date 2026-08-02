@@ -4,6 +4,8 @@ export type LabelsMode = 'none' | 'names' | 'full';
 export type GridMm = 0 | 1 | 2 | 5;
 
 export interface Settings {
+    /** Идентификатор объекта из targets.json */
+    targetId: string;
     /** Предельная звёздная величина: показываем звёзды ярче */
     magLimit: number;
     widthCm: number;
@@ -55,6 +57,13 @@ export interface Settings {
     wristOffY: number;
     wristRotDeg: number;
     wristOpacity: number;
+}
+
+/** Именованный набор настроек, сохранённый пользователем */
+export interface Preset {
+    id: string;
+    name: string;
+    settings: Settings;
 }
 
 /** Загруженное фото запястья (хранится отдельно от Settings) */

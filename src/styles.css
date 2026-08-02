@@ -216,6 +216,89 @@ select {
     opacity: 0;
 }
 
+/* пресеты */
+
+.text-input {
+    flex: 1;
+    min-width: 0;
+    font: 500 12px 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 8px;
+}
+
+.text-input::placeholder {
+    color: var(--muted);
+}
+
+.preset-form {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.preset-row {
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+}
+
+.preset-load {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    font: 500 12px 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.preset-load:hover {
+    border-color: var(--accent);
+}
+
+.preset-name {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.preset-target {
+    font-size: 10.5px;
+    color: var(--muted);
+}
+
+.preset-delete {
+    font: 500 12px 'Inter', sans-serif;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0 7px;
+    cursor: pointer;
+}
+
+.preset-delete:hover {
+    color: #e2707f;
+    border-color: #e2707f;
+}
+
 .check {
     display: flex;
     align-items: center;

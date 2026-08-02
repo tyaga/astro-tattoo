@@ -1,10 +1,14 @@
 {
-  "name": "pleiades-tattoo",
+  "name": "astro-tattoo",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "fetch": "node scripts/fetch-catalogs.mjs",
+    "fetch:force": "node scripts/fetch-catalogs.mjs --force",
+    "predev": "npm run fetch",
     "dev": "vite",
+    "prebuild": "npm run fetch",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },

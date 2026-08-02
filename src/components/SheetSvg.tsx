@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import photoUrl from '../assets/pleiades.jpg';
-import { rad } from '../lib/catalog';
+import { getTarget, rad } from '../lib/catalog';
 import { sheetSize } from '../lib/model';
 import { isDark } from '../lib/palette';
 import type { DrawnStar, Settings, WristImage } from '../lib/types';
@@ -49,8 +49,10 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
     const bx = W - 13;
     const by = H - 3;
 
+    // снимок неба есть не у каждого объекта
+    const skyPhoto = settings.showPhoto && Boolean(getTarget(settings.targetId).photo);
     // подписи и разметка подстраиваются под тёмный фон: кожу или снимок неба
-    const onDark = settings.showPhoto || isDark(settings.skinTone);
+    const onDark = skyPhoto || isDark(settings.skinTone);
     const nameFill = onDark ? '#f0f0f5' : '#33343d';
     const infoFill = onDark ? '#c9cad6' : '#8a8b96';
     const chromeStroke = onDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(60, 62, 78, 0.32)';
@@ -95,7 +97,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 );
             })()}
 
-            {settings.showPhoto && (() => {
+            {skyPhoto && (() => {
                 // фото привязано к небу: центр — центроид скопления,
                 // трансформации те же, что у звёзд (fov, pan, rotation, flips)
                 const scale = Math.min(W, H) / 2 / Math.tan(rad(settings.fovDeg));
@@ -153,7 +155,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
 
             <g clipPath="url(#sheet)">
                 {drawn.map((s, i) =>
-                    settings.showPhoto ? (
+                    skyPhoto ? (
                         // поверх снимка неба — контур, чтобы совмещать точки со звёздами
                         <circle
                             key={i}

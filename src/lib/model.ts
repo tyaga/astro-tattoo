@@ -1,12 +1,11 @@
-import { CATALOG, rad } from './catalog';
+import { getCatalog, getTarget, rad } from './catalog';
 import type { DrawnStar, Settings } from './types';
 
 export function sheetSize(s: Settings): { W: number; H: number } {
     return { W: s.widthCm * 10, H: s.heightCm * 10 };
 }
 
-export function starDiameterMm(s: Settings, mag: number): number {
-    const brightest = CATALOG[0].mag;
+export function starDiameterMm(s: Settings, mag: number, brightest: number): number {
     // диаметр пропорционален потоку в степени contrast
     const raw = s.maxMm * Math.pow(10, -0.4 * (mag - brightest) * s.contrast);
     const clamped = Math.min(s.maxMm, Math.max(s.minMm, raw));
@@ -14,18 +13,28 @@ export function starDiameterMm(s: Settings, mag: number): number {
     return Math.max(s.stepMm, Math.round(clamped / s.stepMm) * s.stepMm);
 }
 
+/** Масштаб проекции: мм полотна на единицу тангенса */
+function projectionScale(s: Settings): number {
+    const { W, H } = sheetSize(s);
+    return Math.min(W, H) / 2 / Math.tan(rad(s.fovDeg));
+}
+
 /** Звёзды, попадающие на полотно, в мм от левого верхнего угла */
 export function computeDrawn(s: Settings): DrawnStar[] {
     const { W, H } = sheetSize(s);
-    const scale = Math.min(W, H) / 2 / Math.tan(rad(s.fovDeg));
+    const catalog = getCatalog(s.targetId);
+    if (catalog.length === 0) return [];
+
+    const scale = projectionScale(s);
     const th = rad(s.rotation);
     const cos = Math.cos(th);
     const sin = Math.sin(th);
+    const brightest = catalog[0].mag;
     const drawn: DrawnStar[] = [];
 
-    for (const star of CATALOG) {
+    for (const star of catalog) {
         if (star.mag > s.magLimit) break; // каталог отсортирован по яркости
-        // вид "как на небе": север вверху, восток слева
+        // вид «как на небе»: север вверху, восток слева
         let x0 = -star.u;
         let y0 = star.v;
         if (s.flipX) x0 = -x0;
@@ -34,12 +43,37 @@ export function computeDrawn(s: Settings): DrawnStar[] {
         const y1 = x0 * sin + y0 * cos;
         const X = W / 2 + s.panX + x1 * scale;
         const Y = H / 2 + s.panY - y1 * scale;
-        const d = starDiameterMm(s, star.mag);
+        const d = starDiameterMm(s, star.mag, brightest);
         const r = d / 2;
         if (X < -r || X > W + r || Y < -r || Y > H + r) continue;
         drawn.push({ X, Y, d, mag: star.mag, name: star.name });
     }
     return drawn;
+}
+
+/** Поле зрения, при котором звёзды ярче предела вписываются в полотно */
+export function fitFovDeg(s: Settings): number {
+    const { W, H } = sheetSize(s);
+    const catalog = getCatalog(s.targetId);
+    const margin = Math.min(W, H) * 0.08;
+
+    let maxU = 0;
+    let maxV = 0;
+    for (const star of catalog) {
+        if (star.mag > s.magLimit) break;
+        maxU = Math.max(maxU, Math.abs(star.u));
+        maxV = Math.max(maxV, Math.abs(star.v));
+    }
+    if (maxU === 0 && maxV === 0) return s.fovDeg;
+
+    // scale ограничен и по ширине, и по высоте
+    const scaleLimit = Math.min(
+        maxU > 0 ? (W / 2 - margin) / maxU : Infinity,
+        maxV > 0 ? (H / 2 - margin) / maxV : Infinity,
+    );
+    const tan = Math.min(W, H) / 2 / scaleLimit;
+    const fov = (Math.atan(tan) * 180) / Math.PI;
+    return Math.min(30, Math.max(0.2, Math.round(fov * 20) / 20));
 }
 
 export interface SizeClass {
@@ -60,23 +94,28 @@ export function sizeClasses(drawn: DrawnStar[]): SizeClass[] {
 
 export function buildSpec(s: Settings, drawn: DrawnStar[]): string {
     const { W, H } = sheetSize(s);
+    const target = getTarget(s.targetId);
+    const source =
+        target.source === 'gaia' ? 'Gaia DR3 (VizieR I/355)' : 'Hipparcos (VizieR I/239)';
+
     const lines: string[] = [];
-    lines.push('Плеяды (M45) — спецификация эскиза татуировки');
+    lines.push(`${target.name} — спецификация эскиза татуировки`);
+    lines.push(target.subtitle);
     lines.push(
         `Полотно: ${W} × ${H} мм. Координаты X — от левого края, Y — от верхнего.`,
     );
-    lines.push(`Звёзд: ${drawn.length}. Данные: Gaia DR3 (VizieR I/355).`);
+    lines.push(`Звёзд: ${drawn.length}. Данные: ${source}.`);
     lines.push('');
     lines.push('Размерные классы точек:');
     for (const c of sizeClasses(drawn)) {
         lines.push(`  ⌀ ${c.d.toFixed(2)} мм — ${c.count} шт.`);
     }
     lines.push('');
-    lines.push('  №  Имя         mag     X, мм    Y, мм   ⌀, мм');
+    lines.push('  №  Имя               mag     X, мм    Y, мм   ⌀, мм');
     const sorted = [...drawn].sort((a, b) => a.mag - b.mag);
     sorted.forEach((star, i) => {
         const num = String(i + 1).padStart(3);
-        const name = (star.name ?? '—').padEnd(10);
+        const name = (star.name ?? '—').padEnd(16);
         lines.push(
             `${num}  ${name} ${star.mag.toFixed(2).padStart(5)}  ` +
             `${star.X.toFixed(1).padStart(7)}  ${star.Y.toFixed(1).padStart(7)}  ` +

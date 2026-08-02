@@ -1,25 +1,29 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Legend } from './components/Legend';
+import { Presets } from './components/Presets';
 import { Preview } from './components/Preview';
 import { Check, Chip, Slider, Swatches } from './components/controls';
 import { INKS, SKIN_TONES } from './lib/palette';
-import { CATALOG, magForCount } from './lib/catalog';
+import { TARGETS, getCatalog, getTarget, magForCount } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
-import { buildSpec, computeDrawn, sheetSize, sizeClasses } from './lib/model';
 import {
-    DEFAULTS, clearSettings, loadSettings, loadWrist, saveSettings, saveWrist,
+    buildSpec, computeDrawn, fitFovDeg, sheetSize, sizeClasses,
+} from './lib/model';
+import {
+    DEFAULTS, clearSettings, loadPresets, loadSettings, loadWrist,
+    savePresets, saveSettings, saveWrist,
 } from './lib/state';
-import type { GridMm, LabelsMode, Settings, WristImage } from './lib/types';
+import type { GridMm, LabelsMode, Preset, Settings, WristImage } from './lib/types';
 
-const STAR_PRESETS = [
-    { n: 7, label: '7 сестёр' },
-    { n: 9, label: '9' },
-    { n: 14, label: '14' },
-    { n: 25, label: '25' },
-    { n: 50, label: '50' },
-    { n: 120, label: '120' },
-];
+const STAR_COUNTS = [5, 7, 9, 14, 25, 50, 120];
+
+/** Пресет применяется поверх дефолтов: в старых пресетах могут
+ *  отсутствовать поля, добавленные позже */
+const mergePreset = (preset: Preset) => (): Settings => ({
+    ...DEFAULTS,
+    ...preset.settings,
+});
 
 const GRID_OPTIONS: { value: GridMm; label: string }[] = [
     { value: 0, label: 'нет' },
@@ -31,7 +35,10 @@ const GRID_OPTIONS: { value: GridMm; label: string }[] = [
 export default function App() {
     const [settings, setSettings] = useState<Settings>(loadSettings);
     const [wrist, setWrist] = useState<WristImage | null>(loadWrist);
+    const [presets, setPresets] = useState<Preset[]>(loadPresets);
     const svgRef = useRef<SVGSVGElement>(null);
+
+    const target = getTarget(settings.targetId);
 
     useEffect(() => {
         saveSettings(settings);
@@ -40,6 +47,30 @@ export default function App() {
     useEffect(() => {
         saveWrist(wrist);
     }, [wrist]);
+
+    useEffect(() => {
+        savePresets(presets);
+    }, [presets]);
+
+    /** Смена объекта поверх текущих настроек: меняем только то,
+     *  что привязано к конкретному участку неба */
+    const handleTargetChange = (targetId: string) => {
+        setSettings(s => {
+            const next: Settings = {
+                ...s,
+                targetId,
+                magLimit: getTarget(targetId).defaultMagLimit,
+                panX: 0,
+                panY: 0,
+            };
+            return { ...next, fovDeg: fitFovDeg(next) };
+        });
+    };
+
+    const handleSavePreset = (name: string) => {
+        const id = `${Date.now().toString(36)}-${name.length}`;
+        setPresets(list => [...list, { id, name, settings }]);
+    };
 
     const handleWristFile = async (file: File | undefined) => {
         if (!file) return;
@@ -69,7 +100,10 @@ export default function App() {
         const svg = svgToStandalone(svgRef.current, W, H, {
             blackAndWhite: settings.exportBw,
         });
-        downloadBlob('pleiades-tattoo.svg', new Blob([svg], { type: 'image/svg+xml' }));
+        downloadBlob(
+            `${target.id}-tattoo.svg`,
+            new Blob([svg], { type: 'image/svg+xml' }),
+        );
     };
 
     const handleExportPng = () => {
@@ -78,12 +112,12 @@ export default function App() {
         const svg = svgToStandalone(svgRef.current, W, H, {
             blackAndWhite: settings.exportBw,
         });
-        exportPng(svg, W, H, 'pleiades-tattoo-300dpi.png');
+        exportPng(svg, W, H, `${target.id}-tattoo-300dpi.png`);
     };
 
     const handleExportSpec = () => {
         downloadBlob(
-            'pleiades-tattoo-spec.txt',
+            `${target.id}-tattoo-spec.txt`,
             new Blob([buildSpec(settings, drawn)], { type: 'text/plain;charset=utf-8' }),
         );
     };
@@ -97,31 +131,51 @@ export default function App() {
         <div className="app">
             <aside className="sidebar left">
                 <header className="sidebar-header">
-                    <h1>Плеяды · M45</h1>
-                    <p>Эскиз татуировки по данным Gaia DR3</p>
+                    <h1>Астро·тату</h1>
+                    <p>Эскизы созвездий по данным Gaia и Hipparcos</p>
                 </header>
+
+                <section className="group">
+                    <h2>Объект</h2>
+                    <div className="control">
+                        <select
+                            value={settings.targetId}
+                            onChange={e => handleTargetChange(e.target.value)}
+                        >
+                            {TARGETS.map(t => (
+                                <option key={t.id} value={t.id}>
+                                    {t.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <p className="stat">{target.subtitle}</p>
+                </section>
 
                 <section className="group">
                     <h2>Звёзды</h2>
                     <div className="chips">
-                        {STAR_PRESETS.map(p => (
+                        {STAR_COUNTS.map(n => (
                             <Chip
-                                key={p.n}
-                                label={p.label}
-                                active={Math.abs(settings.magLimit - magForCount(p.n)) < 1e-9}
-                                onClick={() => set('magLimit')(magForCount(p.n))}
+                                key={n}
+                                label={String(n)}
+                                active={
+                                    Math.abs(settings.magLimit - magForCount(target.id, n)) < 1e-9
+                                }
+                                onClick={() => set('magLimit')(magForCount(target.id, n))}
                             />
                         ))}
                     </div>
                     <Slider
                         label="Предел яркости"
                         value={settings.magLimit}
-                        min={2.5} max={14} step={0.05}
+                        min={0} max={target.fetchMagLimit} step={0.05}
                         format={v => v.toFixed(2) + 'ᵐ'}
                         onChange={set('magLimit')}
                     />
                     <p className="stat">
-                        В поле: <b>{drawn.length}</b> звёзд · в каталоге: {CATALOG.length}
+                        В поле: <b>{drawn.length}</b> звёзд · в каталоге:{' '}
+                        {getCatalog(target.id).length}
                     </p>
                 </section>
 
@@ -144,10 +198,23 @@ export default function App() {
                     <Slider
                         label="Поле зрения"
                         value={settings.fovDeg}
-                        min={0.2} max={4} step={0.05}
+                        min={0.2} max={30} step={0.05}
                         format={v => v.toFixed(2) + '°'}
                         onChange={set('fovDeg')}
                     />
+                    <button
+                        className="btn ghost"
+                        onClick={() =>
+                            setSettings(s => ({
+                                ...s,
+                                fovDeg: fitFovDeg({ ...s, panX: 0, panY: 0 }),
+                                panX: 0,
+                                panY: 0,
+                            }))
+                        }
+                    >
+                        Вписать в полотно
+                    </button>
                     <Slider
                         label="Поворот"
                         value={settings.rotation}
@@ -303,6 +370,17 @@ export default function App() {
                     <Legend classes={classes} />
                 </section>
 
+                <section className="group">
+                    <h2>Пресеты</h2>
+                    <Presets
+                        presets={presets}
+                        settings={settings}
+                        onSave={handleSavePreset}
+                        onLoad={p => setSettings(mergePreset(p))}
+                        onDelete={id => setPresets(list => list.filter(p => p.id !== id))}
+                    />
+                </section>
+
             </aside>
 
             <aside className="sidebar photos">
@@ -402,8 +480,8 @@ export default function App() {
                     )}
                 </section>
 
-                <section className="group">
-                    <h2>Фото для сравнения</h2>
+                <section className="group" hidden={!target.photo}>
+                    <h2>Снимок объекта</h2>
                     <Check
                         label="Показать фото на фоне"
                         checked={settings.showPhoto}
