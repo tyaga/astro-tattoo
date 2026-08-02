@@ -53,7 +53,9 @@ const force = process.argv.includes('--force');
 function buildUrl(target) {
     const source = SOURCES[target.source];
     if (!source) throw new Error(`Неизвестный каталог: ${target.source}`);
-    const { ra, dec } = target.center;
+    // выборка центрируется там же, где проекция и снимок, иначе у широких
+    // созвездий поле звёзд и подложка расходятся по краям
+    const { ra, dec } = projectionCenter(target);
     const params = new URLSearchParams({
         '-source': source.table,
         '-c': `${ra.toFixed(5)} ${dec >= 0 ? '+' : ''}${dec.toFixed(5)}`,
@@ -272,7 +274,12 @@ async function main() {
         }
         console.log(`• ${target.id}`);
 
+        // после перевыгрузки каталога индексы звёзд меняются,
+        // поэтому линии фигуры приходится строить заново
+        let catalogRebuilt = false;
+
         if (force || !haveCatalog) {
+            catalogRebuilt = true;
             let stars;
             try {
                 stars = parseVizier(await fetchWithRetry(buildUrl(target)));
@@ -310,7 +317,7 @@ async function main() {
             }
         }
 
-        if (force || !haveLines) {
+        if (force || !haveLines || catalogRebuilt) {
             // у скоплений фигуры нет — кладём пустой список, чтобы не качать зря
             if (target.lines === false) {
                 await writeFile(linesPath, '[]');

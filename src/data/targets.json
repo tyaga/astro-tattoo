@@ -81,7 +81,7 @@
       "ra": 84.1,
       "dec": -1.15
     },
-    "radiusArcmin": 240,
+    "radiusArcmin": 315,
     "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 5,
@@ -117,8 +117,8 @@
       "ra": 83.5,
       "dec": 1
     },
-    "radiusArcmin": 780,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 1260,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4,
     "named": [
@@ -183,8 +183,8 @@
       "ra": 186,
       "dec": 55.5
     },
-    "radiusArcmin": 900,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 1530,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4,
     "named": [
@@ -243,8 +243,8 @@
       "ra": 15,
       "dec": 60
     },
-    "radiusArcmin": 660,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 1080,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4,
     "named": [
@@ -291,8 +291,8 @@
       "ra": 187,
       "dec": -60
     },
-    "radiusArcmin": 330,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 585,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4.5,
     "named": [
@@ -339,8 +339,8 @@
       "ra": 282,
       "dec": 36
     },
-    "radiusArcmin": 360,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 630,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4.5,
     "named": [
@@ -387,8 +387,8 @@
       "ra": 302,
       "dec": 38
     },
-    "radiusArcmin": 780,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1350,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4,
     "named": [
@@ -435,8 +435,8 @@
       "ra": 236,
       "dec": 28.5
     },
-    "radiusArcmin": 330,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 585,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 5,
     "named": [
@@ -489,8 +489,8 @@
       "ra": 310,
       "dec": 14.5
     },
-    "radiusArcmin": 300,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 495,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 5,
     "named": [
@@ -537,8 +537,8 @@
       "ra": 240,
       "dec": 80
     },
-    "radiusArcmin": 840,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1440,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 5,
     "named": [
@@ -579,7 +579,7 @@
       "ra": 67,
       "dec": 16.5
     },
-    "radiusArcmin": 420,
+    "radiusArcmin": 720,
     "fetchMagLimit": 7.5,
     "maxRows": 3000,
     "defaultMagLimit": 5.5,
@@ -628,7 +628,7 @@
       "ra": 130.1,
       "dec": 19.667
     },
-    "radiusArcmin": 70,
+    "radiusArcmin": 108,
     "fetchMagLimit": 13.5,
     "maxRows": 5000,
     "defaultMagLimit": 8,
@@ -653,8 +653,8 @@
       "ra": 253,
       "dec": -31
     },
-    "radiusArcmin": 1020,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1530,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -719,8 +719,8 @@
       "ra": 161,
       "dec": 17.5
     },
-    "radiusArcmin": 1080,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1530,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3.5,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -779,8 +779,8 @@
       "ra": 280,
       "dec": -29
     },
-    "radiusArcmin": 660,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 990,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3.4,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -845,8 +845,8 @@
       "ra": 354.5,
       "dec": 22
     },
-    "radiusArcmin": 960,
-    "fetchMagLimit": 5.5,
+    "radiusArcmin": 1260,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -887,8 +887,8 @@
       "ra": 219,
       "dec": 29
     },
-    "radiusArcmin": 900,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1350,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3.6,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -947,8 +947,8 @@
       "ra": 105,
       "dec": 23
     },
-    "radiusArcmin": 900,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1350,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3.6,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -1013,8 +1013,8 @@
       "ra": 80,
       "dec": 40
     },
-    "radiusArcmin": 780,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1170,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3.2,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -1073,8 +1073,8 @@
       "ra": 295,
       "dec": 5
     },
-    "radiusArcmin": 840,
-    "fetchMagLimit": 6,
+    "radiusArcmin": 1260,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 3.9,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -1133,8 +1133,8 @@
       "ra": 185,
       "dec": -20.5
     },
-    "radiusArcmin": 420,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 675,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4.1,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -1181,8 +1181,8 @@
       "ra": 297,
       "dec": 18.5
     },
-    "radiusArcmin": 300,
-    "fetchMagLimit": 6.5,
+    "radiusArcmin": 450,
+    "fetchMagLimit": 7,
     "maxRows": 3000,
     "defaultMagLimit": 4.5,
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -1223,7 +1223,7 @@
       "ra": 186,
       "dec": 25.8
     },
-    "radiusArcmin": 330,
+    "radiusArcmin": 495,
     "fetchMagLimit": 8,
     "maxRows": 3000,
     "defaultMagLimit": 6.5,
@@ -1248,7 +1248,7 @@
       "ra": 35.16,
       "dec": 57.14
     },
-    "radiusArcmin": 80,
+    "radiusArcmin": 117,
     "fetchMagLimit": 13,
     "maxRows": 5000,
     "defaultMagLimit": 9.5,

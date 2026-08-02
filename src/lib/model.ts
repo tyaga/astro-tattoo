@@ -52,15 +52,26 @@ export function computeDrawn(s: Settings): DrawnStar[] {
     return drawn;
 }
 
-/** Угловой радиус рисунка: самая далёкая от центра видимая звезда,
- *  в тангенс-единицах. Не зависит от поворота и размера полотна. */
+/** Угловой радиус рисунка в тангенс-единицах — по нему нормируется
+ *  физический размер татуировки. Меряем по именованным звёздам: они и есть
+ *  узнаваемая фигура, тогда как в выборку попадает поле заметно шире неё.
+ *  Для скоплений без имён берём 90-й процентиль, чтобы одна далёкая
+ *  звезда поля не раздувала размер. */
 export function patternRadiusTan(s: Settings): number {
-    let r = 0;
-    for (const star of getCatalog(s.targetId)) {
-        if (star.mag > s.magLimit) break;
-        r = Math.max(r, Math.hypot(star.u, star.v));
+    const catalog = getCatalog(s.targetId);
+    const named = catalog.filter(star => star.name);
+    if (named.length >= 3) {
+        return named.reduce((r, star) => Math.max(r, Math.hypot(star.u, star.v)), 0);
     }
-    return r;
+
+    const radii: number[] = [];
+    for (const star of catalog) {
+        if (star.mag > s.magLimit) break;
+        radii.push(Math.hypot(star.u, star.v));
+    }
+    if (radii.length === 0) return 0;
+    radii.sort((a, b) => a - b);
+    return radii[Math.min(radii.length - 1, Math.floor(radii.length * 0.9))];
 }
 
 /** Поперечник рисунка на полотне, мм — «насколько велика татуировка» */
