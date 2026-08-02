@@ -1,10 +1,13 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { TARGETS } from '../lib/catalog';
+import { pick } from '../i18n';
+import type { Lang } from '../i18n';
 import { TargetThumb } from './TargetThumb';
 
 interface Props {
     current: string;
     onSelect: (id: string) => void;
+    lang: Lang;
 }
 
 /** На сколько прокручивать полосу кнопками-стрелками */
@@ -12,25 +15,25 @@ const SCROLL_STEP = 320;
 
 /** Карточки вынесены в memo: при прокрутке меняется только состояние краёв,
  *  и без этого React перерисовывал бы все миниатюры на каждое событие */
-const TargetCards = memo(function TargetCards({ current, onSelect }: Props) {
+const TargetCards = memo(function TargetCards({ current, onSelect, lang }: Props) {
     return (
         <>
             {TARGETS.map(t => (
                 <button
                     key={t.id}
                     className={t.id === current ? 'target-card active' : 'target-card'}
-                    title={`${t.name} — ${t.subtitle}`}
+                    title={`${pick(t.name, lang)} — ${pick(t.subtitle, lang)}`}
                     onClick={() => onSelect(t.id)}
                 >
                     <TargetThumb id={t.id} className="target-thumb" />
-                    <span className="target-name">{t.name}</span>
+                    <span className="target-name">{pick(t.name, lang)}</span>
                 </button>
             ))}
         </>
     );
 });
 
-export function TargetBar({ current, onSelect }: Props) {
+export function TargetBar({ current, onSelect, lang }: Props) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [edges, setEdges] = useState({ left: false, right: false });
 
@@ -74,13 +77,13 @@ export function TargetBar({ current, onSelect }: Props) {
                 }
             >
                 <div className="topbar-scroll" ref={scrollRef} onScroll={updateEdges}>
-                    <TargetCards current={current} onSelect={onSelect} />
+                    <TargetCards current={current} onSelect={onSelect} lang={lang} />
                 </div>
 
                 {edges.left && (
                     <button
                         className="topbar-arrow left"
-                        aria-label="Прокрутить влево"
+                        aria-label="←"
                         onClick={() => scrollBy(-SCROLL_STEP)}
                     >
                         ‹
@@ -89,7 +92,7 @@ export function TargetBar({ current, onSelect }: Props) {
                 {edges.right && (
                     <button
                         className="topbar-arrow right"
-                        aria-label="Прокрутить вправо"
+                        aria-label="→"
                         onClick={() => scrollBy(SCROLL_STEP)}
                     >
                         ›

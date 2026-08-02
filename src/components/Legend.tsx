@@ -1,8 +1,10 @@
 import type { SizeClass } from '../lib/model';
+import { t } from '../i18n';
+import type { Lang } from '../i18n';
 
-export function Legend({ classes }: { classes: SizeClass[] }) {
+export function Legend({ classes, lang }: { classes: SizeClass[]; lang: Lang }) {
     if (classes.length === 0) {
-        return <div className="legend-empty">нет звёзд в поле</div>;
+        return <div className="legend-empty">{t(lang, 'noStars')}</div>;
     }
     return (
         <div className="legend">
@@ -15,8 +17,8 @@ export function Legend({ classes }: { classes: SizeClass[] }) {
                             height: Math.min(18, Math.max(3, c.d * 6)),
                         }}
                     />
-                    <span className="legend-size">⌀ {c.d.toFixed(2)} мм</span>
-                    <span className="legend-count">{c.count} шт.</span>
+                    <span className="legend-size">⌀ {c.d.toFixed(2)} {t(lang, 'mm')}</span>
+                    <span className="legend-count">{c.count} {t(lang, 'pieces')}</span>
                 </div>
             ))}
         </div>

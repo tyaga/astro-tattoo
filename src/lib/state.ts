@@ -1,8 +1,10 @@
 import { TARGETS } from './catalog';
+import { detectLang } from '../i18n';
 import { applyTargetPreset } from './model';
 import type { Preset, Settings, WristImage } from './types';
 
 const SETTINGS_KEY = 'astro-tattoo-settings';
+const PER_TARGET_KEY = 'astro-tattoo-per-target';
 const WRIST_KEY = 'astro-tattoo-wrist';
 const PRESETS_KEY = 'astro-tattoo-presets';
 
@@ -33,19 +35,18 @@ export const DEFAULTS: Settings = {
     gridMm: 1,
     showLines: false,
     lineMm: 0.3,
+    backgroundStars: 'show',
     previewZoom: 1,
     theme: 'auto',
+    lang: 'ru',
     skinTone: '#efcbb0',
     inkColor: '#1e2127',
     inkOpacity: 0.92,
     exportBw: true,
     showPhoto: false,
     photoOpacity: 0.85,
-    photoScale: 1,
-    photoRotDeg: 0,
     showWrist: true,
     wristWidthCm: 16.3,
-    wristHeightCm: 21.7,
     wristOffX: 0,
     wristOffY: 0,
     wristRotDeg: 90,
@@ -64,18 +65,25 @@ function readJson<T>(key: string): T | null {
 /** Ключи с null/undefined не должны затирать дефолты: сохранённое состояние
  *  может быть от версии, где части полей ещё не было */
 export function mergeSettings(saved: unknown): Settings {
+    const raw = (saved ?? {}) as Record<string, unknown>;
     const clean = Object.fromEntries(
-        Object.entries((saved ?? {}) as Record<string, unknown>)
-            .filter(([, v]) => v !== null && v !== undefined),
+        Object.entries(raw).filter(([, v]) => v !== null && v !== undefined),
     );
+    // раньше приглушение фона было галочкой
+    if (clean.backgroundStars === undefined && 'fadeUnlinked' in clean) {
+        clean.backgroundStars = clean.fadeUnlinked ? 'fade' : 'show';
+    }
+    delete clean.fadeUnlinked;
     return { ...DEFAULTS, ...clean } as Settings;
 }
 
 export function loadSettings(): Settings {
     const saved =
         readJson<unknown>(SETTINGS_KEY) ?? readJson<unknown>(LEGACY_SETTINGS_KEY);
-    // первый визит — показываем объект таким, каким его принято рисовать
-    if (!saved) return applyTargetPreset({ ...DEFAULTS }, DEFAULTS.targetId);
+    // первый визит — язык берём из браузера, объект показываем как принято
+    if (!saved) {
+        return applyTargetPreset({ ...DEFAULTS, lang: detectLang() }, DEFAULTS.targetId);
+    }
 
     const settings = mergeSettings(saved);
     // объект мог исчезнуть из списка с прошлого визита
@@ -113,6 +121,40 @@ export function saveWrist(img: WristImage | null): void {
     } catch {
         // не влезло в квоту localStorage — фото живёт только до перезагрузки
     }
+}
+
+/** Настройки, привязанные к объекту: их запоминаем отдельно для каждого,
+ *  чтобы возврат к созвездию возвращал и подобранный для него вид.
+ *  Полотно, кожа, чернила, сетка и фото запястья общие — они про место
+ *  на теле, а не про объект. */
+const TARGET_FIELDS = [
+    'magLimit', 'fovDeg', 'rotation', 'panX', 'panY',
+    'maxMm', 'minMm', 'contrast', 'stepMm', 'quantize',
+    'showLines', 'lineMm', 'backgroundStars', 'labels',
+] as const;
+
+export type TargetState = Pick<Settings, (typeof TARGET_FIELDS)[number]>;
+
+export function pickTargetState(s: Settings): TargetState {
+    const out = {} as Record<string, unknown>;
+    for (const key of TARGET_FIELDS) out[key] = s[key];
+    return out as TargetState;
+}
+
+export function loadPerTarget(): Record<string, TargetState> {
+    return readJson<Record<string, TargetState>>(PER_TARGET_KEY) ?? {};
+}
+
+export function savePerTarget(map: Record<string, TargetState>): void {
+    try {
+        localStorage.setItem(PER_TARGET_KEY, JSON.stringify(map));
+    } catch {
+        // квота исчерпана — переживём, это только удобство
+    }
+}
+
+export function clearPerTarget(): void {
+    localStorage.removeItem(PER_TARGET_KEY);
 }
 
 export function loadPresets(): Preset[] {

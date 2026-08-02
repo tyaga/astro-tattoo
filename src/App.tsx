@@ -2,24 +2,31 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Legend } from './components/Legend';
 import { Presets } from './components/Presets';
 import { Preview } from './components/Preview';
+import { RotationDial } from './components/RotationDial';
 import { TargetBar } from './components/TargetBar';
 import { TargetThumb } from './components/TargetThumb';
-import { Check, Chip, Slider, Swatches } from './components/controls';
+import {
+    Check, Chip, Segmented, Slider, Swatches,
+} from './components/controls';
 import { INKS, SKIN_TONES } from './lib/palette';
 import { getCatalog, getLines, getTarget, magForCount } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
+import { settingsFromQuery, shareUrl } from './lib/url';
 import {
-    applyTargetPreset, buildSpec, computeDrawn, fitFovDeg, fovForPatternMm,
+    applyTargetPreset, buildSpec, computeDrawn, computeMarkers, fitFovDeg, fovForPatternMm,
     patternSizeMm, sheetSize, sizeClasses,
 } from './lib/model';
 import {
-    DEFAULTS, clearSettings, loadPresets, loadSettings, loadWrist,
-    savePresets, saveSettings, saveWrist,
+    DEFAULTS, clearPerTarget, clearSettings, loadPerTarget, loadPresets,
+    loadSettings, loadWrist, pickTargetState, savePerTarget, savePresets,
+    saveSettings, saveWrist,
 } from './lib/state';
 import type {
-    GridMm, LabelsMode, Preset, Settings, Theme, WristImage,
+    BackgroundMode, GridMm, LabelsMode, Preset, Settings, Theme, WristImage,
 } from './lib/types';
+import { LANGS, LANG_LABELS, LANG_TITLES, pick, t } from './i18n';
+import type { Lang, StringKey } from './i18n';
 
 const STAR_COUNTS = [5, 7, 9, 14, 25, 50, 120];
 
@@ -30,29 +37,63 @@ const mergePreset = (preset: Preset) => (): Settings => ({
     ...preset.settings,
 });
 
-const THEMES: { value: Theme; icon: string; title: string }[] = [
-    { value: 'auto', icon: '◐', title: 'Как в системе' },
-    { value: 'light', icon: '☀', title: 'Светлая тема' },
-    { value: 'dark', icon: '☾', title: 'Тёмная тема' },
+const themeOptions = (lang: Lang) => [
+    { value: 'auto' as Theme, label: '◐', title: t(lang, 'themeAuto') },
+    { value: 'light' as Theme, label: '☀', title: t(lang, 'themeLight') },
+    { value: 'dark' as Theme, label: '☾', title: t(lang, 'themeDark') },
 ];
 
-const GRID_OPTIONS: { value: GridMm; label: string }[] = [
-    { value: 0, label: 'нет' },
-    { value: 1, label: '1 мм' },
-    { value: 2, label: '2 мм' },
-    { value: 5, label: '5 мм' },
+const labelOptions = (lang: Lang) => [
+    { value: 'none' as LabelsMode, label: t(lang, 'labelsNone'), title: t(lang, 'labelsNoneHint') },
+    { value: 'names' as LabelsMode, label: t(lang, 'labelsNames'), title: t(lang, 'labelsNamesHint') },
+    { value: 'full' as LabelsMode, label: t(lang, 'labelsFull'), title: t(lang, 'labelsFullHint') },
 ];
+
+const gridOptions = (lang: Lang) => [
+    { value: 0 as GridMm, label: t(lang, 'gridNone') },
+    { value: 1 as GridMm, label: `1 ${t(lang, 'mm')}` },
+    { value: 2 as GridMm, label: `2 ${t(lang, 'mm')}` },
+    { value: 5 as GridMm, label: `5 ${t(lang, 'mm')}` },
+];
+
+const backgroundOptions = (lang: Lang) => [
+    { value: 'show' as BackgroundMode, label: t(lang, 'bgShow'), title: t(lang, 'bgShowHint') },
+    { value: 'fade' as BackgroundMode, label: t(lang, 'bgFade'), title: t(lang, 'bgFadeHint') },
+    { value: 'hide' as BackgroundMode, label: t(lang, 'bgHide'), title: t(lang, 'bgHideHint') },
+];
+
+const showHide = (lang: Lang) => [
+    { value: true, label: t(lang, 'on'), title: t(lang, 'show') },
+    { value: false, label: t(lang, 'off'), title: t(lang, 'hide') },
+];
+
+const langOptions = LANGS.map(l => ({ value: l, label: LANG_LABELS[l], title: LANG_TITLES[l] }));
 
 export default function App() {
-    const [settings, setSettings] = useState<Settings>(loadSettings);
+    const [settings, setSettings] = useState<Settings>(
+        // ссылка задаёт рисунок, но примерку берём из этого браузера
+        () => {
+            const local = loadSettings();
+            return settingsFromQuery(window.location.search, local) ?? local;
+        },
+    );
+    const [linkCopied, setLinkCopied] = useState(false);
     const [wrist, setWrist] = useState<WristImage | null>(loadWrist);
     const [presets, setPresets] = useState<Preset[]>(loadPresets);
+    const perTargetRef = useRef(loadPerTarget());
     const svgRef = useRef<SVGSVGElement>(null);
 
+    const lang = settings.lang;
+    const tr = (key: StringKey) => t(lang, key);
+    const cm = tr('cm');
+    const mm = tr('mm');
     const target = getTarget(settings.targetId);
 
     useEffect(() => {
         saveSettings(settings);
+        // запоминаем настройки текущего объекта, чтобы вернуть их при возврате
+        perTargetRef.current[settings.targetId] = pickTargetState(settings);
+        savePerTarget(perTargetRef.current);
     }, [settings]);
 
     useEffect(() => {
@@ -67,23 +108,20 @@ export default function App() {
         document.documentElement.dataset.theme = settings.theme;
     }, [settings.theme]);
 
-    /** Смена объекта поверх текущих настроек: новый объект занимает
-     *  на полотне столько же миллиметров, сколько занимал прежний.
+    useEffect(() => {
+        document.documentElement.lang = lang;
+        document.title = `${t(lang, 'brand')} — ${t(lang, 'tagline')}`;
+    }, [lang]);
+
+    /** Смена объекта: возвращаем настройки, подобранные для него раньше,
+     *  а если объект открывается впервые — его вид по умолчанию.
      *  Ссылка стабильна, иначе memo на карточках объектов не сработает. */
     const handleTargetChange = useCallback((targetId: string) => {
         setSettings(s => {
-            const keepMm = patternSizeMm(s);
-            const next: Settings = {
-                ...s,
-                targetId,
-                magLimit: getTarget(targetId).preset.magLimit,
-                panX: 0,
-                panY: 0,
-            };
-            return {
-                ...next,
-                fovDeg: keepMm > 0 ? fovForPatternMm(next, keepMm) : fitFovDeg(next),
-            };
+            const remembered = perTargetRef.current[targetId];
+            return remembered
+                ? { ...s, ...remembered, targetId }
+                : applyTargetPreset(s, targetId);
         });
     }, []);
 
@@ -97,12 +135,7 @@ export default function App() {
         try {
             const img = await fileToWristImage(file);
             setWrist(img);
-            setSettings(s => ({
-                ...s,
-                showWrist: true,
-                // высота по пропорциям нового фото
-                wristHeightCm: Math.round(s.wristWidthCm * img.aspect * 10) / 10,
-            }));
+            setSettings(s => ({ ...s, showWrist: true }));
         } catch (e) {
             console.error(e);
         }
@@ -110,6 +143,7 @@ export default function App() {
 
     const drawn = useMemo(() => computeDrawn(settings), [settings]);
     const classes = useMemo(() => sizeClasses(drawn), [drawn]);
+    const markers = useMemo(() => computeMarkers(settings), [settings]);
     const patternCm = useMemo(() => patternSizeMm(settings) / 10, [settings]);
     const hasLines = getLines(target.id).length > 0;
 
@@ -144,53 +178,67 @@ export default function App() {
         );
     };
 
+    const handleCopyLink = async () => {
+        const url = shareUrl(settings);
+        try {
+            await navigator.clipboard.writeText(url);
+        } catch {
+            // буфер недоступен — хотя бы покажем ссылку в адресной строке
+        }
+        window.history.replaceState(null, '', url);
+        setLinkCopied(true);
+        setTimeout(() => setLinkCopied(false), 1600);
+    };
+
     const handleReset = () => {
         clearSettings();
+        clearPerTarget();
+        perTargetRef.current = {};
         setSettings(s => applyTargetPreset({ ...DEFAULTS }, s.targetId));
     };
 
     return (
         <div className="app">
-            <TargetBar current={settings.targetId} onSelect={handleTargetChange} />
+            <header className="appbar">
+                <div className="appbar-brand">
+                    <h1>{tr('brand')}</h1>
+                    <p>{tr('tagline')}</p>
+                </div>
+                <div className="appbar-controls">
+                    <Segmented
+                        options={langOptions}
+                        value={lang}
+                        onChange={set('lang')}
+                    />
+                    <Segmented
+                        className="icons"
+                        options={themeOptions(lang)}
+                        value={settings.theme}
+                        onChange={set('theme')}
+                    />
+                </div>
+            </header>
+
+            <TargetBar current={settings.targetId} onSelect={handleTargetChange} lang={lang} />
 
             <aside className="sidebar left">
-                <header className="sidebar-header">
-                    <div className="header-row">
-                        <h1>Астро·тату</h1>
-                        <div className="theme-switch">
-                            {THEMES.map(t => (
-                                <button
-                                    key={t.value}
-                                    className={settings.theme === t.value ? 'theme-btn active' : 'theme-btn'}
-                                    title={t.title}
-                                    aria-label={t.title}
-                                    onClick={() => set('theme')(t.value)}
-                                >
-                                    {t.icon}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                    <p>Эскизы созвездий по данным Gaia и Hipparcos</p>
-                </header>
-
                 <section className="group current-target">
                     <TargetThumb id={target.id} className="current-thumb" />
                     <div className="current-text">
-                        <b>{target.name}</b>
-                        <span className="stat">{target.subtitle}</span>
+                        <b>{pick(target.name, lang)}</b>
+                        <span className="stat">{pick(target.subtitle, lang)}</span>
                         <button
                             className="link-btn"
-                            title="Диапазон звёзд, размер рисунка, точки и линии — как принято рисовать этот объект"
+                            title={tr('defaultViewHint')}
                             onClick={() => setSettings(s => applyTargetPreset(s, s.targetId))}
                         >
-                            вид по умолчанию
+                            {tr('defaultView')}
                         </button>
                     </div>
                 </section>
 
                 <section className="group">
-                    <h2>Звёзды</h2>
+                    <h2>{tr('stars')}</h2>
                     <div className="chips">
                         {STAR_COUNTS.map(n => (
                             <Chip
@@ -204,39 +252,42 @@ export default function App() {
                         ))}
                     </div>
                     <Slider
-                        label="Предел яркости"
+                        label={tr('magLimit')}
                         value={settings.magLimit}
                         min={0} max={target.fetchMagLimit} step={0.05}
                         format={v => v.toFixed(2) + 'ᵐ'}
+                        editHint={tr('typeValueHint')}
                         onChange={set('magLimit')}
                     />
                     <p className="stat">
-                        В поле: <b>{drawn.length}</b> звёзд · в каталоге:{' '}
-                        {getCatalog(target.id).length}
+                        {tr('inField')}: <b>{drawn.length}</b> {tr('starsShort')} ·{' '}
+                        {tr('inCatalog')}: {getCatalog(target.id).length}
                     </p>
                 </section>
 
                 <section className="group">
-                    <h2>Полотно</h2>
+                    <h2>{tr('sheet')}</h2>
                     <Slider
-                        label="Ширина"
+                        label={tr('width')}
                         value={settings.widthCm}
                         min={3} max={25} step={0.5}
-                        format={v => v.toFixed(1) + ' см'}
+                        format={v => v.toFixed(1) + ' ' + cm}
+                        editHint={tr('typeValueHint')}
                         onChange={set('widthCm')}
                     />
                     <Slider
-                        label="Высота"
+                        label={tr('height')}
                         value={settings.heightCm}
                         min={2} max={20} step={0.5}
-                        format={v => v.toFixed(1) + ' см'}
+                        format={v => v.toFixed(1) + ' ' + cm}
+                        editHint={tr('typeValueHint')}
                         onChange={set('heightCm')}
                     />
                     <Slider
-                        label="Размер рисунка"
+                        label={tr('patternSize')}
                         value={patternCm}
                         min={0.5} max={25} step={0.1}
-                        format={v => v.toFixed(1) + ' см'}
+                        format={v => v.toFixed(1) + ' ' + cm}
                         onChange={cm =>
                             setSettings(s => ({ ...s, fovDeg: fovForPatternMm(s, cm * 10) }))
                         }
@@ -252,25 +303,19 @@ export default function App() {
                             }))
                         }
                     >
-                        Вписать в полотно
+                        {tr('fitToSheet')}
                     </button>
-                    <p className="stat">Поле зрения: {settings.fovDeg.toFixed(2)}°</p>
-                    <Slider
-                        label="Поворот"
-                        value={settings.rotation}
-                        min={0} max={360} step={1}
-                        format={v => Math.round(v) + '°'}
-                        onChange={set('rotation')}
-                    />
+                    <p className="stat">{tr('fieldOfView')}: {settings.fovDeg.toFixed(2)}°</p>
+                    <RotationDial value={settings.rotation} onChange={set('rotation')} lang={lang} />
                     <div className="row">
-                        <Check label="Зеркало ⟷" checked={settings.flipX} onChange={set('flipX')} />
-                        <Check label="Зеркало ⟱" checked={settings.flipY} onChange={set('flipY')} />
+                        <Check label={tr('mirrorH')} checked={settings.flipX} onChange={set('flipX')} />
+                        <Check label={tr('mirrorV')} checked={settings.flipY} onChange={set('flipY')} />
                     </div>
                     <button
                         className="btn ghost"
                         onClick={() => setSettings(s => ({ ...s, panX: 0, panY: 0 }))}
                     >
-                        Центрировать
+                        {tr('center')}
                     </button>
                 </section>
             </aside>
@@ -280,12 +325,12 @@ export default function App() {
                     settings={settings}
                     setSettings={setSettings}
                     drawn={drawn}
+                    markers={markers}
                     wrist={wrist}
                     svgRef={svgRef}
                 />
                 <p className="hint">
-                    Перетаскивание — сдвиг поля · Shift + перетаскивание — поворот ·
-                    {' '}⌘/Ctrl + колесо — приблизить превью
+                    {tr('previewHint')}
                     {settings.previewZoom !== 1 && (
                         <>
                             {' · '}
@@ -293,123 +338,150 @@ export default function App() {
                                 className="link-btn"
                                 onClick={() => set('previewZoom')(1)}
                             >
-                                {Math.round(settings.previewZoom * 100)}% — сбросить
+                                {Math.round(settings.previewZoom * 100)}% — {tr('reset')}
                             </button>
                         </>
                     )}
                 </p>
 
                 <div className="export-bar">
-                    <span className="export-label">Экспорт</span>
+                    <span className="export-label">{tr('exportTitle')}</span>
                     <button className="btn primary" onClick={handleExportSvg}>SVG 1:1</button>
                     <button className="btn primary" onClick={handleExportPng}>PNG 300 dpi</button>
-                    <button className="btn" onClick={handleExportSpec}>Спецификация .txt</button>
+                    <button className="btn" onClick={handleExportSpec}>{tr('exportSpec')}</button>
+                    <button className="btn" onClick={handleCopyLink}>
+                        {linkCopied ? tr('linkCopied') : tr('copyLink')}
+                    </button>
                     <Check
-                        label="чёрным по белому"
+                        label={tr('exportBw')}
                         checked={settings.exportBw}
                         onChange={set('exportBw')}
                     />
                     <button className="btn ghost danger" onClick={handleReset}>
-                        Сбросить всё
+                        {tr('resetAll')}
                     </button>
                 </div>
             </main>
 
             <aside className="sidebar right">
                 <section className="group first">
-                    <h2>Точки</h2>
+                    <h2>{tr('dots')}</h2>
                     <Slider
-                        label="Макс. диаметр"
+                        label={tr('maxDiameter')}
                         value={settings.maxMm}
                         min={0.5} max={10} step={0.1}
-                        format={v => v.toFixed(1) + ' мм'}
+                        format={v => v.toFixed(1) + ' ' + mm}
+                        editHint={tr('typeValueHint')}
                         onChange={set('maxMm')}
                     />
                     <Slider
-                        label="Мин. диаметр"
+                        label={tr('minDiameter')}
                         value={settings.minMm}
                         min={0.1} max={3} step={0.05}
-                        format={v => v.toFixed(2) + ' мм'}
+                        format={v => v.toFixed(2) + ' ' + mm}
+                        editHint={tr('typeValueHint')}
                         onChange={set('minMm')}
                     />
                     <Slider
-                        label="Контраст размеров"
+                        label={tr('contrast')}
                         value={settings.contrast}
                         min={0.1} max={1} step={0.05}
                         format={v => v.toFixed(2)}
+                        editHint={tr('typeValueHint')}
                         onChange={set('contrast')}
                     />
                     <Slider
-                        label="Шаг квантования"
+                        label={tr('quantStep')}
                         value={settings.stepMm}
                         min={0.05} max={3} step={0.05}
-                        format={v => v.toFixed(2) + ' мм'}
+                        format={v => v.toFixed(2) + ' ' + mm}
+                        editHint={tr('typeValueHint')}
                         onChange={set('stepMm')}
                     />
                     <Check
-                        label="Квантовать размеры"
+                        label={tr('quantize')}
                         checked={settings.quantize}
                         onChange={set('quantize')}
                     />
                 </section>
 
                 <section className="group">
-                    <h2>Кожа и чернила</h2>
+                    <h2>{tr('skinAndInk')}</h2>
                     <Swatches
-                        label="Тон кожи"
+                        label={tr('skinTone')}
                         options={SKIN_TONES}
                         value={settings.skinTone}
                         onChange={set('skinTone')}
+                        customLabel={tr('ownColor')}
+                        customTitle={tr('customColor')}
+                        lang={lang}
                     />
                     <Swatches
-                        label="Чернила"
+                        label={tr('ink')}
                         options={INKS}
                         value={settings.inkColor}
                         onChange={set('inkColor')}
+                        customLabel={tr('ownColor')}
+                        customTitle={tr('customColor')}
+                        lang={lang}
                     />
                     <Slider
-                        label="Плотность чернил"
+                        label={tr('inkOpacity')}
                         value={settings.inkOpacity}
                         min={0.3} max={1} step={0.02}
                         format={v => Math.round(v * 100) + '%'}
+                        editScale={100}
+                        editHint={tr('typeValueHint')}
                         onChange={set('inkOpacity')}
                     />
                 </section>
 
                 <section className="group">
-                    <h2>Оформление</h2>
+                    <h2>{tr('style')}</h2>
                     <div className="control">
-                        <label htmlFor="labels">Подписи звёзд</label>
-                        <select
-                            id="labels"
+                        <label>{tr('labels')}</label>
+                        <Segmented
+                            options={labelOptions(lang)}
                             value={settings.labels}
-                            onChange={e => set('labels')(e.target.value as LabelsMode)}
-                        >
-                            <option value="none">Без подписей</option>
-                            <option value="names">Только имена</option>
-                            <option value="full">Имена + параметры</option>
-                        </select>
-                    </div>
-                    <Check
-                        label={
-                            hasLines ? 'Линии фигуры' : 'Линии фигуры — у скопления их нет'
-                        }
-                        checked={settings.showLines && hasLines}
-                        onChange={set('showLines')}
-                    />
-                    {settings.showLines && hasLines && (
-                        <Slider
-                            label="Толщина линий"
-                            value={settings.lineMm}
-                            min={0.1} max={1.5} step={0.05}
-                            format={v => v.toFixed(2) + ' мм'}
-                            onChange={set('lineMm')}
+                        onChange={set('labels')}
                         />
+                    </div>
+                    <div className="control-row">
+                        <span>{tr('figureLines')}</span>
+                        {hasLines ? (
+                            <Segmented
+                                options={showHide(lang)}
+                                value={settings.showLines}
+                        onChange={set('showLines')}
+                            />
+                        ) : (
+                            <span className="stat">{tr('noFigure')}</span>
+                        )}
+                    </div>
+                    {settings.showLines && hasLines && (
+                        <>
+                            <Slider
+                                label={tr('lineWidth')}
+                                value={settings.lineMm}
+                                min={0.1} max={1.5} step={0.05}
+                                format={v => v.toFixed(2) + ' ' + mm}
+                                editHint={tr('typeValueHint')}
+                        onChange={set('lineMm')}
+                            />
+                            <div className="control">
+                                <label title={tr('backgroundHint')}>{tr('background')}</label>
+                                <Segmented
+                                    options={backgroundOptions(lang)}
+                                    value={settings.backgroundStars}
+                                    onChange={set('backgroundStars')}
+                                />
+                            </div>
+                        </>
                     )}
                     <div className="control">
-                        <label>Сетка</label>
+                        <label>{tr('grid')}</label>
                         <div className="chips">
-                            {GRID_OPTIONS.map(g => (
+                            {gridOptions(lang).map(g => (
                                 <Chip
                                     key={g.value}
                                     label={g.label}
@@ -422,13 +494,14 @@ export default function App() {
                 </section>
 
                 <section className="group">
-                    <h2>Размерные классы</h2>
-                    <Legend classes={classes} />
+                    <h2>{tr('sizeClasses')}</h2>
+                    <Legend classes={classes} lang={lang} />
                 </section>
 
                 <section className="group">
-                    <h2>Пресеты</h2>
+                    <h2>{tr('presets')}</h2>
                     <Presets
+                        lang={lang}
                         presets={presets}
                         settings={settings}
                         onSave={handleSavePreset}
@@ -441,10 +514,19 @@ export default function App() {
 
             <aside className="sidebar photos">
                 <section className="group first">
-                    <h2>Запястье</h2>
+                    <div className="group-head">
+                        <h2>{tr('wrist')}</h2>
+                        {wrist && (
+                            <Segmented
+                                options={showHide(lang)}
+                                value={settings.showWrist}
+                        onChange={set('showWrist')}
+                            />
+                        )}
+                    </div>
                     <div className="row wrap">
                         <label className="btn file-btn">
-                            {wrist ? 'Заменить фото…' : 'Загрузить фото…'}
+                            {wrist ? tr('replacePhoto') : tr('uploadPhoto')}
                             <input
                                 type="file"
                                 accept="image/*"
@@ -457,116 +539,80 @@ export default function App() {
                         </label>
                         {wrist && (
                             <button className="btn ghost" onClick={() => setWrist(null)}>
-                                Убрать
+                                {tr('removePhoto')}
                             </button>
                         )}
                     </div>
                     {wrist && (
                         <>
-                            <Check
-                                label="Показать запястье"
-                                checked={settings.showWrist}
-                                onChange={set('showWrist')}
-                            />
                             {settings.showWrist && (
                                 <>
                                     <Slider
-                                        label="Ширина кадра"
+                                        label={tr('frameSize')}
                                         value={settings.wristWidthCm}
                                         min={3} max={30} step={0.1}
-                                        format={v => v.toFixed(1) + ' см'}
-                                        onChange={set('wristWidthCm')}
+                                        format={v => v.toFixed(1) + ' ' + cm}
+                                        editHint={tr('typeValueHint')}
+                        onChange={set('wristWidthCm')}
                                     />
                                     <Slider
-                                        label="Высота кадра"
-                                        value={settings.wristHeightCm}
-                                        min={3} max={40} step={0.1}
-                                        format={v => v.toFixed(1) + ' см'}
-                                        onChange={set('wristHeightCm')}
-                                    />
-                                    <button
-                                        className="btn ghost"
-                                        onClick={() =>
-                                            setSettings(s => ({
-                                                ...s,
-                                                wristHeightCm:
-                                                    Math.round(s.wristWidthCm * wrist.aspect * 10) / 10,
-                                            }))
-                                        }
-                                    >
-                                        Высота по пропорциям фото
-                                    </button>
-                                    <Slider
-                                        label="Сдвиг по X"
+                                        label={tr('offsetX')}
                                         value={settings.wristOffX}
                                         min={-100} max={100} step={1}
-                                        format={v => Math.round(v) + ' мм'}
-                                        onChange={set('wristOffX')}
+                                        format={v => Math.round(v) + ' ' + mm}
+                                        editHint={tr('typeValueHint')}
+                        onChange={set('wristOffX')}
                                     />
                                     <Slider
-                                        label="Сдвиг по Y"
+                                        label={tr('offsetY')}
                                         value={settings.wristOffY}
                                         min={-100} max={100} step={1}
-                                        format={v => Math.round(v) + ' мм'}
-                                        onChange={set('wristOffY')}
+                                        format={v => Math.round(v) + ' ' + mm}
+                                        editHint={tr('typeValueHint')}
+                        onChange={set('wristOffY')}
                                     />
-                                    <Slider
-                                        label="Поворот"
+                                    <RotationDial
                                         value={settings.wristRotDeg}
-                                        min={-180} max={180} step={1}
-                                        format={v => Math.round(v) + '°'}
                                         onChange={set('wristRotDeg')}
+                                        lang={lang}
                                     />
                                     <Slider
-                                        label="Прозрачность"
+                                        label={tr('opacity')}
                                         value={settings.wristOpacity}
                                         min={0.2} max={1} step={0.05}
+                                        editScale={100}
                                         format={v => Math.round(v * 100) + '%'}
-                                        onChange={set('wristOpacity')}
+                                        editHint={tr('typeValueHint')}
+                        onChange={set('wristOpacity')}
                                     />
                                 </>
                             )}
                         </>
                     )}
                     {!wrist && (
-                        <p className="stat">
-                            Сфотографируй внутреннюю сторону запястья (лучше с линейкой
-                            в кадре) и подгони ширину кадра до реального размера.
-                        </p>
+                        <p className="stat">{tr('wristHint')}</p>
                     )}
                 </section>
 
                 <section className="group">
-                    <h2>Снимок неба</h2>
-                    <Check
-                        label="Показать фото на фоне"
-                        checked={settings.showPhoto}
-                        onChange={set('showPhoto')}
-                    />
+                    <div className="group-head">
+                        <h2>{tr('skyPhoto')}</h2>
+                        <Segmented
+                            options={showHide(lang)}
+                            value={settings.showPhoto}
+                            onChange={set('showPhoto')}
+                        />
+                    </div>
                     {settings.showPhoto && (
-                        <>
-                            <Slider
-                                label="Прозрачность"
-                                value={settings.photoOpacity}
-                                min={0.2} max={1} step={0.05}
-                                format={v => Math.round(v * 100) + '%'}
-                                onChange={set('photoOpacity')}
-                            />
-                            <Slider
-                                label="Подгонка масштаба"
-                                value={settings.photoScale}
-                                min={0.8} max={1.25} step={0.005}
-                                format={v => Math.round(v * 1000) / 10 + '%'}
-                                onChange={set('photoScale')}
-                            />
-                            <Slider
-                                label="Поворот фото"
-                                value={settings.photoRotDeg}
-                                min={-180} max={180} step={1}
-                                format={v => Math.round(v) + '°'}
-                                onChange={set('photoRotDeg')}
-                            />
-                        </>
+                        <Slider
+                            label={tr('opacity')}
+                            value={settings.photoOpacity}
+                            min={0.2} max={1} step={0.05}
+                            format={v => Math.round(v * 100) + '%'}
+                            editScale={100}
+                            editHint={tr('typeValueHint')}
+                            onChange={set('photoOpacity')}
+                        />
                     )}
                 </section>
             </aside>

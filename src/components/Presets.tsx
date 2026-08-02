@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { getTarget } from '../lib/catalog';
+import { pick, t as tr } from '../i18n';
+import type { Lang } from '../i18n';
 import type { Preset, Settings } from '../lib/types';
 
 interface Props {
+    lang: Lang;
     presets: Preset[];
     settings: Settings;
     onSave: (name: string) => void;
@@ -10,11 +13,11 @@ interface Props {
     onDelete: (id: string) => void;
 }
 
-export function Presets({ presets, settings, onSave, onLoad, onDelete }: Props) {
+export function Presets({ lang, presets, settings, onSave, onLoad, onDelete }: Props) {
     const [name, setName] = useState('');
 
     const submit = () => {
-        const trimmed = name.trim() || getTarget(settings.targetId).name;
+        const trimmed = name.trim() || pick(getTarget(settings.targetId).name, lang);
         onSave(trimmed);
         setName('');
     };
@@ -25,7 +28,7 @@ export function Presets({ presets, settings, onSave, onLoad, onDelete }: Props) 
                 <input
                     type="text"
                     className="text-input"
-                    placeholder="Название пресета"
+                    placeholder={tr(lang, 'presetName')}
                     value={name}
                     onChange={e => setName(e.target.value)}
                     onKeyDown={e => {
@@ -33,32 +36,30 @@ export function Presets({ presets, settings, onSave, onLoad, onDelete }: Props) 
                     }}
                 />
                 <button className="btn" onClick={submit}>
-                    Сохранить
+                    {tr(lang, 'save')}
                 </button>
             </div>
 
             {presets.length === 0 ? (
-                <p className="stat">
-                    Сохраняй удачные компоновки — они останутся в браузере.
-                </p>
+                <p className="stat">{tr(lang, 'presetsHint')}</p>
             ) : (
                 <div className="preset-list">
                     {presets.map(p => (
                         <div className="preset-row" key={p.id}>
                             <button
                                 className="preset-load"
-                                title={`${getTarget(p.settings.targetId).name} · применить`}
+                                title={`${pick(getTarget(p.settings.targetId).name, lang)} · ${tr(lang, 'apply')}`}
                                 onClick={() => onLoad(p)}
                             >
                                 <span className="preset-name">{p.name}</span>
                                 <span className="preset-target">
-                                    {getTarget(p.settings.targetId).name}
+                                    {pick(getTarget(p.settings.targetId).name, lang)}
                                 </span>
                             </button>
                             <button
                                 className="preset-delete"
-                                title="Удалить"
-                                aria-label={`Удалить пресет ${p.name}`}
+                                title={tr(lang, 'delete')}
+                                aria-label={`${tr(lang, 'delete')}: ${p.name}`}
                                 onClick={() => onDelete(p.id)}
                             >
                                 ✕

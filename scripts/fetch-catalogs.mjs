@@ -21,6 +21,12 @@ const LINES_DIR = join(ROOT, 'src/data/lines');
  *  к нашему каталогу поиском ближайшей звезды. */
 const LINES_URL =
     'https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.lines.json';
+/** Границы созвездий оттуда же: по ним считаем, какой кусок неба выгружать,
+ *  чтобы звёзды не кончались на краю фигуры */
+const BOUNDS_URL =
+    'https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.bounds.json';
+/** Запас к радиусу выборки, градусы */
+const RADIUS_MARGIN = 1.5;
 /** Допуск привязки вершины линии к звезде каталога, градусы */
 const LINE_SNAP_DEG = 0.25;
 
@@ -271,6 +277,75 @@ async function getLineFeatures() {
     return lineFeatures;
 }
 
+let boundFeatures = null;
+async function getBoundFeatures() {
+    if (boundFeatures) return boundFeatures;
+    const raw = await fetchWithRetry(BOUNDS_URL);
+    boundFeatures = JSON.parse(raw).features ?? [];
+    return boundFeatures;
+}
+
+/** Все вершины полигона границы, в градусах */
+function* boundaryVertices(feature) {
+    const walk = node => {
+        if (typeof node[0] === 'number') {
+            const [lon, dec] = node;
+            return [[lon < 0 ? lon + 360 : lon, dec]];
+        }
+        return node.flatMap(walk);
+    };
+    yield* walk(feature.geometry?.coordinates ?? []);
+}
+
+/** Радиус выборки: чтобы поле звёзд покрывало созвездие целиком, а не
+ *  только его фигуру. Иначе при отдалении звёзды обрываются по кругу. */
+async function constellationRadiusArcmin(target, features) {
+    const center = projectionCenter(target);
+    const bounds = await getBoundFeatures();
+    // берём только главное созвездие: у Возничего одна звезда общая с Тельцом,
+    // и по обоим границам радиус раздувался вдвое
+    const ids = new Set(features.length ? [mainFeature(target, features).id] : []);
+    let maxDeg = 0;
+    for (const feature of bounds) {
+        if (!ids.has(feature.id)) continue;
+        for (const [ra, dec] of boundaryVertices(feature)) {
+            maxDeg = Math.max(maxDeg, sphericalDist(center.ra, center.dec, ra, dec));
+        }
+    }
+    return maxDeg ? Math.ceil((maxDeg + RADIUS_MARGIN) * 60) : 0;
+}
+
+/** Созвездие, которому принадлежит больше всего именованных звёзд объекта */
+function mainFeature(target, features) {
+    let best = features[0];
+    let bestCount = -1;
+    for (const feature of features) {
+        let count = 0;
+        for (const line of feature.geometry?.coordinates ?? []) {
+            for (const [lon, dec] of line) {
+                const ra = lon < 0 ? lon + 360 : lon;
+                if ((target.named ?? []).some(n => angularDist(ra, dec, n.ra, n.dec) <= LINE_SNAP_DEG)) {
+                    count++;
+                }
+            }
+        }
+        if (count > bestCount) {
+            bestCount = count;
+            best = feature;
+        }
+    }
+    return best;
+}
+
+/** Полноценное угловое расстояние (не малые углы) */
+function sphericalDist(ra1, dec1, ra2, dec2) {
+    const toRad = d => (d * Math.PI) / 180;
+    const cos =
+        Math.sin(toRad(dec1)) * Math.sin(toRad(dec2)) +
+        Math.cos(toRad(dec1)) * Math.cos(toRad(dec2)) * Math.cos(toRad(ra1 - ra2));
+    return (Math.acos(Math.min(1, Math.max(-1, cos))) * 180) / Math.PI;
+}
+
 async function main() {
     const targets = JSON.parse(await readFile(TARGETS_PATH, 'utf8'));
     await mkdir(OUT_DIR, { recursive: true });
@@ -296,6 +371,23 @@ async function main() {
 
         if (force || !haveCatalog) {
             catalogRebuilt = true;
+
+            // расширяем выборку до границ созвездия, если они у объекта есть
+            if (target.lines !== false) {
+                try {
+                    const own = ownFeatures(target, await getLineFeatures());
+                    const needed = await constellationRadiusArcmin(target, own);
+                    if (needed > target.radiusArcmin) {
+                        console.log(
+                            `  · радиус ${target.radiusArcmin}′ → ${needed}′ ` +
+                            `(границы ${own.map(f => f.id).join(', ')})`,
+                        );
+                        target.radiusArcmin = needed;
+                    }
+                } catch (e) {
+                    console.warn(`  ! границы не получены: ${e.message}`);
+                }
+            }
             let stars;
             try {
                 stars = parseVizier(await fetchWithRetry(buildUrl(target)));

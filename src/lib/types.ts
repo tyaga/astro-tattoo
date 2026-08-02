@@ -1,4 +1,9 @@
+import type { Lang } from '../i18n/strings';
+
 export type LabelsMode = 'none' | 'names' | 'full';
+
+/** Что делать со звёздами, не входящими в фигуру */
+export type BackgroundMode = 'show' | 'fade' | 'hide';
 
 /** Тема интерфейса; auto — следовать системной настройке */
 export type Theme = 'auto' | 'light' | 'dark';
@@ -37,10 +42,14 @@ export interface Settings {
     showLines: boolean;
     /** Толщина линий фигуры, мм */
     lineMm: number;
+    /** Звёзды вне фигуры: показывать, приглушить или убрать совсем */
+    backgroundStars: BackgroundMode;
     /** Экранный масштаб предпросмотра (на эскиз не влияет) */
     previewZoom: number;
     /** Тема интерфейса — на эскиз и экспорт не влияет */
     theme: Theme;
+    /** Язык интерфейса и подписей */
+    lang: Lang;
     /** Цвет полотна — оттенок кожи */
     skinTone: string;
     /** Цвет чернил */
@@ -52,16 +61,11 @@ export interface Settings {
     /** Фото-подложка для сравнения (не попадает в экспорт) */
     showPhoto: boolean;
     photoOpacity: number;
-    /** Множитель к угловому размеру снимка — на случай ручной подгонки */
-    photoScale: number;
-    /** Поворот фото относительно неба, градусы */
-    photoRotDeg: number;
     /** Фото запястья под эскизом (не попадает в экспорт) */
     showWrist: boolean;
-    /** Ширина кадра фото запястья в реальных см полотна */
+    /** Ширина кадра фото запястья в реальных см полотна.
+     *  Высота выводится из пропорций снимка — фото не должно растягиваться. */
     wristWidthCm: number;
-    /** Высота кадра, см — независимая, чтобы компенсировать перспективу */
-    wristHeightCm: number;
     wristOffX: number;
     wristOffY: number;
     wristRotDeg: number;

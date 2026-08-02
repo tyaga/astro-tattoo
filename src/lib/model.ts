@@ -1,4 +1,5 @@
-import { getCatalog, getTarget, rad } from './catalog';
+import { getCatalog, getLines, getTarget, projectPoint, rad, starName } from './catalog';
+import { pick, t as tr } from '../i18n';
 import type { DrawnStar, Settings } from './types';
 
 /** Дальше гномоническая проекция слишком растягивает углы полотна */
@@ -32,6 +33,43 @@ function projectionScale(s: Settings): number {
     return Math.min(W, H) / 2 / Math.tan(rad(s.fovDeg));
 }
 
+/** Переводит точку проекции (тангенс-единицы) в миллиметры полотна */
+function placeOnSheet(s: Settings, u: number, v: number): { X: number; Y: number } {
+    const { W, H } = sheetSize(s);
+    const scale = projectionScale(s);
+    const th = rad(s.rotation);
+    // вид «как на небе»: север вверху, восток слева
+    let x0 = -u;
+    let y0 = v;
+    if (s.flipX) x0 = -x0;
+    if (s.flipY) y0 = -y0;
+    return {
+        X: W / 2 + s.panX + (x0 * Math.cos(th) - y0 * Math.sin(th)) * scale,
+        Y: H / 2 + s.panY - (x0 * Math.sin(th) + y0 * Math.cos(th)) * scale,
+    };
+}
+
+export interface DrawnMarker {
+    id: string;
+    name: string;
+    X: number;
+    Y: number;
+}
+
+/** Особые точки объекта (например звезда, к которой летит «Вояджер») */
+export function computeMarkers(s: Settings): DrawnMarker[] {
+    const target = getTarget(s.targetId);
+    const { W, H } = sheetSize(s);
+    const out: DrawnMarker[] = [];
+    for (const m of target.markers ?? []) {
+        const p = projectPoint(target, m.ra, m.dec);
+        const { X, Y } = placeOnSheet(s, p.u, p.v);
+        if (X < -10 || X > W + 10 || Y < -10 || Y > H + 10) continue;
+        out.push({ id: m.id, name: m.name, X, Y });
+    }
+    return out;
+}
+
 /** Звёзды, попадающие на полотно, в мм от левого верхнего угла */
 export function computeDrawn(s: Settings): DrawnStar[] {
     const { W, H } = sheetSize(s);
@@ -43,11 +81,16 @@ export function computeDrawn(s: Settings): DrawnStar[] {
     const cos = Math.cos(th);
     const sin = Math.sin(th);
     const brightest = referenceMag(s.targetId);
+    // в режиме «только фигура» поле не рисуем совсем: тогда и легенда,
+    // и спецификация считают ровно те точки, что уйдут на кожу
+    const figureOnly = s.backgroundStars === 'hide' && s.showLines;
+    const linked = figureOnly ? new Set(getLines(s.targetId).flat()) : null;
     const drawn: DrawnStar[] = [];
 
     for (let index = 0; index < catalog.length; index++) {
         const star = catalog[index];
         if (star.mag > s.magLimit) break; // каталог отсортирован по яркости
+        if (linked && !linked.has(index) && !star.name) continue;
         // вид «как на небе»: север вверху, восток слева
         let x0 = -star.u;
         let y0 = star.v;
@@ -143,10 +186,12 @@ export function applyTargetPreset(base: Settings, targetId: string): Settings {
         stepMm: p.stepMm,
         quantize: p.quantize,
         showLines: p.showLines,
+        lineMm: p.lineMm,
+        backgroundStars: p.backgroundStars,
         labels: p.labels,
-        rotation: 0,
-        panX: 0,
-        panY: 0,
+        rotation: p.rotation ?? 0,
+        panX: p.panX ?? 0,
+        panY: p.panY ?? 0,
     };
     return { ...next, fovDeg: fovForPatternMm(next, p.patternCm * 10) };
 }
@@ -168,29 +213,29 @@ export function sizeClasses(drawn: DrawnStar[]): SizeClass[] {
 }
 
 export function buildSpec(s: Settings, drawn: DrawnStar[]): string {
+    const lang = s.lang;
     const { W, H } = sheetSize(s);
     const target = getTarget(s.targetId);
     const source =
         target.source === 'gaia' ? 'Gaia DR3 (VizieR I/355)' : 'Hipparcos (VizieR I/239)';
 
     const lines: string[] = [];
-    lines.push(`${target.name} — спецификация эскиза татуировки`);
-    lines.push(target.subtitle);
-    lines.push(
-        `Полотно: ${W} × ${H} мм. Координаты X — от левого края, Y — от верхнего.`,
-    );
-    lines.push(`Звёзд: ${drawn.length}. Данные: ${source}.`);
+    const mm = tr(lang, 'mm');
+    lines.push(`${pick(target.name, lang)} — ${tr(lang, 'specTitle')}`);
+    lines.push(pick(target.subtitle, lang));
+    lines.push(`${tr(lang, 'specSheet')}: ${W} × ${H} ${mm}. ${tr(lang, 'specCoords')}`);
+    lines.push(`${tr(lang, 'specStars')}: ${drawn.length}. ${tr(lang, 'specData')}: ${source}.`);
     lines.push('');
-    lines.push('Размерные классы точек:');
+    lines.push(tr(lang, 'specSizeClasses'));
     for (const c of sizeClasses(drawn)) {
-        lines.push(`  ⌀ ${c.d.toFixed(2)} мм — ${c.count} шт.`);
+        lines.push(`  ⌀ ${c.d.toFixed(2)} ${mm} — ${c.count} ${tr(lang, 'pieces')}`);
     }
     lines.push('');
-    lines.push('  №  Имя               mag     X, мм    Y, мм   ⌀, мм');
+    lines.push(`  №  ${tr(lang, 'specName').padEnd(16)}  mag     X       Y      ⌀`);
     const sorted = [...drawn].sort((a, b) => a.mag - b.mag);
     sorted.forEach((star, i) => {
         const num = String(i + 1).padStart(3);
-        const name = (star.name ?? '—').padEnd(16);
+        const name = (star.name ? starName(star.name, lang) : '—').padEnd(16);
         lines.push(
             `${num}  ${name} ${star.mag.toFixed(2).padStart(5)}  ` +
             `${star.X.toFixed(1).padStart(7)}  ${star.Y.toFixed(1).padStart(7)}  ` +

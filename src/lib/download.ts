@@ -14,7 +14,9 @@ function toBlackAndWhite(svg: SVGSVGElement): void {
     );
     svg.querySelectorAll('[data-role="star"]').forEach(el => {
         el.setAttribute('fill', '#000000');
-        el.removeAttribute('opacity');
+        // приглушённые звёзды остаются приглушёнными: это часть замысла
+        if (el.getAttribute('data-faded') === '1') el.setAttribute('opacity', '0.3');
+        else el.removeAttribute('opacity');
     });
     svg.querySelectorAll('[data-role="name"]').forEach(el =>
         el.setAttribute('fill', '#33343d'),

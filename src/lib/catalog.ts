@@ -1,8 +1,11 @@
 import targetsJson from '../data/targets.json';
-import type { LabelsMode } from './types';
+import type { BackgroundMode, LabelsMode } from './types';
 
 export interface NamedStar {
+    /** Каноническое (латинское) имя — оно же попадает в каталог */
     name: string;
+    /** Русское написание */
+    ru?: string;
     ra: number;
     dec: number;
     mag: number;
@@ -22,13 +25,33 @@ export interface TargetPreset {
     stepMm: number;
     quantize: boolean;
     showLines: boolean;
+    /** Толщина линий фигуры, мм */
+    lineMm: number;
+    /** Что делать со звёздами вне фигуры */
+    backgroundStars: BackgroundMode;
     labels: LabelsMode;
+    /** Поворот фигуры, градусы: некоторые созвездия узнаются
+     *  в развороте, отличном от «север вверху» */
+    rotation?: number;
+    /** Сдвиг поля, мм: у Жирафа он выводит в кадр Глизе 445 */
+    panX?: number;
+    panY?: number;
+}
+
+/** Особая точка на карте объекта — рисуется значком, а не звездой */
+export interface Marker {
+    id: string;
+    name: string;
+    ru?: string;
+    ra: number;
+    dec: number;
 }
 
 export interface Target {
     id: string;
-    name: string;
-    subtitle: string;
+    /** Название и подзаголовок по языкам */
+    name: Record<string, string>;
+    subtitle: Record<string, string>;
     /** Каталог-источник: Gaia DR3 для скоплений, Hipparcos для ярких созвездий */
     source: 'gaia' | 'hipparcos';
     center: { ra: number; dec: number };
@@ -41,6 +64,7 @@ export interface Target {
     /** Угловая ширина снимка, градусы (он в той же TAN-проекции, что и эскиз) */
     photoFovDeg: number;
     named: NamedStar[];
+    markers?: Marker[];
 }
 
 export interface CatalogStar {
@@ -60,7 +84,19 @@ interface RawStar {
     name?: string;
 }
 
-export const TARGETS = targetsJson as Target[];
+export const TARGETS = targetsJson as unknown as Target[];
+
+/** Каноническое имя звезды → русское написание; собирается из targets.json */
+const RU_STAR_NAMES: Record<string, string> = {};
+for (const target of TARGETS) {
+    for (const star of target.named) if (star.ru) RU_STAR_NAMES[star.name] = star.ru;
+    for (const marker of target.markers ?? []) if (marker.ru) RU_STAR_NAMES[marker.name] = marker.ru;
+}
+
+/** Имена звёзд международные; по-русски показываем привычное написание */
+export function starName(name: string, lang: string): string {
+    return lang === 'ru' ? RU_STAR_NAMES[name] ?? name : name;
+}
 
 export const rad = (deg: number): number => (deg * Math.PI) / 180;
 
@@ -142,6 +178,16 @@ export function projectionCenter(target: Target): { ra: number; dec: number } {
         ra: (ra + 360) % 360,
         dec: (Math.atan2(z, Math.hypot(x, y)) * 180) / Math.PI,
     };
+}
+
+/** Проекция произвольной точки неба в систему объекта — для меток,
+ *  которых нет в звёздном каталоге */
+export function projectPoint(
+    target: Target,
+    ra: number,
+    dec: number,
+): { u: number; v: number } {
+    return gnomonic(ra, dec, projectionCenter(target));
 }
 
 const cache = new Map<string, CatalogStar[]>();

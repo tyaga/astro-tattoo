@@ -1,14 +1,18 @@
 import { forwardRef } from 'react';
-import { getLines, getPhotoUrl, getTarget, rad } from '../lib/catalog';
+import { getLines, getPhotoUrl, getTarget, rad, starName } from '../lib/catalog';
 import { sheetSize } from '../lib/model';
 import { isDark } from '../lib/palette';
+import { t } from '../i18n';
 import type { DrawnStar, Settings, WristImage } from '../lib/types';
+import type { DrawnMarker } from '../lib/model';
+import { VoyagerIcon } from './VoyagerIcon';
 
 const FONT = 'Helvetica, Arial, sans-serif';
 
 interface Props {
     settings: Settings;
     drawn: DrawnStar[];
+    markers: DrawnMarker[];
     wrist: WristImage | null;
 }
 
@@ -24,7 +28,7 @@ function gridStroke(pos: number, stepMm: number, onDark: boolean): string {
 }
 
 export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
-    { settings, drawn, wrist },
+    { settings, drawn, markers, wrist },
     ref,
 ) {
     const { W, H } = sheetSize(settings);
@@ -44,6 +48,13 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
     const target = getTarget(settings.targetId);
     const photoUrl = getPhotoUrl(target.id);
     const skyPhoto = settings.showPhoto && Boolean(photoUrl);
+
+    // звёзды фигуры: остальные можно приглушить, чтобы рисунок читался
+    const lines = settings.showLines ? getLines(target.id) : [];
+    const linked = new Set(lines.flat());
+    const fading = settings.showLines && settings.backgroundStars === 'fade' && linked.size > 0;
+    const starOpacity = (star: DrawnStar) =>
+        fading && !linked.has(star.i) ? settings.inkOpacity * 0.3 : settings.inkOpacity;
     // подписи и разметка подстраиваются под тёмный фон: кожу или снимок неба
     const onDark = skyPhoto || isDark(settings.skinTone);
     const nameFill = onDark ? '#f0f0f5' : '#33343d';
@@ -67,7 +78,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
             {settings.showWrist && wrist && (() => {
                 // фото запястья привязано к полотну: тату «лежит» на коже
                 const wMm = settings.wristWidthCm * 10;
-                const hMm = settings.wristHeightCm * 10;
+                const hMm = wMm * wrist.aspect; // пропорции снимка не искажаем
                 const cx = W / 2 + settings.wristOffX;
                 const cy = H / 2 + settings.wristOffY;
                 return (
@@ -95,13 +106,13 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 // что и эскиз, поэтому геометрия точная: остаётся перевести
                 // угловой размер снимка в миллиметры полотна
                 const scale = Math.min(W, H) / 2 / Math.tan(rad(settings.fovDeg));
-                const halfDeg = (target.photoFovDeg * settings.photoScale) / 2;
+                const halfDeg = target.photoFovDeg / 2;
                 const size = 2 * Math.tan(rad(halfDeg)) * scale; // снимок квадратный
                 const fx = settings.flipX ? -1 : 1;
                 const fy = settings.flipY ? -1 : 1;
                 const cx = W / 2 + settings.panX;
                 const cy = H / 2 + settings.panY;
-                const rot = -(settings.rotation + settings.photoRotDeg * fx * fy);
+                const rot = -settings.rotation;
                 return (
                     <g clipPath="url(#sheet)" data-export="exclude">
                         <g
@@ -181,13 +192,40 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                         <circle
                             key={i}
                             data-role="star"
+                            data-faded={fading && !linked.has(s.i) ? '1' : undefined}
                             cx={s.X} cy={s.Y} r={s.d / 2}
                             fill={settings.inkColor}
-                            opacity={settings.inkOpacity}
+                            opacity={starOpacity(s)}
                         />
                     ),
                 )}
             </g>
+
+            {markers.length > 0 && (
+                <g clipPath="url(#sheet)">
+                    {markers.map(m => (
+                        <g key={m.id}>
+                            <VoyagerIcon
+                                x={m.X} y={m.Y}
+                                size={Math.max(3, settings.maxMm * 2.2)}
+                                color={skyPhoto ? '#ff4d5e' : settings.inkColor}
+                                opacity={skyPhoto ? 1 : settings.inkOpacity}
+                            />
+                            {settings.labels !== 'none' && (
+                                <text
+                                    data-role="name"
+                                    x={m.X + Math.max(3, settings.maxMm * 2.2) / 2 + 1}
+                                    y={m.Y + 0.5}
+                                    fontFamily={FONT} fontSize={1.4} fontWeight={600}
+                                    fill={nameFill}
+                                >
+                                    {starName(m.name, settings.lang)}
+                                </text>
+                            )}
+                        </g>
+                    ))}
+                </g>
+            )}
 
             {settings.labels !== 'none' && (
                 <g clipPath="url(#sheet)">
@@ -206,7 +244,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                                         fill={nameFill}
                                         textAnchor={anchor}
                                     >
-                                        {s.name}
+                                        {starName(s.name!, settings.lang)}
                                     </text>
                                     {settings.labels === 'full' && (
                                         <text
@@ -216,7 +254,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                                             fill={infoFill}
                                             textAnchor={anchor}
                                         >
-                                            {s.mag.toFixed(1)}ᵐ · ⌀ {s.d.toFixed(2)} мм
+                                            {s.mag.toFixed(1)}ᵐ · ⌀ {s.d.toFixed(2)} {t(settings.lang, 'mm')}
                                         </text>
                                     )}
                                 </g>
@@ -236,7 +274,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 fontFamily={FONT} fontSize={1.7}
                 fill={infoFill} textAnchor="middle"
             >
-                1 см
+                1 {t(settings.lang, 'cm')}
             </text>
 
             <rect

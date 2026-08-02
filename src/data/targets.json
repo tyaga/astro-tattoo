@@ -1,8 +1,18 @@
 [
   {
     "id": "pleiades",
-    "name": "Плеяды",
-    "subtitle": "M45 · рассеянное скопление",
+    "name": {
+      "ru": "Плеяды",
+      "en": "Pleiades",
+      "is": "Sjöstirnið",
+      "nl": "Plejaden"
+    },
+    "subtitle": {
+      "ru": "M45 · рассеянное скопление",
+      "en": "M45 · open cluster",
+      "is": "M45 · lausþyrping",
+      "nl": "M45 · open sterrenhoop"
+    },
     "source": "gaia",
     "center": {
       "ra": 56.75,
@@ -13,58 +23,67 @@
     "maxRows": 5000,
     "named": [
       {
-        "name": "Альциона",
+        "name": "Alcyone",
         "ra": 56.871152,
         "dec": 24.105136,
-        "mag": 2.87
+        "mag": 2.87,
+        "ru": "Альциона"
       },
       {
-        "name": "Атлас",
+        "name": "Atlas",
         "ra": 57.290597,
         "dec": 24.053417,
-        "mag": 3.62
+        "mag": 3.62,
+        "ru": "Атлас"
       },
       {
-        "name": "Электра",
+        "name": "Electra",
         "ra": 56.218904,
         "dec": 24.113336,
-        "mag": 3.7
+        "mag": 3.7,
+        "ru": "Электра"
       },
       {
-        "name": "Майя",
+        "name": "Maia",
         "ra": 56.456695,
         "dec": 24.36775,
-        "mag": 3.86
+        "mag": 3.86,
+        "ru": "Майя"
       },
       {
-        "name": "Меропа",
+        "name": "Merope",
         "ra": 56.581553,
         "dec": 23.948348,
-        "mag": 4.17
+        "mag": 4.17,
+        "ru": "Меропа"
       },
       {
-        "name": "Тайгета",
+        "name": "Taygeta",
         "ra": 56.302063,
         "dec": 24.46727,
-        "mag": 4.26
+        "mag": 4.26,
+        "ru": "Тайгета"
       },
       {
-        "name": "Плейона",
+        "name": "Pleione",
         "ra": 57.296738,
         "dec": 24.13671,
-        "mag": 5.05
+        "mag": 5.05,
+        "ru": "Плейона"
       },
       {
-        "name": "Келено",
+        "name": "Celaeno",
         "ra": 56.200893,
         "dec": 24.289468,
-        "mag": 5.44
+        "mag": 5.44,
+        "ru": "Келено"
       },
       {
-        "name": "Астеропа",
+        "name": "Asterope",
         "ra": 56.476987,
         "dec": 24.554512,
-        "mag": 5.75
+        "mag": 5.75,
+        "ru": "Астеропа"
       }
     ],
     "photoSurvey": "CDS/P/DSS2/color",
@@ -77,15 +96,27 @@
       "minMm": 0.35,
       "contrast": 0.28,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": false,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "show"
     }
   },
   {
     "id": "orion",
-    "name": "Орион",
-    "subtitle": "Созвездие целиком",
+    "name": {
+      "ru": "Орион",
+      "en": "Orion",
+      "is": "Óríon",
+      "nl": "Orion"
+    },
+    "subtitle": {
+      "ru": "Созвездие целиком",
+      "en": "The whole constellation",
+      "is": "Allt stjörnumerkið",
+      "nl": "Het hele sterrenbeeld"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 83.5,
@@ -96,72 +127,92 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Бетельгейзе",
+        "name": "Betelgeuse",
         "ra": 88.79294,
         "dec": 7.40706,
-        "mag": 0.45
+        "mag": 0.45,
+        "ru": "Бетельгейзе"
       },
       {
-        "name": "Ригель",
+        "name": "Rigel",
         "ra": 78.63447,
         "dec": -8.20164,
-        "mag": 0.18
+        "mag": 0.18,
+        "ru": "Ригель"
       },
       {
-        "name": "Беллатрикс",
+        "name": "Bellatrix",
         "ra": 81.28276,
         "dec": 6.3497,
-        "mag": 1.64
+        "mag": 1.64,
+        "ru": "Беллатрикс"
       },
       {
-        "name": "Саиф",
+        "name": "Saiph",
         "ra": 86.93912,
         "dec": -9.66961,
-        "mag": 2.06
+        "mag": 2.06,
+        "ru": "Саиф"
       },
       {
-        "name": "Альнитак",
+        "name": "Alnitak",
         "ra": 85.18969,
         "dec": -1.94257,
-        "mag": 1.77
+        "mag": 1.77,
+        "ru": "Альнитак"
       },
       {
-        "name": "Альнилам",
+        "name": "Alnilam",
         "ra": 84.05339,
         "dec": -1.20192,
-        "mag": 1.69
+        "mag": 1.69,
+        "ru": "Альнилам"
       },
       {
-        "name": "Минтака",
+        "name": "Mintaka",
         "ra": 83.00167,
         "dec": -0.29909,
-        "mag": 2.25
+        "mag": 2.25,
+        "ru": "Минтака"
       },
       {
-        "name": "Меисса",
+        "name": "Meissa",
         "ra": 83.78451,
         "dec": 9.93417,
-        "mag": 3.39
+        "mag": 3.39,
+        "ru": "Меисса"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 28,
     "preset": {
-      "magLimit": 4,
+      "magLimit": 4.65,
       "patternCm": 9,
       "maxMm": 2.2,
       "minMm": 0.4,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "show"
     }
   },
   {
     "id": "big-dipper",
-    "name": "Большая Медведица",
-    "subtitle": "Ковш · астеризм",
+    "name": {
+      "ru": "Большая Медведица",
+      "en": "Big Dipper",
+      "is": "Karlsvagninn",
+      "nl": "Grote Beer"
+    },
+    "subtitle": {
+      "ru": "Ковш · астеризм",
+      "en": "The Plough · asterism",
+      "is": "Stjörnumynstur",
+      "nl": "Steelpan · asterisme"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 186,
@@ -172,66 +223,85 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Дубхе",
+        "name": "Dubhe",
         "ra": 165.93196,
         "dec": 61.75103,
-        "mag": 1.79
+        "mag": 1.79,
+        "ru": "Дубхе"
       },
       {
-        "name": "Мерак",
+        "name": "Merak",
         "ra": 165.46032,
         "dec": 56.38243,
-        "mag": 2.37
+        "mag": 2.37,
+        "ru": "Мерак"
       },
       {
-        "name": "Фекда",
+        "name": "Phecda",
         "ra": 178.45768,
         "dec": 53.69476,
-        "mag": 2.44
+        "mag": 2.44,
+        "ru": "Фекда"
       },
       {
-        "name": "Мегрец",
+        "name": "Megrez",
         "ra": 183.8565,
         "dec": 57.03258,
-        "mag": 3.32
+        "mag": 3.32,
+        "ru": "Мегрец"
       },
       {
-        "name": "Алиот",
+        "name": "Alioth",
         "ra": 193.50729,
         "dec": 55.95982,
-        "mag": 1.77
+        "mag": 1.77,
+        "ru": "Алиот"
       },
       {
-        "name": "Мицар",
+        "name": "Mizar",
         "ra": 200.98142,
         "dec": 54.92536,
-        "mag": 2.23
+        "mag": 2.23,
+        "ru": "Мицар"
       },
       {
-        "name": "Алькаид",
+        "name": "Alkaid",
         "ra": 206.88516,
         "dec": 49.31327,
-        "mag": 1.86
+        "mag": 1.86,
+        "ru": "Алькаид"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 34,
     "preset": {
-      "magLimit": 3.4,
+      "magLimit": 4.6,
       "patternCm": 8,
       "maxMm": 2,
       "minMm": 0.5,
       "contrast": 0.35,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "show"
     }
   },
   {
     "id": "cassiopeia",
-    "name": "Кассиопея",
-    "subtitle": "Небесная W · созвездие",
+    "name": {
+      "ru": "Кассиопея",
+      "en": "Cassiopeia",
+      "is": "Kassíópeia",
+      "nl": "Cassiopeia"
+    },
+    "subtitle": {
+      "ru": "Небесная W · созвездие",
+      "en": "The celestial W",
+      "is": "Himin-W",
+      "nl": "De hemelse W"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 15,
@@ -242,54 +312,71 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Шедар",
+        "name": "Schedar",
         "ra": 10.12684,
         "dec": 56.53733,
-        "mag": 2.24
+        "mag": 2.24,
+        "ru": "Шедар"
       },
       {
-        "name": "Каф",
+        "name": "Caph",
         "ra": 2.29452,
         "dec": 59.14978,
-        "mag": 2.28
+        "mag": 2.28,
+        "ru": "Каф"
       },
       {
-        "name": "Цих",
+        "name": "Tsih",
         "ra": 14.17721,
         "dec": 60.71674,
-        "mag": 2.47
+        "mag": 2.47,
+        "ru": "Цих"
       },
       {
-        "name": "Рукба",
+        "name": "Ruchbah",
         "ra": 21.45397,
         "dec": 60.23528,
-        "mag": 2.68
+        "mag": 2.68,
+        "ru": "Рукба"
       },
       {
-        "name": "Сегин",
+        "name": "Segin",
         "ra": 28.5988,
         "dec": 63.67012,
-        "mag": 3.38
+        "mag": 3.38,
+        "ru": "Сегин"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 24,
     "preset": {
-      "magLimit": 3.5,
+      "magLimit": 4.3,
       "patternCm": 6.5,
       "maxMm": 1.9,
       "minMm": 0.5,
       "contrast": 0.4,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "southern-cross",
-    "name": "Южный Крест",
-    "subtitle": "Crux · созвездие",
+    "name": {
+      "ru": "Южный Крест",
+      "en": "Southern Cross",
+      "is": "Suðurkrossinn",
+      "nl": "Zuiderkruis"
+    },
+    "subtitle": {
+      "ru": "Crux · созвездие",
+      "en": "Crux · constellation",
+      "is": "Crux · stjörnumerki",
+      "nl": "Crux · sterrenbeeld"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 187,
@@ -300,34 +387,39 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Акрукс",
+        "name": "Acrux",
         "ra": 186.64957,
         "dec": -63.09909,
-        "mag": 0.77
+        "mag": 0.77,
+        "ru": "Акрукс"
       },
       {
-        "name": "Мимоза",
+        "name": "Mimosa",
         "ra": 191.93029,
         "dec": -59.68877,
-        "mag": 1.25
+        "mag": 1.25,
+        "ru": "Мимоза"
       },
       {
-        "name": "Гакрукс",
+        "name": "Gacrux",
         "ra": 187.79151,
         "dec": -57.11321,
-        "mag": 1.63
+        "mag": 1.63,
+        "ru": "Гакрукс"
       },
       {
-        "name": "Имаи",
+        "name": "Imai",
         "ra": 183.78632,
         "dec": -58.7489,
-        "mag": 2.79
+        "mag": 2.79,
+        "ru": "Имаи"
       },
       {
-        "name": "Джинан",
+        "name": "Ginan",
         "ra": 185.34,
         "dec": -60.40111,
-        "mag": 3.59
+        "mag": 3.59,
+        "ru": "Джинан"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -339,15 +431,27 @@
       "minMm": 0.4,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "lyra",
-    "name": "Лира",
-    "subtitle": "С Вегой · созвездие",
+    "name": {
+      "ru": "Лира",
+      "en": "Lyra",
+      "is": "Harpan",
+      "nl": "Lier"
+    },
+    "subtitle": {
+      "ru": "С Вегой · созвездие",
+      "en": "With Vega",
+      "is": "Með Vegu",
+      "nl": "Met Wega"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 282,
@@ -358,34 +462,39 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Вега",
+        "name": "Vega",
         "ra": 279.23474,
         "dec": 38.78369,
-        "mag": 0.03
+        "mag": 0.03,
+        "ru": "Вега"
       },
       {
-        "name": "Шелиак",
+        "name": "Sheliak",
         "ra": 282.52,
         "dec": 33.36278,
-        "mag": 3.52
+        "mag": 3.52,
+        "ru": "Шелиак"
       },
       {
-        "name": "Сулафат",
+        "name": "Sulafat",
         "ra": 284.73594,
         "dec": 32.68955,
-        "mag": 3.24
+        "mag": 3.24,
+        "ru": "Сулафат"
       },
       {
-        "name": "Дельта Лиры",
+        "name": "Delta Lyrae",
         "ra": 283.62625,
         "dec": 36.89864,
-        "mag": 4.3
+        "mag": 4.3,
+        "ru": "Дельта Лиры"
       },
       {
-        "name": "Дзета Лиры",
+        "name": "Zeta Lyrae",
         "ra": 281.19333,
         "dec": 37.60505,
-        "mag": 4.36
+        "mag": 4.36,
+        "ru": "Дзета Лиры"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -397,15 +506,27 @@
       "minMm": 0.35,
       "contrast": 0.25,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "cygnus",
-    "name": "Лебедь",
-    "subtitle": "Северный Крест · созвездие",
+    "name": {
+      "ru": "Лебедь",
+      "en": "Cygnus",
+      "is": "Svanurinn",
+      "nl": "Zwaan"
+    },
+    "subtitle": {
+      "ru": "Северный Крест · созвездие",
+      "en": "The Northern Cross",
+      "is": "Norðurkrossinn",
+      "nl": "Het Noorderkruis"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 302,
@@ -416,54 +537,71 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Денеб",
+        "name": "Deneb",
         "ra": 310.35798,
         "dec": 45.28034,
-        "mag": 1.25
+        "mag": 1.25,
+        "ru": "Денеб"
       },
       {
-        "name": "Садр",
+        "name": "Sadr",
         "ra": 305.55708,
         "dec": 40.25668,
-        "mag": 2.23
+        "mag": 2.23,
+        "ru": "Садр"
       },
       {
-        "name": "Дженах",
+        "name": "Gienah",
         "ra": 311.55291,
         "dec": 33.97026,
-        "mag": 2.48
+        "mag": 2.48,
+        "ru": "Дженах"
       },
       {
-        "name": "Дельта Лебедя",
+        "name": "Delta Cygni",
         "ra": 296.24377,
         "dec": 45.13081,
-        "mag": 2.87
+        "mag": 2.87,
+        "ru": "Дельта Лебедя"
       },
       {
-        "name": "Альбирео",
+        "name": "Albireo",
         "ra": 292.68034,
         "dec": 27.95968,
-        "mag": 3.05
+        "mag": 3.05,
+        "ru": "Альбирео"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 30,
     "preset": {
-      "magLimit": 3.2,
+      "magLimit": 4.85,
       "patternCm": 8.5,
       "maxMm": 2,
       "minMm": 0.5,
       "contrast": 0.35,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "corona-borealis",
-    "name": "Северная Корона",
-    "subtitle": "Полукруг · созвездие",
+    "name": {
+      "ru": "Северная Корона",
+      "en": "Northern Crown",
+      "is": "Kórónan",
+      "nl": "Noorderkroon"
+    },
+    "subtitle": {
+      "ru": "Полукруг · созвездие",
+      "en": "A half-circle of stars",
+      "is": "Hálfhringur stjarna",
+      "nl": "Halve cirkel van sterren"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 236,
@@ -474,40 +612,46 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Альфекка",
+        "name": "Alphecca",
         "ra": 233.67207,
         "dec": 26.71469,
-        "mag": 2.22
+        "mag": 2.22,
+        "ru": "Альфекка"
       },
       {
-        "name": "Нусакан",
+        "name": "Nusakan",
         "ra": 231.95712,
         "dec": 29.10581,
-        "mag": 3.66
+        "mag": 3.66,
+        "ru": "Нусакан"
       },
       {
-        "name": "Гамма",
+        "name": "Gamma CrB",
         "ra": 235.6858,
         "dec": 26.29563,
-        "mag": 3.81
+        "mag": 3.81,
+        "ru": "Гамма"
       },
       {
-        "name": "Дельта",
+        "name": "Delta CrB",
         "ra": 237.39832,
         "dec": 26.06827,
-        "mag": 4.59
+        "mag": 4.59,
+        "ru": "Дельта"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon CrB",
         "ra": 239.39672,
         "dec": 26.87781,
-        "mag": 4.14
+        "mag": 4.14,
+        "ru": "Эпсилон"
       },
       {
-        "name": "Тета",
+        "name": "Theta CrB",
         "ra": 233.2325,
         "dec": 31.35917,
-        "mag": 4.14
+        "mag": 4.14,
+        "ru": "Тета"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
@@ -519,15 +663,27 @@
       "minMm": 0.4,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "delphinus",
-    "name": "Дельфин",
-    "subtitle": "Ромб Иова · созвездие",
+    "name": {
+      "ru": "Дельфин",
+      "en": "Delphinus",
+      "is": "Höfrungurinn",
+      "nl": "Dolfijn"
+    },
+    "subtitle": {
+      "ru": "Ромб Иова · созвездие",
+      "en": "Job's Coffin · constellation",
+      "is": "Kista Jobs",
+      "nl": "Grafkist van Job"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 310,
@@ -538,54 +694,71 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Ротанев",
+        "name": "Rotanev",
         "ra": 309.38708,
         "dec": 14.5952,
-        "mag": 3.63
+        "mag": 3.63,
+        "ru": "Ротанев"
       },
       {
-        "name": "Суалоцин",
+        "name": "Sualocin",
         "ra": 309.90958,
         "dec": 15.91194,
-        "mag": 3.77
+        "mag": 3.77,
+        "ru": "Суалоцин"
       },
       {
-        "name": "Гамма",
+        "name": "Gamma Del",
         "ra": 311.66458,
         "dec": 16.12417,
-        "mag": 4.27
+        "mag": 4.27,
+        "ru": "Гамма"
       },
       {
-        "name": "Дельта",
+        "name": "Delta Del",
         "ra": 310.865,
         "dec": 15.07444,
-        "mag": 4.43
+        "mag": 4.43,
+        "ru": "Дельта"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon Del",
         "ra": 308.30333,
         "dec": 11.30333,
-        "mag": 4.03
+        "mag": 4.03,
+        "ru": "Эпсилон"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 11,
     "preset": {
-      "magLimit": 4.5,
+      "magLimit": 5.55,
       "patternCm": 4,
       "maxMm": 1.5,
       "minMm": 0.5,
       "contrast": 0.4,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "little-dipper",
-    "name": "Малая Медведица",
-    "subtitle": "С Полярной звездой · астеризм",
+    "name": {
+      "ru": "Малая Медведица",
+      "en": "Little Dipper",
+      "is": "Litli vagninn",
+      "nl": "Kleine Beer"
+    },
+    "subtitle": {
+      "ru": "С Полярной звездой · астеризм",
+      "en": "With the North Star",
+      "is": "Með Pólstjörnunni",
+      "nl": "Met de Poolster"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 240,
@@ -596,48 +769,64 @@
     "maxRows": 3000,
     "named": [
       {
-        "name": "Полярная",
+        "name": "Polaris",
         "ra": 37.95456,
         "dec": 89.26411,
-        "mag": 1.97
+        "mag": 1.97,
+        "ru": "Полярная"
       },
       {
-        "name": "Кохаб",
+        "name": "Kochab",
         "ra": 222.67636,
         "dec": 74.1555,
-        "mag": 2.08
+        "mag": 2.08,
+        "ru": "Кохаб"
       },
       {
-        "name": "Феркад",
+        "name": "Pherkad",
         "ra": 230.18208,
         "dec": 71.83397,
-        "mag": 3.05
+        "mag": 3.05,
+        "ru": "Феркад"
       },
       {
-        "name": "Йильдун",
+        "name": "Yildun",
         "ra": 263.05417,
         "dec": 86.58642,
-        "mag": 4.36
+        "mag": 4.36,
+        "ru": "Йильдун"
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 32,
     "preset": {
-      "magLimit": 4.4,
+      "magLimit": 6.25,
       "patternCm": 7,
       "maxMm": 2,
       "minMm": 0.4,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "scorpius",
-    "name": "Скорпион",
-    "subtitle": "С Антаресом · созвездие",
+    "name": {
+      "ru": "Скорпион",
+      "en": "Scorpius",
+      "is": "Sporðdrekinn",
+      "nl": "Schorpioen"
+    },
+    "subtitle": {
+      "ru": "С Антаресом · созвездие",
+      "en": "With Antares",
+      "is": "Með Antares",
+      "nl": "Met Antares"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 253,
@@ -650,70 +839,91 @@
     "photoFovDeg": 34,
     "named": [
       {
-        "name": "Антарес",
+        "name": "Antares",
         "ra": 247.35192,
         "dec": -26.432,
-        "mag": 0.96
+        "mag": 0.96,
+        "ru": "Антарес"
       },
       {
-        "name": "Шаула",
+        "name": "Shaula",
         "ra": 263.40217,
         "dec": -37.10389,
-        "mag": 1.62
+        "mag": 1.62,
+        "ru": "Шаула"
       },
       {
-        "name": "Саргас",
+        "name": "Sargas",
         "ra": 264.32963,
         "dec": -42.99783,
-        "mag": 1.86
+        "mag": 1.86,
+        "ru": "Саргас"
       },
       {
-        "name": "Дшубба",
+        "name": "Dschubba",
         "ra": 240.08333,
         "dec": -22.62167,
-        "mag": 2.32
+        "mag": 2.32,
+        "ru": "Дшубба"
       },
       {
-        "name": "Граффиас",
+        "name": "Acrab",
         "ra": 241.35917,
         "dec": -19.80528,
-        "mag": 2.62
+        "mag": 2.62,
+        "ru": "Граффиас"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon Sco",
         "ra": 252.54167,
         "dec": -34.29333,
-        "mag": 2.29
+        "mag": 2.29,
+        "ru": "Эпсилон"
       },
       {
-        "name": "Лесат",
+        "name": "Lesath",
         "ra": 262.69083,
         "dec": -37.29583,
-        "mag": 2.7
+        "mag": 2.7,
+        "ru": "Лесат"
       },
       {
-        "name": "Пи",
+        "name": "Pi Sco",
         "ra": 239.7125,
         "dec": -26.11417,
-        "mag": 2.89
+        "mag": 2.89,
+        "ru": "Пи"
       }
     ],
     "preset": {
-      "magLimit": 3.2,
-      "patternCm": 9,
+      "magLimit": 5.95,
+      "patternCm": 6.7,
       "maxMm": 2.2,
       "minMm": 0.45,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "rotation": 337,
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "leo",
-    "name": "Лев",
-    "subtitle": "Серп и Регул · созвездие",
+    "name": {
+      "ru": "Лев",
+      "en": "Leo",
+      "is": "Ljónið",
+      "nl": "Leeuw"
+    },
+    "subtitle": {
+      "ru": "Серп и Регул · созвездие",
+      "en": "The Sickle and Regulus",
+      "is": "Sigðin og Regúlus",
+      "nl": "De Sikkel en Regulus"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 161,
@@ -726,64 +936,83 @@
     "photoFovDeg": 34,
     "named": [
       {
-        "name": "Регул",
+        "name": "Regulus",
         "ra": 152.09296,
         "dec": 11.96722,
-        "mag": 1.36
+        "mag": 1.36,
+        "ru": "Регул"
       },
       {
-        "name": "Альгиеба",
+        "name": "Algieba",
         "ra": 154.9932,
         "dec": 19.84139,
-        "mag": 2.08
+        "mag": 2.08,
+        "ru": "Альгиеба"
       },
       {
-        "name": "Денебола",
+        "name": "Denebola",
         "ra": 177.2649,
         "dec": 14.57222,
-        "mag": 2.14
+        "mag": 2.14,
+        "ru": "Денебола"
       },
       {
-        "name": "Зосма",
+        "name": "Zosma",
         "ra": 168.52708,
         "dec": 20.52361,
-        "mag": 2.56
+        "mag": 2.56,
+        "ru": "Зосма"
       },
       {
-        "name": "Альгенуби",
+        "name": "Algenubi",
         "ra": 146.46292,
         "dec": 23.77417,
-        "mag": 2.98
+        "mag": 2.98,
+        "ru": "Альгенуби"
       },
       {
-        "name": "Чорт",
+        "name": "Chertan",
         "ra": 168.56,
         "dec": 15.42972,
-        "mag": 3.33
+        "mag": 3.33,
+        "ru": "Чорт"
       },
       {
-        "name": "Адхафера",
+        "name": "Adhafera",
         "ra": 154.1725,
         "dec": 23.41722,
-        "mag": 3.44
+        "mag": 3.44,
+        "ru": "Адхафера"
       }
     ],
     "preset": {
-      "magLimit": 3.6,
+      "magLimit": 5.25,
       "patternCm": 8.5,
       "maxMm": 2,
       "minMm": 0.45,
       "contrast": 0.32,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "bootes",
-    "name": "Волопас",
-    "subtitle": "Воздушный змей с Арктуром",
+    "name": {
+      "ru": "Волопас",
+      "en": "Boötes",
+      "is": "Hjarðmaðurinn",
+      "nl": "Ossenhoeder"
+    },
+    "subtitle": {
+      "ru": "Воздушный змей с Арктуром",
+      "en": "A kite with Arcturus",
+      "is": "Flugdreki með Arktúrusi",
+      "nl": "Vlieger met Arcturus"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 219,
@@ -796,64 +1025,83 @@
     "photoFovDeg": 30,
     "named": [
       {
-        "name": "Арктур",
+        "name": "Arcturus",
         "ra": 213.91542,
         "dec": 19.1825,
-        "mag": -0.05
+        "mag": -0.05,
+        "ru": "Арктур"
       },
       {
-        "name": "Изар",
+        "name": "Izar",
         "ra": 221.24667,
         "dec": 27.07417,
-        "mag": 2.35
+        "mag": 2.35,
+        "ru": "Изар"
       },
       {
-        "name": "Мунифрид",
+        "name": "Muphrid",
         "ra": 208.67125,
         "dec": 18.39778,
-        "mag": 2.68
+        "mag": 2.68,
+        "ru": "Мунифрид"
       },
       {
-        "name": "Сегинус",
+        "name": "Seginus",
         "ra": 218.01958,
         "dec": 38.30833,
-        "mag": 3.03
+        "mag": 3.03,
+        "ru": "Сегинус"
       },
       {
-        "name": "Дельта",
+        "name": "Delta Boo",
         "ra": 228.87583,
         "dec": 33.31472,
-        "mag": 3.47
+        "mag": 3.47,
+        "ru": "Дельта"
       },
       {
-        "name": "Неккар",
+        "name": "Nekkar",
         "ra": 225.48667,
         "dec": 40.39056,
-        "mag": 3.49
+        "mag": 3.49,
+        "ru": "Неккар"
       },
       {
-        "name": "Ро",
+        "name": "Rho Boo",
         "ra": 217.9575,
         "dec": 30.37139,
-        "mag": 3.58
+        "mag": 3.58,
+        "ru": "Ро"
       }
     ],
     "preset": {
-      "magLimit": 3.6,
+      "magLimit": 4.55,
       "patternCm": 8,
       "maxMm": 2.2,
       "minMm": 0.4,
       "contrast": 0.26,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "gemini",
-    "name": "Близнецы",
-    "subtitle": "Кастор и Поллукс · созвездие",
+    "name": {
+      "ru": "Близнецы",
+      "en": "Gemini",
+      "is": "Tvíburarnir",
+      "nl": "Tweelingen"
+    },
+    "subtitle": {
+      "ru": "Кастор и Поллукс · созвездие",
+      "en": "Castor and Pollux",
+      "is": "Kastor og Pollux",
+      "nl": "Castor en Pollux"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 105,
@@ -866,70 +1114,90 @@
     "photoFovDeg": 30,
     "named": [
       {
-        "name": "Поллукс",
+        "name": "Pollux",
         "ra": 116.32875,
         "dec": 28.02611,
-        "mag": 1.14
+        "mag": 1.14,
+        "ru": "Поллукс"
       },
       {
-        "name": "Кастор",
+        "name": "Castor",
         "ra": 113.64958,
         "dec": 31.88833,
-        "mag": 1.58
+        "mag": 1.58,
+        "ru": "Кастор"
       },
       {
-        "name": "Альхена",
+        "name": "Alhena",
         "ra": 99.42792,
         "dec": 16.39917,
-        "mag": 1.93
+        "mag": 1.93,
+        "ru": "Альхена"
       },
       {
-        "name": "Тежат",
+        "name": "Tejat",
         "ra": 95.74,
         "dec": 22.51361,
-        "mag": 2.87
+        "mag": 2.87,
+        "ru": "Тежат"
       },
       {
-        "name": "Мебсута",
+        "name": "Mebsuta",
         "ra": 100.98292,
         "dec": 25.13111,
-        "mag": 2.98
+        "mag": 2.98,
+        "ru": "Мебсута"
       },
       {
-        "name": "Пропус",
+        "name": "Propus",
         "ra": 93.71958,
         "dec": 22.50667,
-        "mag": 3.28
+        "mag": 3.28,
+        "ru": "Пропус"
       },
       {
-        "name": "Кси",
+        "name": "Xi Gem",
         "ra": 101.3225,
         "dec": 12.89556,
-        "mag": 3.36
+        "mag": 3.36,
+        "ru": "Кси"
       },
       {
-        "name": "Вазат",
+        "name": "Wasat",
         "ra": 110.03083,
         "dec": 21.98222,
-        "mag": 3.53
+        "mag": 3.53,
+        "ru": "Вазат"
       }
     ],
     "preset": {
-      "magLimit": 3.6,
+      "magLimit": 4.9,
       "patternCm": 8.5,
       "maxMm": 2,
       "minMm": 0.45,
       "contrast": 0.32,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "auriga",
-    "name": "Возничий",
-    "subtitle": "Пятиугольник с Капеллой",
+    "name": {
+      "ru": "Возничий",
+      "en": "Auriga",
+      "is": "Ökumaðurinn",
+      "nl": "Voerman"
+    },
+    "subtitle": {
+      "ru": "Пятиугольник с Капеллой",
+      "en": "A pentagon with Capella",
+      "is": "Fimmhyrningur með Kapellu",
+      "nl": "Vijfhoek met Capella"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 80,
@@ -942,64 +1210,83 @@
     "photoFovDeg": 26,
     "named": [
       {
-        "name": "Капелла",
+        "name": "Capella",
         "ra": 79.1725,
         "dec": 45.99806,
-        "mag": 0.08
+        "mag": 0.08,
+        "ru": "Капелла"
       },
       {
-        "name": "Эль Нат",
+        "name": "Elnath",
         "ra": 81.57292,
         "dec": 28.6075,
-        "mag": 1.65
+        "mag": 1.65,
+        "ru": "Эль Нат"
       },
       {
-        "name": "Менкалинан",
+        "name": "Menkalinan",
         "ra": 89.88208,
         "dec": 44.9475,
-        "mag": 1.9
+        "mag": 1.9,
+        "ru": "Менкалинан"
       },
       {
-        "name": "Тета",
+        "name": "Theta Aur",
         "ra": 89.93042,
         "dec": 37.2125,
-        "mag": 2.62
+        "mag": 2.62,
+        "ru": "Тета"
       },
       {
-        "name": "Хассалех",
+        "name": "Hassaleh",
         "ra": 74.24833,
         "dec": 33.16611,
-        "mag": 2.69
+        "mag": 2.69,
+        "ru": "Хассалех"
       },
       {
-        "name": "Альмааз",
+        "name": "Almaaz",
         "ra": 75.49208,
         "dec": 43.82333,
-        "mag": 3.03
+        "mag": 3.03,
+        "ru": "Альмааз"
       },
       {
-        "name": "Хедус",
+        "name": "Haedus",
         "ra": 76.62875,
         "dec": 41.23444,
-        "mag": 3.17
+        "mag": 3.17,
+        "ru": "Хедус"
       }
     ],
     "preset": {
-      "magLimit": 3.3,
+      "magLimit": 5.6,
       "patternCm": 7.5,
       "maxMm": 2.1,
       "minMm": 0.45,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "aquila",
-    "name": "Орёл",
-    "subtitle": "С Альтаиром · созвездие",
+    "name": {
+      "ru": "Орёл",
+      "en": "Aquila",
+      "is": "Örninn",
+      "nl": "Arend"
+    },
+    "subtitle": {
+      "ru": "С Альтаиром · созвездие",
+      "en": "With Altair",
+      "is": "Með Altair",
+      "nl": "Met Altair"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 295,
@@ -1012,64 +1299,83 @@
     "photoFovDeg": 28,
     "named": [
       {
-        "name": "Альтаир",
+        "name": "Altair",
         "ra": 297.69583,
         "dec": 8.86833,
-        "mag": 0.76
+        "mag": 0.76,
+        "ru": "Альтаир"
       },
       {
-        "name": "Тараред",
+        "name": "Tarazed",
         "ra": 296.565,
         "dec": 10.61333,
-        "mag": 2.72
+        "mag": 2.72,
+        "ru": "Тараред"
       },
       {
-        "name": "Дзета",
+        "name": "Zeta Aql",
         "ra": 286.3525,
         "dec": 13.86333,
-        "mag": 2.99
+        "mag": 2.99,
+        "ru": "Дзета"
       },
       {
-        "name": "Тета",
+        "name": "Theta Aql",
         "ra": 302.82625,
         "dec": -0.82139,
-        "mag": 3.23
+        "mag": 3.23,
+        "ru": "Тета"
       },
       {
-        "name": "Дельта",
+        "name": "Delta Aql",
         "ra": 291.37458,
         "dec": 3.11472,
-        "mag": 3.36
+        "mag": 3.36,
+        "ru": "Дельта"
       },
       {
-        "name": "Лямбда",
+        "name": "Lambda Aql",
         "ra": 286.56208,
         "dec": -4.8825,
-        "mag": 3.43
+        "mag": 3.43,
+        "ru": "Лямбда"
       },
       {
-        "name": "Альшаин",
+        "name": "Alshain",
         "ra": 298.82833,
         "dec": 6.40667,
-        "mag": 3.71
+        "mag": 3.71,
+        "ru": "Альшаин"
       }
     ],
     "preset": {
-      "magLimit": 3.9,
+      "magLimit": 4.15,
       "patternCm": 8,
       "maxMm": 2,
       "minMm": 0.4,
       "contrast": 0.3,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "sagitta",
-    "name": "Стрела",
-    "subtitle": "Самое маленькое созвездие-стрела",
+    "name": {
+      "ru": "Стрела",
+      "en": "Sagitta",
+      "is": "Örin",
+      "nl": "Pijl"
+    },
+    "subtitle": {
+      "ru": "Самое маленькое созвездие-стрела",
+      "en": "The little arrow",
+      "is": "Litla örin",
+      "nl": "De kleine pijl"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 297,
@@ -1082,46 +1388,62 @@
     "photoFovDeg": 10,
     "named": [
       {
-        "name": "Гамма",
+        "name": "Gamma Sge",
         "ra": 299.68917,
         "dec": 19.49222,
-        "mag": 3.47
+        "mag": 3.47,
+        "ru": "Гамма"
       },
       {
-        "name": "Дельта",
+        "name": "Delta Sge",
         "ra": 296.84708,
         "dec": 18.53417,
-        "mag": 3.82
+        "mag": 3.82,
+        "ru": "Дельта"
       },
       {
-        "name": "Шам",
+        "name": "Sham",
         "ra": 295.02417,
         "dec": 18.01389,
-        "mag": 4.37
+        "mag": 4.37,
+        "ru": "Шам"
       },
       {
-        "name": "Бета",
+        "name": "Beta Sge",
         "ra": 295.26208,
         "dec": 17.47611,
-        "mag": 4.37
+        "mag": 4.37,
+        "ru": "Бета"
       }
     ],
     "preset": {
-      "magLimit": 4.5,
+      "magLimit": 4.65,
       "patternCm": 3.5,
       "maxMm": 1.4,
       "minMm": 0.5,
       "contrast": 0.45,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "camelopardalis",
-    "name": "Жираф",
-    "subtitle": "Camelopardalis · северное созвездие",
+    "name": {
+      "ru": "Жираф",
+      "en": "Camelopardalis",
+      "is": "Gíraffinn",
+      "nl": "Giraffe"
+    },
+    "subtitle": {
+      "ru": "Camelopardalis · северное созвездие",
+      "en": "A faint northern constellation",
+      "is": "Dauft norðlægt stjörnumerki",
+      "nl": "Vaag noordelijk sterrenbeeld"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 66.7,
@@ -1134,52 +1456,80 @@
     "photoFovDeg": 26,
     "named": [
       {
-        "name": "Бета",
+        "name": "Beta Cam",
         "ra": 75.85458,
         "dec": 60.44225,
-        "mag": 4.03
+        "mag": 4.03,
+        "ru": "Бета"
       },
       {
-        "name": "CS Жирафа",
+        "name": "CS Camelopardalis",
         "ra": 52.26721,
         "dec": 59.94033,
-        "mag": 4.21
+        "mag": 4.21,
+        "ru": "CS Жирафа"
       },
       {
-        "name": "Альфа",
+        "name": "Alpha Cam",
         "ra": 73.5125,
         "dec": 66.34267,
-        "mag": 4.29
+        "mag": 4.29,
+        "ru": "Альфа"
       },
       {
-        "name": "7 Жирафа",
+        "name": "7 Camelopardalis",
         "ra": 74.32162,
         "dec": 53.75208,
-        "mag": 4.43
+        "mag": 4.43,
+        "ru": "7 Жирафа"
       },
       {
-        "name": "Гамма",
+        "name": "Gamma Cam",
         "ra": 57.58979,
         "dec": 71.33228,
-        "mag": 4.59
+        "mag": 4.59,
+        "ru": "Гамма"
       }
     ],
     "preset": {
-      "magLimit": 4.7,
-      "patternCm": 6,
+      "magLimit": 5.25,
+      "patternCm": 5.0,
       "maxMm": 1.4,
       "minMm": 0.5,
       "contrast": 0.5,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
-    }
+      "backgroundStars": "fade",
+      "panX": 7,
+      "panY": 26
+    },
+    "markers": [
+      {
+        "id": "voyager",
+        "name": "Gliese 445",
+        "ra": 176.9225,
+        "dec": 78.6911,
+        "ru": "Глизе 445"
+      }
+    ]
   },
   {
     "id": "hercules",
-    "name": "Геркулес",
-    "subtitle": "Замковый камень · созвездие",
+    "name": {
+      "ru": "Геркулес",
+      "en": "Hercules",
+      "is": "Herkúles",
+      "nl": "Hercules"
+    },
+    "subtitle": {
+      "ru": "Замковый камень · созвездие",
+      "en": "The Keystone",
+      "is": "Hvelfingarsteinninn",
+      "nl": "De Sluitsteen"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 258,
@@ -1192,88 +1542,111 @@
     "photoFovDeg": 36,
     "named": [
       {
-        "name": "Корнефорос",
+        "name": "Kornephoros",
         "ra": 247.555,
         "dec": 21.48972,
-        "mag": 2.78
+        "mag": 2.78,
+        "ru": "Корнефорос"
       },
       {
-        "name": "Дзета",
+        "name": "Zeta Her",
         "ra": 250.32167,
         "dec": 31.60278,
-        "mag": 2.81
+        "mag": 2.81,
+        "ru": "Дзета"
       },
       {
-        "name": "Сарин",
+        "name": "Sarin",
         "ra": 258.75792,
         "dec": 24.83917,
-        "mag": 3.12
+        "mag": 3.12,
+        "ru": "Сарин"
       },
       {
-        "name": "Пи",
+        "name": "Pi Her",
         "ra": 258.76167,
         "dec": 36.80917,
-        "mag": 3.16
+        "mag": 3.16,
+        "ru": "Пи"
       },
       {
-        "name": "Рас Альгети",
+        "name": "Rasalgethi",
         "ra": 258.66208,
         "dec": 14.39028,
-        "mag": 3.35
+        "mag": 3.35,
+        "ru": "Рас Альгети"
       },
       {
-        "name": "Мю",
+        "name": "Mu Her",
         "ra": 266.61458,
         "dec": 27.72083,
-        "mag": 3.42
+        "mag": 3.42,
+        "ru": "Мю"
       },
       {
-        "name": "Эта",
+        "name": "Eta Her",
         "ra": 250.72417,
         "dec": 38.92222,
-        "mag": 3.48
+        "mag": 3.48,
+        "ru": "Эта"
       },
       {
-        "name": "Гамма",
+        "name": "Gamma Her",
         "ra": 245.48,
         "dec": 19.15306,
-        "mag": 3.75
+        "mag": 3.75,
+        "ru": "Гамма"
       },
       {
-        "name": "Йота",
+        "name": "Iota Her",
         "ra": 264.86625,
         "dec": 46.00639,
-        "mag": 3.8
+        "mag": 3.8,
+        "ru": "Йота"
       },
       {
-        "name": "Тета",
+        "name": "Theta Her",
         "ra": 269.06333,
         "dec": 37.25056,
-        "mag": 3.86
+        "mag": 3.86,
+        "ru": "Тета"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon Her",
         "ra": 255.0725,
         "dec": 30.92639,
-        "mag": 3.92
+        "mag": 3.92,
+        "ru": "Эпсилон"
       }
     ],
     "preset": {
-      "magLimit": 4.2,
+      "magLimit": 4.35,
       "patternCm": 9,
       "maxMm": 1.8,
       "minMm": 0.45,
       "contrast": 0.4,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "corona-australis",
-    "name": "Южная Корона",
-    "subtitle": "Изящная дуга · созвездие",
+    "name": {
+      "ru": "Южная Корона",
+      "en": "Southern Crown",
+      "is": "Suðurkórónan",
+      "nl": "Zuiderkroon"
+    },
+    "subtitle": {
+      "ru": "Изящная дуга · созвездие",
+      "en": "A delicate arc",
+      "is": "Fíngerður bogi",
+      "nl": "Een sierlijke boog"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 285.5,
@@ -1286,46 +1659,53 @@
     "photoFovDeg": 12,
     "named": [
       {
-        "name": "Альфекка Южная",
+        "name": "Meridiana",
         "ra": 287.36833,
         "dec": -37.90444,
-        "mag": 4.1
+        "mag": 4.1,
+        "ru": "Альфекка Южная"
       },
       {
-        "name": "Бета",
+        "name": "Beta CrA",
         "ra": 287.50708,
         "dec": -39.34083,
-        "mag": 4.11
+        "mag": 4.11,
+        "ru": "Бета"
       },
       {
-        "name": "Гамма",
+        "name": "Gamma CrA",
         "ra": 286.60458,
         "dec": -37.06333,
-        "mag": 4.2
+        "mag": 4.2,
+        "ru": "Гамма"
       },
       {
-        "name": "Дельта",
+        "name": "Delta CrA",
         "ra": 287.08625,
         "dec": -40.49972,
-        "mag": 4.59
+        "mag": 4.59,
+        "ru": "Дельта"
       },
       {
-        "name": "Тета",
+        "name": "Theta CrA",
         "ra": 278.37583,
         "dec": -42.3125,
-        "mag": 4.62
+        "mag": 4.62,
+        "ru": "Тета"
       },
       {
-        "name": "Дзета",
+        "name": "Zeta CrA",
         "ra": 285.77875,
         "dec": -42.095,
-        "mag": 4.74
+        "mag": 4.74,
+        "ru": "Дзета"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon CrA",
         "ra": 284.67958,
         "dec": -37.10722,
-        "mag": 4.83
+        "mag": 4.83,
+        "ru": "Эпсилон"
       }
     ],
     "preset": {
@@ -1335,15 +1715,27 @@
       "minMm": 0.5,
       "contrast": 0.5,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "lepus",
-    "name": "Заяц",
-    "subtitle": "Под ногами Ориона · созвездие",
+    "name": {
+      "ru": "Заяц",
+      "en": "Lepus",
+      "is": "Hérinn",
+      "nl": "Haas"
+    },
+    "subtitle": {
+      "ru": "Под ногами Ориона · созвездие",
+      "en": "At Orion's feet",
+      "is": "Við fætur Óríons",
+      "nl": "Aan de voeten van Orion"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 83.5,
@@ -1356,70 +1748,90 @@
     "photoFovDeg": 18,
     "named": [
       {
-        "name": "Арнеб",
+        "name": "Arneb",
         "ra": 83.1825,
         "dec": -17.82222,
-        "mag": 2.58
+        "mag": 2.58,
+        "ru": "Арнеб"
       },
       {
-        "name": "Нихаль",
+        "name": "Nihal",
         "ra": 82.06125,
         "dec": -20.75944,
-        "mag": 2.84
+        "mag": 2.84,
+        "ru": "Нихаль"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon Lep",
         "ra": 76.36542,
         "dec": -22.37111,
-        "mag": 3.19
+        "mag": 3.19,
+        "ru": "Эпсилон"
       },
       {
-        "name": "Мю",
+        "name": "Mu Lep",
         "ra": 78.23333,
         "dec": -16.20556,
-        "mag": 3.31
+        "mag": 3.31,
+        "ru": "Мю"
       },
       {
-        "name": "Дзета",
+        "name": "Zeta Lep",
         "ra": 86.73875,
         "dec": -14.82194,
-        "mag": 3.55
+        "mag": 3.55,
+        "ru": "Дзета"
       },
       {
-        "name": "Гамма",
+        "name": "Gamma Lep",
         "ra": 86.11583,
         "dec": -22.44833,
-        "mag": 3.6
+        "mag": 3.6,
+        "ru": "Гамма"
       },
       {
-        "name": "Эта",
+        "name": "Eta Lep",
         "ra": 89.1,
         "dec": -14.16778,
-        "mag": 3.71
+        "mag": 3.71,
+        "ru": "Эта"
       },
       {
-        "name": "Дельта",
+        "name": "Delta Lep",
         "ra": 87.83042,
         "dec": -20.87917,
-        "mag": 3.81
+        "mag": 3.81,
+        "ru": "Дельта"
       }
     ],
     "preset": {
-      "magLimit": 3.9,
+      "magLimit": 4.85,
       "patternCm": 6,
       "maxMm": 1.8,
       "minMm": 0.5,
       "contrast": 0.4,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   },
   {
     "id": "grus",
-    "name": "Журавль",
-    "subtitle": "Изогнутая цепочка · южное созвездие",
+    "name": {
+      "ru": "Журавль",
+      "en": "Grus",
+      "is": "Tranan",
+      "nl": "Kraanvogel"
+    },
+    "subtitle": {
+      "ru": "Изогнутая цепочка · южное созвездие",
+      "en": "A curved chain of stars",
+      "is": "Bogadregin stjörnuröð",
+      "nl": "Een gebogen keten van sterren"
+    },
     "source": "hipparcos",
     "center": {
       "ra": 339,
@@ -1432,64 +1844,74 @@
     "photoFovDeg": 24,
     "named": [
       {
-        "name": "Альнаир",
+        "name": "Alnair",
         "ra": 332.05833,
         "dec": -46.96111,
-        "mag": 1.74
+        "mag": 1.74,
+        "ru": "Альнаир"
       },
       {
-        "name": "Тиаки",
+        "name": "Tiaki",
         "ra": 340.66667,
         "dec": -46.88472,
-        "mag": 2.07
+        "mag": 2.07,
+        "ru": "Тиаки"
       },
       {
-        "name": "Альданаб",
+        "name": "Aldhanab",
         "ra": 328.48208,
         "dec": -37.36472,
-        "mag": 3
+        "mag": 3,
+        "ru": "Альданаб"
       },
       {
-        "name": "Эпсилон",
+        "name": "Epsilon Gru",
         "ra": 342.13875,
         "dec": -51.31694,
-        "mag": 3.49
+        "mag": 3.49,
+        "ru": "Эпсилон"
       },
       {
-        "name": "Йота",
+        "name": "Iota Gru",
         "ra": 347.58958,
         "dec": -45.24667,
-        "mag": 3.9
+        "mag": 3.9,
+        "ru": "Йота"
       },
       {
-        "name": "Дельта",
+        "name": "Delta Gru",
         "ra": 337.3175,
         "dec": -43.49556,
-        "mag": 3.97
+        "mag": 3.97,
+        "ru": "Дельта"
       },
       {
-        "name": "Дзета",
+        "name": "Zeta Gru",
         "ra": 345.21958,
         "dec": -52.75417,
-        "mag": 4.11
+        "mag": 4.11,
+        "ru": "Дзета"
       },
       {
-        "name": "Тета",
+        "name": "Theta Gru",
         "ra": 346.71958,
         "dec": -43.52028,
-        "mag": 4.28
+        "mag": 4.28,
+        "ru": "Тета"
       }
     ],
     "preset": {
-      "magLimit": 4.3,
+      "magLimit": 4.8,
       "patternCm": 7,
       "maxMm": 2,
       "minMm": 0.4,
       "contrast": 0.32,
       "stepMm": 0.25,
+      "quantize": true,
       "showLines": true,
+      "lineMm": 0.3,
       "labels": "names",
-      "quantize": true
+      "backgroundStars": "fade"
     }
   }
 ]

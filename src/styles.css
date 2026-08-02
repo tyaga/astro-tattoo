@@ -57,11 +57,56 @@ body {
 }
 
 .app {
-    --topbar-h: 88px;
+    --appbar-h: 39px;
+    --topbar-h: 127px;
     display: grid;
     grid-template-columns: 230px minmax(0, 1fr) 230px 230px;
     grid-template-rows: auto minmax(0, 1fr);
     min-height: 100vh;
+}
+
+/* ---------- строка названия и переключателей ---------- */
+
+.appbar {
+    grid-column: 1 / -1;
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 14px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+}
+
+.appbar-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    min-width: 0;
+}
+
+.appbar-brand h1 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.appbar-brand p {
+    font-size: 11px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.appbar-controls {
+    display: flex;
+    flex: none;
+    gap: 6px;
 }
 
 /* ---------- верхняя панель объектов ---------- */
@@ -69,7 +114,7 @@ body {
 .topbar {
     grid-column: 1 / -1;
     position: sticky;
-    top: 0;
+    top: var(--appbar-h);
     z-index: 10;
     background: var(--panel);
     border-bottom: 1px solid var(--border);
@@ -236,10 +281,11 @@ body {
     letter-spacing: 0.02em;
 }
 
-/* переключатель темы */
+/* переключатель-пилюля: тема, показать/скрыть, режим подписей */
 
-.theme-switch {
-    display: flex;
+.segmented {
+    display: inline-flex;
+    flex: none;
     gap: 2px;
     padding: 2px;
     background: var(--panel-2);
@@ -247,29 +293,123 @@ body {
     border-radius: 999px;
 }
 
-.theme-btn {
-    width: 20px;
-    height: 20px;
+.seg-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 8px;
+    font: 500 11px 'Inter', sans-serif;
     line-height: 1;
     color: var(--muted);
     background: transparent;
     border: none;
-    border-radius: 50%;
+    border-radius: 999px;
     cursor: pointer;
+    white-space: nowrap;
     transition: color 0.15s, background 0.15s;
 }
 
-.theme-btn:hover {
+.seg-btn:hover {
     color: var(--text);
 }
 
-.theme-btn.active {
+.seg-btn.active {
     color: #fff;
     background: var(--accent);
+}
+
+/* вариант для иконок — круглые кнопки без боковых отступов */
+.segmented.icons .seg-btn {
+    padding: 0;
+    width: 20px;
+}
+
+/* заголовок блока с переключателем справа */
+.group-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.group-head h2 {
+    margin-bottom: 0;
+}
+
+/* редактируемое значение бегунка */
+
+button.value {
+    border: none;
+    cursor: text;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.value-input {
+    width: 62px;
+    text-align: right;
+    border: 1px solid var(--accent);
+    outline: none;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* диск поворота */
+
+.dial-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dial {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    cursor: grab;
+    touch-action: none;
+}
+
+.dial:active {
+    cursor: grabbing;
+}
+
+.dial-face {
+    fill: var(--panel-2);
+    stroke: var(--border);
+    stroke-width: 1;
+}
+
+.dial-tick {
+    stroke: var(--muted);
+    stroke-width: 1;
+}
+
+.dial-arm {
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+}
+
+.dial-knob {
+    fill: var(--accent);
+}
+
+.dial-quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* строка «подпись — контрол» */
+.control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 8px;
 }
 
 .sidebar-header p {

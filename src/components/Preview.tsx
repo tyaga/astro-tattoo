@@ -4,6 +4,7 @@ import {
 } from 'react';
 import { sheetSize } from '../lib/model';
 import type { DrawnStar, Settings, WristImage } from '../lib/types';
+import type { DrawnMarker } from '../lib/model';
 import { SheetSvg } from './SheetSvg';
 
 const ZOOM_MIN = 0.5;
@@ -30,11 +31,12 @@ interface Props {
     settings: Settings;
     setSettings: Dispatch<SetStateAction<Settings>>;
     drawn: DrawnStar[];
+    markers: DrawnMarker[];
     wrist: WristImage | null;
     svgRef: ForwardedRef<SVGSVGElement>;
 }
 
-export function Preview({ settings, setSettings, drawn, wrist, svgRef }: Props) {
+export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }: Props) {
     const wrapRef = useRef<HTMLDivElement>(null);
     const zoomRef = useRef<HTMLDivElement>(null);
     const dragRef = useRef<DragState | null>(null);
@@ -126,7 +128,13 @@ export function Preview({ settings, setSettings, drawn, wrist, svgRef }: Props) 
                 onPointerUp={endDrag}
                 onPointerCancel={endDrag}
             >
-                <SheetSvg ref={svgRef} settings={settings} drawn={drawn} wrist={wrist} />
+                <SheetSvg
+                    ref={svgRef}
+                    settings={settings}
+                    drawn={drawn}
+                    markers={markers}
+                    wrist={wrist}
+                />
             </div>
         </div>
     );
