@@ -537,7 +537,7 @@ export default function App() {
             </aside>
 
             <aside className="sidebar photos">
-                <section className="group first" data-adv>
+                <section className="group first">
                     <div className="group-head">
                         <h2>{tr('wrist')}</h2>
                         {wrist && (
