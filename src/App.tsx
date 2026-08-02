@@ -181,6 +181,20 @@ export default function App() {
         );
     };
 
+    /** Раскрытые блоки лежат ниже экрана, поэтому подводим к ним:
+     *  иначе кажется, что кнопка ничего не делает */
+    const handleToggleAll = () => {
+        const next = !showAll;
+        setShowAll(next);
+        if (next) {
+            setTimeout(() => {
+                document
+                    .querySelector('[data-adv]')
+                    ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+    };
+
     const handleCopyLink = async () => {
         const url = shareUrl(settings);
         try {
@@ -363,7 +377,7 @@ export default function App() {
 
                 <button
                     className="btn ghost mobile-only"
-                    onClick={() => setShowAll(v => !v)}
+                    onClick={handleToggleAll}
                 >
                     {showAll ? tr('lessSettings') : tr('moreSettings')}
                 </button>
