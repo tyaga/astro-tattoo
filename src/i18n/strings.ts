@@ -122,6 +122,7 @@ const ru = {
     hide: 'Скрыть',
     reset: 'сбросить',
 
+    previewHintTouch: 'Палец — двигать · два пальца — размер и поворот',
     previewHint:
         'Перетаскивание — сдвиг поля · Shift + перетаскивание — поворот · ⌘/Ctrl + колесо — приблизить превью',
 
@@ -246,6 +247,7 @@ const en: Record<StringKey, string> = {
     hide: 'Hide',
     reset: 'reset',
 
+    previewHintTouch: 'One finger moves · two fingers size and rotate',
     previewHint:
         'Drag to pan · Shift + drag to rotate · ⌘/Ctrl + wheel to zoom the preview',
 
@@ -368,6 +370,7 @@ const is: Record<StringKey, string> = {
     hide: 'Fela',
     reset: 'núllstilla',
 
+    previewHintTouch: 'Einn fingur færir · tveir stækka og snúa',
     previewHint:
         'Dragðu til að færa · Shift + dráttur snýr · ⌘/Ctrl + skrun stækkar forskoðun',
 
@@ -490,6 +493,7 @@ const nl: Record<StringKey, string> = {
     hide: 'Verbergen',
     reset: 'herstellen',
 
+    previewHintTouch: 'Eén vinger verplaatst · twee vingers schalen en draaien',
     previewHint:
         'Slepen verschuift · Shift + slepen draait · ⌘/Ctrl + scrollen zoomt de voorbeeldweergave',
 

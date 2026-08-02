@@ -20,6 +20,23 @@ interface DragState {
     mmPerPx: number;
 }
 
+/** Жест двумя пальцами: щипок меняет размер, разворот пальцев — поворот,
+ *  а перемещение середины между ними двигает поле */
+interface PinchState {
+    distance: number;
+    angle: number;
+    midX: number;
+    midY: number;
+    fovDeg: number;
+    rotation: number;
+    panX: number;
+    panY: number;
+    mmPerPx: number;
+}
+
+const MIN_FOV = 0.05;
+const MAX_FOV = 45;
+
 /** Точка под курсором, вокруг которой нужно сохранить масштабирование */
 interface ZoomAnchor {
     x: number;
@@ -40,6 +57,8 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
     const wrapRef = useRef<HTMLDivElement>(null);
     const zoomRef = useRef<HTMLDivElement>(null);
     const dragRef = useRef<DragState | null>(null);
+    const pinchRef = useRef<PinchState | null>(null);
+    const pointersRef = useRef(new Map<number, { x: number; y: number }>());
     const anchorRef = useRef<ZoomAnchor | null>(null);
 
     // ⌘/Ctrl + колесо — приблизить предпросмотр (нужен non-passive listener)
@@ -76,13 +95,52 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
         el.scrollTop = (el.scrollTop + anchor.y) * k - anchor.y;
     }, [settings.previewZoom]);
 
+    /** Сколько миллиметров полотна в экранном пикселе */
+    const mmPerPx = () => {
+        const svg = zoomRef.current?.querySelector('svg');
+        if (!svg) return 1;
+        return sheetSize(settings).W / svg.getBoundingClientRect().width;
+    };
+
+    const twoPointers = () => {
+        const [a, b] = [...pointersRef.current.values()];
+        return {
+            distance: Math.hypot(a.x - b.x, a.y - b.y),
+            angle: (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI,
+            midX: (a.x + b.x) / 2,
+            midY: (a.y + b.y) / 2,
+        };
+    };
+
     const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
         e.preventDefault();
         const zoomEl = zoomRef.current;
-        const svg = zoomEl?.querySelector('svg');
-        if (!zoomEl || !svg) return;
-        zoomEl.setPointerCapture(e.pointerId);
-        const rect = svg.getBoundingClientRect();
+        if (!zoomEl) return;
+        try {
+            zoomEl.setPointerCapture(e.pointerId);
+        } catch {
+            // захват не критичен: жест продолжит работать и без него
+        }
+        pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+        if (pointersRef.current.size === 2) {
+            // второй палец — переходим к щипку, обычное перетаскивание отменяем
+            dragRef.current = null;
+            const { distance, angle, midX, midY } = twoPointers();
+            pinchRef.current = {
+                distance,
+                angle,
+                midX,
+                midY,
+                fovDeg: settings.fovDeg,
+                rotation: settings.rotation,
+                panX: settings.panX,
+                panY: settings.panY,
+                mmPerPx: mmPerPx(),
+            };
+            return;
+        }
+
         dragRef.current = {
             startX: e.clientX,
             startY: e.clientY,
@@ -90,11 +148,43 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
             panY: settings.panY,
             rotation: settings.rotation,
             rotating: e.shiftKey,
-            mmPerPx: sheetSize(settings).W / rect.width,
+            mmPerPx: mmPerPx(),
         };
     };
 
     const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (pointersRef.current.has(e.pointerId)) {
+            pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        }
+
+        const pinch = pinchRef.current;
+        if (pinch && pointersRef.current.size >= 2) {
+            const { distance, angle, midX, midY } = twoPointers();
+            if (pinch.distance < 20) return;
+            // рисунок растёт во столько же раз, во сколько разъехались пальцы:
+            // размер обратно пропорционален тангенсу поля зрения
+            const k = distance / pinch.distance;
+            const tan = Math.tan((pinch.fovDeg * Math.PI) / 180) / k;
+            const fovDeg = Math.min(
+                MAX_FOV,
+                Math.max(MIN_FOV, (Math.atan(tan) * 180) / Math.PI),
+            );
+            // пальцы развернулись — на столько же поворачивается рисунок
+            let turn = angle - pinch.angle;
+            if (turn > 180) turn -= 360;
+            if (turn < -180) turn += 360;
+            const rotation = ((pinch.rotation + turn) % 360 + 360) % 360;
+
+            setSettings(s => ({
+                ...s,
+                fovDeg: Math.round(fovDeg * 100) / 100,
+                rotation: Math.round(rotation),
+                panX: pinch.panX + (midX - pinch.midX) * pinch.mmPerPx,
+                panY: pinch.panY + (midY - pinch.midY) * pinch.mmPerPx,
+            }));
+            return;
+        }
+
         const drag = dragRef.current;
         if (!drag) return;
         const dx = e.clientX - drag.startX;
@@ -111,8 +201,10 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
         }
     };
 
-    const endDrag = () => {
-        dragRef.current = null;
+    const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+        pointersRef.current.delete(e.pointerId);
+        if (pointersRef.current.size < 2) pinchRef.current = null;
+        if (pointersRef.current.size === 0) dragRef.current = null;
     };
 
     return (

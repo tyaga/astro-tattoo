@@ -360,6 +360,7 @@ export default function App() {
                     wrist={wrist}
                     svgRef={svgRef}
                 />
+                <p className="hint touch">{tr('previewHintTouch')}</p>
                 <p className="hint">
                     {tr('previewHint')}
                     {settings.previewZoom !== 1 && (

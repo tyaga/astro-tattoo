@@ -933,6 +933,11 @@ select {
     text-align: center;
 }
 
+/* подсказка про пальцы нужна только на сенсорном экране */
+.hint.touch {
+    display: none;
+}
+
 .link-btn {
     font: inherit;
     color: var(--accent);
@@ -1037,14 +1042,20 @@ select {
         overflow: hidden;
     }
 
-    /* вертикальный свайп листает страницу, горизонтальный двигает эскиз:
-       иначе палец «залипает» в превью и до настроек не добраться */
+    /* превью — холст: палец двигает рисунок, щипок меняет размер.
+       Страница листается за его пределами, места для этого хватает */
     .preview {
-        touch-action: pan-y;
+        touch-action: none;
     }
 
     .hint {
         display: none;
+    }
+
+    .hint.touch {
+        display: block;
+        order: 4;
+        margin: 6px 10px 0;
     }
 
     .mobile-only {
