@@ -58,12 +58,26 @@ function buildUrl(target) {
     return `https://vizier.cds.unistra.fr/viz-bin/asu-txt?${params}`;
 }
 
-/** Центр проекции — центроид именованных звёзд; та же формула, что в src/lib/catalog.ts */
+/** Центр проекции — та же логика, что в src/lib/catalog.ts:
+ *  векторное усреднение именованных звёзд (наивное среднее RA ломается
+ *  на границе 0h), а если имён мало — центр выборки */
 function projectionCenter(target) {
-    if (!target.named?.length) return target.center;
+    const named = target.named ?? [];
+    if (named.length < 3) return target.center;
+    const toRad = d => (d * Math.PI) / 180;
+    let x = 0;
+    let y = 0;
+    let z = 0;
+    for (const n of named) {
+        const a = toRad(n.ra);
+        const d = toRad(n.dec);
+        x += Math.cos(d) * Math.cos(a);
+        y += Math.cos(d) * Math.sin(a);
+        z += Math.sin(d);
+    }
     return {
-        ra: target.named.reduce((s, n) => s + n.ra, 0) / target.named.length,
-        dec: target.named.reduce((s, n) => s + n.dec, 0) / target.named.length,
+        ra: ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360,
+        dec: (Math.atan2(z, Math.hypot(x, y)) * 180) / Math.PI,
     };
 }
 

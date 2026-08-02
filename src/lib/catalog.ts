@@ -92,6 +92,29 @@ function gnomonic(
     };
 }
 
+/** Центр проекции: рисунок центрируется по именованным звёздам, если их
+ *  достаточно, иначе по центру выборки. Усреднение векторное — наивное
+ *  среднее RA разваливается на границе 0h (например, у Квадрата Пегаса).
+ *  Та же логика продублирована в scripts/fetch-catalogs.mjs. */
+export function projectionCenter(target: Target): { ra: number; dec: number } {
+    if (target.named.length < 3) return target.center;
+    let x = 0;
+    let y = 0;
+    let z = 0;
+    for (const n of target.named) {
+        const a = rad(n.ra);
+        const d = rad(n.dec);
+        x += Math.cos(d) * Math.cos(a);
+        y += Math.cos(d) * Math.sin(a);
+        z += Math.sin(d);
+    }
+    const ra = (Math.atan2(y, x) * 180) / Math.PI;
+    return {
+        ra: (ra + 360) % 360,
+        dec: (Math.atan2(z, Math.hypot(x, y)) * 180) / Math.PI,
+    };
+}
+
 const cache = new Map<string, CatalogStar[]>();
 
 /** Каталог объекта: отсортирован по яркости, спроецирован вокруг его центра */
@@ -100,13 +123,7 @@ export function getCatalog(id: string): CatalogStar[] {
     if (cached) return cached;
 
     const target = getTarget(id);
-    // центр проекции — центроид именованных звёзд, иначе центр запроса
-    const center = target.named.length
-        ? {
-            ra: target.named.reduce((s, n) => s + n.ra, 0) / target.named.length,
-            dec: target.named.reduce((s, n) => s + n.dec, 0) / target.named.length,
-        }
-        : target.center;
+    const center = projectionCenter(target);
 
     const stars: CatalogStar[] = rawStars(target.id)
         .map(s => {
