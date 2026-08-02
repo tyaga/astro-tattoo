@@ -39,6 +39,10 @@ export function settingsToQuery(s: Settings): string {
     p.set('bg', s.backgroundStars);
     p.set('lb', s.labels);
     p.set('vi', s.markerIcon);
+    p.set('vr', String(Math.round(s.markerRotDeg)));
+    p.set('vs', s.markerMm.toFixed(1));
+    if (s.voyagerReal) p.set('vp', '1');
+    if (s.voyagerAspect) p.set('va', '1');
     p.set('g', String(s.gridMm));
     p.set('sk', s.skinTone.replace('#', ''));
     p.set('ik', s.inkColor.replace('#', ''));
@@ -88,6 +92,14 @@ export function settingsFromQuery(search: string, local: Settings): Settings | n
 
     const bg = p.get('bg');
     if (bg === 'show' || bg === 'fade' || bg === 'hide') s.backgroundStars = bg as BackgroundMode;
+
+    const markerSize = Number(p.get('vs'));
+    if (Number.isFinite(markerSize) && markerSize > 0) s.markerMm = markerSize;
+
+    const markerRot = Number(p.get('vr'));
+    if (Number.isFinite(markerRot) && p.get('vr') !== null) s.markerRotDeg = markerRot;
+    if (p.get('vp') === '1') s.voyagerReal = true;
+    if (p.get('va') === '1') s.voyagerAspect = true;
 
     const icon = p.get('vi');
     if (icon && ICONS.includes(icon as MarkerIcon)) s.markerIcon = icon as MarkerIcon;

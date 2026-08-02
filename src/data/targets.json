@@ -684,6 +684,207 @@
     "photoFovDeg": 32
   },
   {
+    "id": "ophiuchus",
+    "name": {
+      "ru": "Змееносец",
+      "en": "Ophiuchus",
+      "is": "Naðurvaldi",
+      "nl": "Slangendrager"
+    },
+    "subtitle": {
+      "ru": "Тринадцатое зодиакальное · созвездие",
+      "en": "The Serpent Bearer",
+      "is": "Höggormsberinn",
+      "nl": "De Slangendrager"
+    },
+    "source": "hipparcos",
+    "center": {
+      "ra": 258,
+      "dec": -4
+    },
+    "radiusArcmin": 1200,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 40,
+    "named": [
+      {
+        "name": "Rasalhague",
+        "ra": 263.73362,
+        "dec": 12.56004,
+        "mag": 2.08,
+        "ru": "Расальхаге"
+      },
+      {
+        "name": "Cebalrai",
+        "ra": 265.86813,
+        "dec": 4.5673,
+        "mag": 2.76,
+        "ru": "Цебальрай"
+      },
+      {
+        "name": "Yed Prior",
+        "ra": 243.58641,
+        "dec": -3.69433,
+        "mag": 2.73,
+        "ru": "Йед Приор"
+      },
+      {
+        "name": "Yed Posterior",
+        "ra": 244.58038,
+        "dec": -4.69251,
+        "mag": 3.23,
+        "ru": "Йед Постериор"
+      },
+      {
+        "name": "Zeta Oph",
+        "ra": 249.28975,
+        "dec": -10.56709,
+        "mag": 2.56,
+        "ru": "Дзета"
+      },
+      {
+        "name": "Sabik",
+        "ra": 257.59453,
+        "dec": -15.72491,
+        "mag": 2.43,
+        "ru": "Сабик"
+      },
+      {
+        "name": "Gamma Oph",
+        "ra": 266.97317,
+        "dec": 2.70728,
+        "mag": 3.75,
+        "ru": "Гамма"
+      },
+      {
+        "name": "Nu Oph",
+        "ra": 269.75663,
+        "dec": -9.77363,
+        "mag": 3.32,
+        "ru": "Ню"
+      },
+      {
+        "name": "Kappa Oph",
+        "ra": 254.41707,
+        "dec": 9.37503,
+        "mag": 3.19,
+        "ru": "Каппа"
+      },
+      {
+        "name": "Lambda Oph",
+        "ra": 247.72843,
+        "dec": 1.98392,
+        "mag": 3.82,
+        "ru": "Лямбда"
+      }
+    ]
+  },
+  {
+    "id": "pavo",
+    "name": {
+      "ru": "Павлин",
+      "en": "Pavo",
+      "is": "Páfuglinn",
+      "nl": "Pauw"
+    },
+    "subtitle": {
+      "ru": "Южное созвездие",
+      "en": "The Peacock",
+      "is": "Páfuglinn",
+      "nl": "De Pauw"
+    },
+    "source": "hipparcos",
+    "center": {
+      "ra": 295,
+      "dec": -65
+    },
+    "radiusArcmin": 1200,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 40,
+    "named": [
+      {
+        "name": "Peacock",
+        "ra": 306.4119,
+        "dec": -56.73509,
+        "mag": 1.94,
+        "ru": "Пикок"
+      },
+      {
+        "name": "Beta Pav",
+        "ra": 311.23956,
+        "dec": -66.20321,
+        "mag": 3.42,
+        "ru": "Бета"
+      },
+      {
+        "name": "Delta Pav",
+        "ra": 302.1817,
+        "dec": -66.18207,
+        "mag": 3.56,
+        "ru": "Дельта"
+      },
+      {
+        "name": "Epsilon Pav",
+        "ra": 300.14813,
+        "dec": -72.9105,
+        "mag": 3.96,
+        "ru": "Эпсилон"
+      },
+      {
+        "name": "Zeta Pav",
+        "ra": 280.7589,
+        "dec": -71.42812,
+        "mag": 4.01,
+        "ru": "Дзета"
+      },
+      {
+        "name": "Eta Pav",
+        "ra": 266.43328,
+        "dec": -64.72387,
+        "mag": 3.62,
+        "ru": "Эта"
+      },
+      {
+        "name": "Gamma Pav",
+        "ra": 321.61085,
+        "dec": -65.3662,
+        "mag": 4.22,
+        "ru": "Гамма"
+      },
+      {
+        "name": "Lambda Pav",
+        "ra": 283.05431,
+        "dec": -62.18759,
+        "mag": 4.22,
+        "ru": "Лямбда"
+      },
+      {
+        "name": "Kappa Pav",
+        "ra": 284.23762,
+        "dec": -67.23349,
+        "mag": 4.4,
+        "ru": "Каппа"
+      },
+      {
+        "name": "Pi Pav",
+        "ra": 272.14507,
+        "dec": -63.66856,
+        "mag": 4.33,
+        "ru": "Пи"
+      },
+      {
+        "name": "Xi Pav",
+        "ra": 275.80682,
+        "dec": -61.49391,
+        "mag": 4.36,
+        "ru": "Кси"
+      }
+    ]
+  },
+  {
     "id": "scorpius",
     "name": {
       "ru": "Скорпион",

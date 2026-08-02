@@ -15,6 +15,15 @@ const TARGETS_PATH = join(ROOT, 'src/data/targets.json');
 const OUT_DIR = join(ROOT, 'src/data/catalogs');
 const PHOTO_DIR = join(ROOT, 'src/data/photos');
 const LINES_DIR = join(ROOT, 'src/data/lines');
+const VOYAGER_PATH = join(ROOT, 'src/data/voyager.json');
+
+/** Эфемериды JPL Horizons: где «Вояджеры» на небе прямо сейчас.
+ *  −31 и −32 — их коды в системе Horizons, 500@399 — наблюдатель в центре Земли */
+const HORIZONS = 'https://ssd.jpl.nasa.gov/api/horizons.api';
+const PROBES = [
+    { id: 'voyager1', code: '-31', name: 'Voyager 1', ru: 'Вояджер-1' },
+    { id: 'voyager2', code: '-32', name: 'Voyager 2', ru: 'Вояджер-2' },
+];
 
 /** Линии фигур созвездий: d3-celestial Олафа Фрона, лицензия BSD-3.
  *  Координаты вершин — позиции самих звёзд, поэтому их можно привязать
@@ -346,6 +355,53 @@ function sphericalDist(ra1, dec1, ra2, dec2) {
     return (Math.acos(Math.min(1, Math.max(-1, cos))) * 180) / Math.PI;
 }
 
+/** Строка Horizons вида «2026-Aug-02 00:00  17 14 44.73 +12 22 01.7  170.8 …» */
+function parseHorizons(text) {
+    const body = text.split('$$SOE')[1]?.split('$$EOE')[0] ?? '';
+    const row = body.trim().split('\n')[0];
+    if (!row) throw new Error('пустой ответ');
+    const m = row.trim().match(
+        /^\S+\s+\S+\s+(\d+) (\d+) ([\d.]+) ([+-]\d+) (\d+) ([\d.]+)\s+([\d.]+)/,
+    );
+    if (!m) throw new Error(`не разобрал строку: ${row.trim()}`);
+    const [, rh, rm, rs, dd, dm, ds, au] = m;
+    const sign = dd.startsWith('-') ? -1 : 1;
+    return {
+        // часы в градусы и градусы-минуты-секунды в доли градуса
+        ra: round((Number(rh) + Number(rm) / 60 + Number(rs) / 3600) * 15, 5),
+        dec: round(sign * (Math.abs(Number(dd)) + Number(dm) / 60 + Number(ds) / 3600), 5),
+        au: round(Number(au), 2),
+        constellation: row.trim().split(/\s+/).pop(),
+    };
+}
+
+/** Куда смотреть, чтобы увидеть аппараты: положение считается на день сборки */
+async function fetchVoyagers() {
+    const day = new Date().toISOString().slice(0, 10);
+    const next = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    const probes = [];
+    for (const probe of PROBES) {
+        const url =
+            `${HORIZONS}?format=text&OBJ_DATA=NO&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER` +
+            `&CENTER=%27500@399%27&COMMAND=%27${probe.code}%27` +
+            `&START_TIME=%27${day}%27&STOP_TIME=%27${next}%27` +
+            `&STEP_SIZE=%271%20d%27&QUANTITIES=%271,20,29%27`;
+        try {
+            const parsed = parseHorizons(await fetchWithRetry(url));
+            probes.push({ id: probe.id, name: probe.name, ru: probe.ru, ...parsed });
+            console.log(
+                `  · ${probe.name}: ${parsed.ra}° ${parsed.dec}° ` +
+                `(${parsed.constellation}), ${parsed.au} а.е.`,
+            );
+        } catch (e) {
+            console.warn(`  ! ${probe.name}: ${e.message}`);
+        }
+    }
+    if (probes.length === 0) return false;
+    await writeFile(VOYAGER_PATH, JSON.stringify({ epoch: day, probes }, null, 1));
+    return true;
+}
+
 async function main() {
     const targets = JSON.parse(await readFile(TARGETS_PATH, 'utf8'));
     await mkdir(OUT_DIR, { recursive: true });
@@ -447,6 +503,13 @@ async function main() {
         }
 
         if (!(await fetchPhoto(target))) failed++;
+    }
+
+    // положение аппаратов меняется каждый день — обновляем всегда,
+    // но без него сборка не останавливается: в коде есть запасной снимок
+    if (force || !existsSync(VOYAGER_PATH)) {
+        console.log('• «Вояджеры» (JPL Horizons)');
+        await fetchVoyagers();
     }
 
     if (failed) {

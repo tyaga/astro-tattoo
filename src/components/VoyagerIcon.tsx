@@ -9,6 +9,9 @@ interface Props {
     color: string;
     opacity: number;
     variant: MarkerIcon;
+    /** Свой разворот значка, градусы: аппарат можно повернуть,
+     *  не трогая остальной рисунок */
+    rotation: number;
 }
 
 /** Пропорции настоящего аппарата: тарелка 3.7 м подавляет всё остальное,
@@ -59,6 +62,21 @@ const SHAPES: Record<MarkerIcon, (c: string) => JSX.Element> = {
             <path d="M 0.2 1.7 L 3.4 3.2" fill="none" strokeWidth={0.42} />
         </g>
     ),
+    // анфас: антенна всегда направлена на Землю, поэтому в телескоп мы увидели
+    // бы именно круг тарелки, а штанги торчали бы из-за неё
+    faceOn: c => (
+        <g fill="none" stroke={c} strokeWidth={0.45}>
+            <path d="M -1.2 2.6 L -5.0 4.9" strokeWidth={0.3} />
+            <circle cx="-5.2" cy="5.0" r="0.35" fill={c} />
+            <path d="M 1.6 2.6 L 4.6 4.2" />
+            <rect x="4.3" y="3.9" width="1.2" height="1.1" rx="0.25" fill={c} stroke="none" />
+            <path d="M -0.2 3.4 L -1.6 4.9" />
+            <circle cx="-1.9" cy="5.2" r="0.42" fill={c} />
+            <circle cx="0" cy="0" r="3.7" strokeWidth={0.5} />
+            <path d="M 0 0 L 0 -3.7 M 0 0 L 3.2 1.85 M 0 0 L -3.2 1.85" strokeWidth={0.3} />
+            <circle cx="0" cy="0" r="0.75" fill={c} stroke="none" />
+        </g>
+    ),
     // золотая пластинка с картой пульсаров: символ миссии, а не аппарат
     record: c => (
         <g fill="none" stroke={c} strokeWidth={0.45}>
@@ -89,11 +107,11 @@ const SHAPES: Record<MarkerIcon, (c: string) => JSX.Element> = {
 };
 
 /** Значок «Вояджера» на полотне, в миллиметрах */
-export function VoyagerIcon({ x, y, size, color, opacity, variant }: Props) {
+export function VoyagerIcon({ x, y, size, color, opacity, variant, rotation }: Props) {
     return (
         <g
             data-role="marker"
-            transform={`translate(${x} ${y}) scale(${size / 10})`}
+            transform={`translate(${x} ${y}) rotate(${rotation}) scale(${size / 10})`}
             strokeLinecap="round"
             strokeLinejoin="round"
             opacity={opacity}

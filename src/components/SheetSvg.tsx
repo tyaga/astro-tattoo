@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { getLines, getPhotoUrl, getTarget, rad, starName } from '../lib/catalog';
-import { sheetSize } from '../lib/model';
+import { markerRotation, sheetSize } from '../lib/model';
 import { isDark } from '../lib/palette';
 import { t } from '../i18n';
 import type { DrawnStar, Settings, WristImage } from '../lib/types';
@@ -208,16 +208,20 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                     {markers.map(m => (
                         <g key={m.id}>
                             <VoyagerIcon
-                                variant={settings.markerIcon}
+                                variant={settings.voyagerAspect ? 'faceOn' : settings.markerIcon}
+                                rotation={markerRotation(
+                                    settings,
+                                    m.id === 'voyager2' ? 'voyager2' : 'voyager1',
+                                )}
                                 x={m.X} y={m.Y}
-                                size={Math.max(3, settings.maxMm * 2.2)}
+                                size={settings.markerMm}
                                 color={skyPhoto ? '#ff4d5e' : settings.inkColor}
                                 opacity={skyPhoto ? 1 : settings.inkOpacity}
                             />
                             {settings.labels !== 'none' && (
                                 <text
                                     data-role="name"
-                                    x={m.X + Math.max(3, settings.maxMm * 2.2) / 2 + 1}
+                                    x={m.X + settings.markerMm / 2 + 1}
                                     y={m.Y + 0.5}
                                     fontFamily={FONT} fontSize={1.4} fontWeight={600}
                                     fill={nameFill}

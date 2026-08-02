@@ -1,4 +1,5 @@
 import { autoPreset } from './autopreset';
+import { VOYAGERS, earthAspect } from './voyager';
 import { getCatalog, getLines, getTarget, projectPoint, rad, starName } from './catalog';
 import { pickName, t as tr } from '../i18n';
 import type { DrawnStar, Settings } from './types';
@@ -57,12 +58,18 @@ export interface DrawnMarker {
     Y: number;
 }
 
-/** Особые точки объекта (например звезда, к которой летит «Вояджер») */
+/** Особые точки объекта (например звезда, к которой летит «Вояджер»).
+ *  По галочке вместо неё берётся настоящее положение аппаратов на небе:
+ *  «Вояджер-1» сейчас в Змееносце, «Вояджер-2» — в Павлине, так что
+ *  в поле большинства объектов они просто не попадут. */
 export function computeMarkers(s: Settings): DrawnMarker[] {
     const target = getTarget(s.targetId);
     const { W, H } = sheetSize(s);
     const out: DrawnMarker[] = [];
-    for (const m of target.markers ?? []) {
+    const points = s.voyagerReal
+        ? VOYAGERS.map(p => ({ id: p.id, name: p.name, ra: p.ra, dec: p.dec }))
+        : target.markers ?? [];
+    for (const m of points) {
         const p = projectPoint(target, m.ra, m.dec);
         const { X, Y } = placeOnSheet(s, p.u, p.v);
         if (X < -10 || X > W + 10 || Y < -10 || Y > H + 10) continue;
@@ -208,6 +215,22 @@ export function applyTargetPreset(base: Settings, targetId: string): Settings {
     // по фигуре: приглушённому полю вылезать за край не жалко
     const fit = fitFovDeg({ ...sized, backgroundStars: 'hide' });
     return { ...sized, fovDeg: Math.max(sized.fovDeg, fit) };
+}
+
+/** Разворот значка аппарата на полотне.
+ *  Свой угол пользователя плюс, по галочке, настоящий крен: направление
+ *  на Канопус переводится из небесных координат в координаты листа —
+ *  рисунок ведь может быть повёрнут и отзеркален. */
+export function markerRotation(s: Settings, probeId = 'voyager1'): number {
+    if (!s.voyagerAspect) return s.markerRotDeg;
+    // «Вояджеры» построены одинаковыми, но смотрят на нас из разных мест неба,
+    // поэтому и крен по Канопусу у каждого свой
+    const probe = VOYAGERS.find(p => p.id === probeId) ?? VOYAGERS[0];
+    if (!probe) return s.markerRotDeg;
+    // север на листе вверху, восток слева: позиционный угол идёт против часовой
+    let phi = -(earthAspect(probe).rollDeg + s.rotation);
+    if (s.flipX !== s.flipY) phi = -phi;
+    return s.markerRotDeg + phi;
 }
 
 export interface SizeClass {

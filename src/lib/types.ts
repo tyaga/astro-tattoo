@@ -6,7 +6,8 @@ export type LabelsMode = 'none' | 'names' | 'full';
 export type BackgroundMode = 'show' | 'fade' | 'hide';
 
 /** Каким рисовать «Вояджер» у Глизе 445 */
-export type MarkerIcon = 'silhouette' | 'schema' | 'minimal' | 'record' | 'classic';
+export type MarkerIcon =
+    | 'silhouette' | 'schema' | 'minimal' | 'faceOn' | 'record' | 'classic';
 
 /** Тема интерфейса; auto — следовать системной настройке */
 export type Theme = 'auto' | 'light' | 'dark';
@@ -49,6 +50,14 @@ export interface Settings {
     backgroundStars: BackgroundMode;
     /** Значок особой точки: у Жирафа это «Вояджер» */
     markerIcon: MarkerIcon;
+    /** Разворот значка, градусы — отдельно от разворота всего рисунка */
+    markerRotDeg: number;
+    /** Размер значка, мм */
+    markerMm: number;
+    /** Рисовать аппараты там, где они сейчас на самом деле */
+    voyagerReal: boolean;
+    /** Рисовать так, как аппарат повёрнут к Земле сегодня */
+    voyagerAspect: boolean;
     /** Экранный масштаб предпросмотра (на эскиз не влияет) */
     previewZoom: number;
     /** Тема интерфейса — на эскиз и экспорт не влияет */

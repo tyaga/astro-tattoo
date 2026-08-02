@@ -171,6 +171,7 @@ export default function App() {
         onPresetDelete: id => setPresets(list => list.filter(p => p.id !== id)),
 
         onPickTarget: () => setPicking(true),
+        onSelectTarget: handleTargetChange,
         onApplyDefaults: () => setSettings(s => applyTargetPreset(s, s.targetId)),
         onFitSheet: () =>
             setSettings(s => ({

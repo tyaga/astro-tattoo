@@ -1,5 +1,7 @@
-import { getCatalog, magForCount, pickName } from '../../lib/catalog';
-import { Chip, Segmented, Slider } from '../controls';
+import { getCatalog, getTarget, magForCount, pickName } from '../../lib/catalog';
+import { PROBE_TARGET, VOYAGERS, VOYAGER_EPOCH } from '../../lib/voyager';
+import { Check, Chip, Segmented, Slider } from '../controls';
+import { RotationDial } from '../RotationDial';
 import { TargetThumb } from '../TargetThumb';
 import { VoyagerGlyph } from '../VoyagerIcon';
 import type { PanelProps } from './types';
@@ -13,13 +15,15 @@ const MARKER_ICONS: { value: MarkerIcon; key: StringKey }[] = [
     { value: 'silhouette', key: 'iconSilhouette' },
     { value: 'schema', key: 'iconSchema' },
     { value: 'minimal', key: 'iconMinimal' },
+    { value: 'faceOn', key: 'iconFaceOn' },
     { value: 'record', key: 'iconRecord' },
     { value: 'classic', key: 'iconClassic' },
 ];
 
 /** Что рисуем: объект, сколько звёзд, линии фигуры */
 export function DrawPanel({
-    settings, set, lang, tr, target, drawn, hasLines, onPickTarget, onApplyDefaults,
+    settings, set, lang, tr, target, drawn, hasLines,
+    onPickTarget, onSelectTarget, onApplyDefaults,
 }: PanelProps) {
     const backgrounds: { value: BackgroundMode; label: string; title: string }[] = [
         { value: 'show', label: tr('bgShow'), title: tr('bgShowHint') },
@@ -105,25 +109,85 @@ export function DrawPanel({
                 </section>
             )}
 
-            {/* особая точка есть только у Жирафа: там «Вояджер» у Глизе 445 */}
-            {target.markers?.length ? (
+            {/* особая точка есть у Жирафа; с настоящим положением аппараты
+                уезжают в свои созвездия, поэтому блок остаётся видимым */}
+            {target.markers?.length || settings.voyagerReal ? (
                 <section className="group">
-                    <h2 title={tr('markerIconHint')}>{tr('markerIcon')}</h2>
+                    <h2>{tr('markerIcon')}</h2>
                     <div className="glyphs">
                         {MARKER_ICONS.map(({ value, key }) => (
                             <button
                                 key={value}
                                 className={
-                                    settings.markerIcon === value ? 'glyph active' : 'glyph'
+                                    !settings.voyagerAspect && settings.markerIcon === value
+                                        ? 'glyph active'
+                                        : 'glyph'
                                 }
                                 title={tr(key)}
-                                onClick={() => set('markerIcon')(value)}
+                                onClick={() => {
+                                    set('voyagerAspect')(false);
+                                    set('markerIcon')(value);
+                                }}
                             >
                                 <VoyagerGlyph variant={value} className="glyph-img" />
                                 <span>{tr(key)}</span>
                             </button>
                         ))}
                     </div>
+
+                    <Slider
+                        label={tr('markerSize')}
+                        value={settings.markerMm}
+                        min={2} max={20} step={0.5}
+                        format={v => v.toFixed(1) + ' ' + tr('mm')}
+                        editHint={tr('typeValueHint')}
+                        onChange={set('markerMm')}
+                    />
+                    <RotationDial
+                        value={settings.markerRotDeg}
+                        onChange={set('markerRotDeg')}
+                        lang={lang}
+                        label={tr('markerRotation')}
+                    />
+
+                    <Check
+                        label={tr('voyagerAspect')}
+                        checked={settings.voyagerAspect}
+                        onChange={set('voyagerAspect')}
+                    />
+                    <p className="stat">{tr('voyagerAspectHint')}</p>
+
+                    <Check
+                        label={tr('voyagerReal')}
+                        checked={settings.voyagerReal}
+                        onChange={set('voyagerReal')}
+                    />
+                    {settings.voyagerReal && (
+                        <ul className="probes">
+                            {VOYAGERS.map(probe => {
+                                const id = PROBE_TARGET[probe.constellation];
+                                return (
+                                    <li key={probe.id}>
+                                        {lang === 'ru' ? probe.ru : probe.name} —{' '}
+                                        {id ? pickName(getTarget(id).name, lang) : probe.constellation},{' '}
+                                        {probe.au} {tr('au')}
+                                        {id && id !== target.id && (
+                                            <>
+                                                {' · '}
+                                                <button
+                                                    className="link-btn"
+                                                    onClick={() => onSelectTarget(id)}
+                                                >
+                                                    {tr('jumpTo')}
+                                                </button>
+                                            </>
+                                        )}
+                                    </li>
+                                );
+                            })}
+                            <li className="epoch">{VOYAGER_EPOCH} · JPL Horizons</li>
+                        </ul>
+                    )}
                 </section>
             ) : null}
 

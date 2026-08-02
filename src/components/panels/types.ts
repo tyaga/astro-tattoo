@@ -27,6 +27,7 @@ export interface PanelProps {
     onPresetDelete: (id: string) => void;
 
     onPickTarget: () => void;
+    onSelectTarget: (id: string) => void;
     onApplyDefaults: () => void;
     onFitSheet: () => void;
     onSheetToPattern: () => void;

@@ -5,3 +5,5 @@ dist/
 src/data/catalogs/
 src/data/photos/
 src/data/lines/
+# положение «Вояджеров» на день сборки — из JPL Horizons
+src/data/voyager.json

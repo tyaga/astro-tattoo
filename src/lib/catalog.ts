@@ -1,4 +1,5 @@
 import targetsJson from '../data/targets.json';
+import { VOYAGERS } from './voyager';
 import type { BackgroundMode, LabelsMode } from './types';
 
 export { pickName } from '../i18n';
@@ -99,6 +100,7 @@ for (const target of TARGETS) {
     for (const star of target.named) if (star.ru) RU_STAR_NAMES[star.name] = star.ru;
     for (const marker of target.markers ?? []) if (marker.ru) RU_STAR_NAMES[marker.name] = marker.ru;
 }
+for (const probe of VOYAGERS) RU_STAR_NAMES[probe.name] = probe.ru;
 
 /** Имена звёзд международные; по-русски показываем привычное написание */
 export function starName(name: string, lang: string): string {
