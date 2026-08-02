@@ -30,6 +30,14 @@ export interface Settings {
     gridMm: GridMm;
     /** Экранный масштаб предпросмотра (на эскиз не влияет) */
     previewZoom: number;
+    /** Цвет полотна — оттенок кожи */
+    skinTone: string;
+    /** Цвет чернил */
+    inkColor: string;
+    /** Плотность чернил: зажившая работа слегка просвечивает */
+    inkOpacity: number;
+    /** Экспортировать чёрным по белому, игнорируя цвета предпросмотра */
+    exportBw: boolean;
     /** Фото-подложка для сравнения (не попадает в экспорт) */
     showPhoto: boolean;
     photoOpacity: number;

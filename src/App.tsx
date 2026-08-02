@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Legend } from './components/Legend';
 import { Preview } from './components/Preview';
-import { Check, Chip, Slider } from './components/controls';
+import { Check, Chip, Slider, Swatches } from './components/controls';
+import { INKS, SKIN_TONES } from './lib/palette';
 import { CATALOG, magForCount } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
@@ -65,14 +66,18 @@ export default function App() {
     const handleExportSvg = () => {
         if (!svgRef.current) return;
         const { W, H } = sheetSize(settings);
-        const svg = svgToStandalone(svgRef.current, W, H);
+        const svg = svgToStandalone(svgRef.current, W, H, {
+            blackAndWhite: settings.exportBw,
+        });
         downloadBlob('pleiades-tattoo.svg', new Blob([svg], { type: 'image/svg+xml' }));
     };
 
     const handleExportPng = () => {
         if (!svgRef.current) return;
         const { W, H } = sheetSize(settings);
-        const svg = svgToStandalone(svgRef.current, W, H);
+        const svg = svgToStandalone(svgRef.current, W, H, {
+            blackAndWhite: settings.exportBw,
+        });
         exportPng(svg, W, H, 'pleiades-tattoo-300dpi.png');
     };
 
@@ -233,6 +238,34 @@ export default function App() {
                         label="Квантовать размеры"
                         checked={settings.quantize}
                         onChange={set('quantize')}
+                    />
+                </section>
+
+                <section className="group">
+                    <h2>Кожа и чернила</h2>
+                    <Swatches
+                        label="Тон кожи"
+                        options={SKIN_TONES}
+                        value={settings.skinTone}
+                        onChange={set('skinTone')}
+                    />
+                    <Swatches
+                        label="Чернила"
+                        options={INKS}
+                        value={settings.inkColor}
+                        onChange={set('inkColor')}
+                    />
+                    <Slider
+                        label="Плотность чернил"
+                        value={settings.inkOpacity}
+                        min={0.3} max={1} step={0.02}
+                        format={v => Math.round(v * 100) + '%'}
+                        onChange={set('inkOpacity')}
+                    />
+                    <Check
+                        label="Экспорт чёрным по белому"
+                        checked={settings.exportBw}
+                        onChange={set('exportBw')}
                     />
                 </section>
 
