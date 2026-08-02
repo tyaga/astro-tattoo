@@ -941,12 +941,18 @@ select {
         --topbar-h: 0px;
     }
 
+    /* .stage растворяется, чтобы эскиз, кнопка и экспорт встали
+       в общий порядок: экспорт уходит под настройки */
+    .stage { display: contents; }
+
     .appbar { order: 1; }
     .topbar { order: 2; }
-    .stage { order: 3; }
-    .sidebar.left { order: 4; }
-    .sidebar.right { order: 5; }
-    .sidebar.photos { order: 6; }
+    .preview-wrap { order: 3; margin: 10px 10px 0; }
+    .mobile-only { order: 4; margin: 8px 10px 0; }
+    .sidebar.left { order: 5; }
+    .sidebar.right { order: 6; }
+    .sidebar.photos { order: 7; }
+    .export-bar { order: 8; margin: 10px; }
 
     /* панели идут обычным потоком под превью */
     .sidebar {
@@ -977,11 +983,6 @@ select {
     .target-thumb {
         width: 38px;
         height: 38px;
-    }
-
-    .stage {
-        padding: 10px 10px 4px;
-        gap: 8px;
     }
 
     .preview-wrap {
