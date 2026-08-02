@@ -908,7 +908,8 @@
       "labels": "names",
       "rotation": 337,
       "backgroundStars": "fade"
-    }
+    },
+    "zodiac": true
   },
   {
     "id": "leo",
@@ -997,7 +998,8 @@
       "lineMm": 0.3,
       "labels": "names",
       "backgroundStars": "fade"
-    }
+    },
+    "zodiac": true
   },
   {
     "id": "bootes",
@@ -1182,7 +1184,8 @@
       "lineMm": 0.3,
       "labels": "names",
       "backgroundStars": "fade"
-    }
+    },
+    "zodiac": true
   },
   {
     "id": "auriga",
@@ -1493,7 +1496,7 @@
     ],
     "preset": {
       "magLimit": 5.25,
-      "patternCm": 5.0,
+      "patternCm": 5,
       "maxMm": 1.4,
       "minMm": 0.5,
       "contrast": 0.5,
@@ -1913,5 +1916,780 @@
       "labels": "names",
       "backgroundStars": "fade"
     }
+  },
+  {
+    "id": "aries",
+    "name": {
+      "ru": "Овен",
+      "en": "Aries",
+      "is": "Hrúturinn",
+      "nl": "Ram"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 33,
+      "dec": 22
+    },
+    "photoFovDeg": 18,
+    "radiusArcmin": 810,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 3.95,
+      "patternCm": 6,
+      "maxMm": 1.9,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Hamal",
+        "ru": "Гамаль",
+        "ra": 31.79336,
+        "dec": 23.46242,
+        "mag": 2
+      },
+      {
+        "name": "Sheratan",
+        "ru": "Шератан",
+        "ra": 28.66,
+        "dec": 20.80806,
+        "mag": 2.64
+      },
+      {
+        "name": "Bharani",
+        "ru": "Барани",
+        "ra": 42.49583,
+        "dec": 27.26056,
+        "mag": 3.61
+      },
+      {
+        "name": "Mesarthim",
+        "ru": "Мезартим",
+        "ra": 28.38261,
+        "dec": 19.29392,
+        "mag": 3.86
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "taurus",
+    "name": {
+      "ru": "Телец",
+      "en": "Taurus",
+      "is": "Nautið",
+      "nl": "Stier"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 70,
+      "dec": 18
+    },
+    "photoFovDeg": 28,
+    "radiusArcmin": 1260,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 3.85,
+      "patternCm": 8,
+      "maxMm": 2.2,
+      "minMm": 0.45,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Aldebaran",
+        "ru": "Альдебаран",
+        "ra": 68.98016,
+        "dec": 16.5093,
+        "mag": 0.87
+      },
+      {
+        "name": "Elnath",
+        "ru": "Эль Нат",
+        "ra": 81.57292,
+        "dec": 28.6075,
+        "mag": 1.65
+      },
+      {
+        "name": "Tianguan",
+        "ru": "Тяньгуань",
+        "ra": 84.41118,
+        "dec": 21.14259,
+        "mag": 3
+      },
+      {
+        "name": "Theta Tauri",
+        "ru": "Тета Тельца",
+        "ra": 67.16542,
+        "dec": 15.87083,
+        "mag": 3.4
+      },
+      {
+        "name": "Lambda Tauri",
+        "ru": "Лямбда Тельца",
+        "ra": 60.17,
+        "dec": 12.49028,
+        "mag": 3.47
+      },
+      {
+        "name": "Ain",
+        "ru": "Айн",
+        "ra": 67.15417,
+        "dec": 19.18028,
+        "mag": 3.53
+      },
+      {
+        "name": "Gamma Tauri",
+        "ru": "Гамма Тельца",
+        "ra": 64.94833,
+        "dec": 15.62778,
+        "mag": 3.65
+      },
+      {
+        "name": "Delta Tauri",
+        "ru": "Дельта Тельца",
+        "ra": 65.73375,
+        "dec": 17.5425,
+        "mag": 3.76
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "cancer",
+    "name": {
+      "ru": "Рак",
+      "en": "Cancer",
+      "is": "Krabbinn",
+      "nl": "Kreeft"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 130,
+      "dec": 17
+    },
+    "photoFovDeg": 22,
+    "radiusArcmin": 990,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 4.75,
+      "patternCm": 6.5,
+      "maxMm": 1.6,
+      "minMm": 0.5,
+      "contrast": 0.45,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Tarf",
+        "ru": "Тарф",
+        "ra": 124.12882,
+        "dec": 9.18564,
+        "mag": 3.53
+      },
+      {
+        "name": "Asellus Australis",
+        "ru": "Азеллюс Аустралис",
+        "ra": 131.17142,
+        "dec": 18.1543,
+        "mag": 3.94
+      },
+      {
+        "name": "Iota Cancri",
+        "ru": "Йота Рака",
+        "ra": 131.67417,
+        "dec": 28.76028,
+        "mag": 4.02
+      },
+      {
+        "name": "Acubens",
+        "ru": "Акубенс",
+        "ra": 134.6218,
+        "dec": 11.85775,
+        "mag": 4.26
+      },
+      {
+        "name": "Asellus Borealis",
+        "ru": "Азеллюс Бореалис",
+        "ra": 130.82142,
+        "dec": 21.46853,
+        "mag": 4.66
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "virgo",
+    "name": {
+      "ru": "Дева",
+      "en": "Virgo",
+      "is": "Meyjan",
+      "nl": "Maagd"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 197,
+      "dec": -1
+    },
+    "photoFovDeg": 36,
+    "radiusArcmin": 1620,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 4.15,
+      "patternCm": 9,
+      "maxMm": 2.2,
+      "minMm": 0.45,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Spica",
+        "ru": "Спика",
+        "ra": 201.29825,
+        "dec": -11.16132,
+        "mag": 0.98
+      },
+      {
+        "name": "Porrima",
+        "ru": "Поррима",
+        "ra": 190.41521,
+        "dec": -1.44939,
+        "mag": 2.74
+      },
+      {
+        "name": "Vindemiatrix",
+        "ru": "Виндемиатрикс",
+        "ra": 195.54417,
+        "dec": 10.95915,
+        "mag": 2.83
+      },
+      {
+        "name": "Auva",
+        "ru": "Аува",
+        "ra": 193.90083,
+        "dec": 3.3975,
+        "mag": 3.38
+      },
+      {
+        "name": "Heze",
+        "ru": "Хезе",
+        "ra": 203.67333,
+        "dec": -0.59583,
+        "mag": 3.38
+      },
+      {
+        "name": "Zavijava",
+        "ru": "Завийява",
+        "ra": 177.67417,
+        "dec": 1.76472,
+        "mag": 3.59
+      },
+      {
+        "name": "Zaniah",
+        "ru": "Заниах",
+        "ra": 184.97646,
+        "dec": -0.66694,
+        "mag": 3.89
+      },
+      {
+        "name": "Syrma",
+        "ru": "Сирма",
+        "ra": 214.00361,
+        "dec": -6.00092,
+        "mag": 4.07
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "libra",
+    "name": {
+      "ru": "Весы",
+      "en": "Libra",
+      "is": "Vogin",
+      "nl": "Weegschaal"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 229,
+      "dec": -19
+    },
+    "photoFovDeg": 26,
+    "radiusArcmin": 1170,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 3.95,
+      "patternCm": 7,
+      "maxMm": 2,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Zubeneschamali",
+        "ru": "Зубен Эльшемали",
+        "ra": 229.25172,
+        "dec": -9.38291,
+        "mag": 2.61
+      },
+      {
+        "name": "Zubenelgenubi",
+        "ru": "Зубен Эльгенуби",
+        "ra": 222.71963,
+        "dec": -16.04178,
+        "mag": 2.75
+      },
+      {
+        "name": "Brachium",
+        "ru": "Брахиум",
+        "ra": 226.0175,
+        "dec": -25.28194,
+        "mag": 3.29
+      },
+      {
+        "name": "Upsilon Librae",
+        "ru": "Ипсилон Весов",
+        "ra": 234.25625,
+        "dec": -28.135,
+        "mag": 3.58
+      },
+      {
+        "name": "Tau Librae",
+        "ru": "Тау Весов",
+        "ra": 234.66417,
+        "dec": -29.77778,
+        "mag": 3.66
+      },
+      {
+        "name": "Gamma Librae",
+        "ru": "Гамма Весов",
+        "ra": 233.8815,
+        "dec": -14.78944,
+        "mag": 3.91
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "sagittarius",
+    "name": {
+      "ru": "Стрелец",
+      "en": "Sagittarius",
+      "is": "Bogmaðurinn",
+      "nl": "Boogschutter"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака · Чайник",
+      "en": "Zodiac sign · the Teapot",
+      "is": "Stjörnumerki · Teketillinn",
+      "nl": "Sterrenbeeld · de Theepot"
+    },
+    "center": {
+      "ra": 281,
+      "dec": -28
+    },
+    "photoFovDeg": 26,
+    "radiusArcmin": 1170,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 3.4,
+      "patternCm": 7.5,
+      "maxMm": 2.1,
+      "minMm": 0.45,
+      "contrast": 0.35,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Kaus Australis",
+        "ru": "Каус Аустралис",
+        "ra": 276.043,
+        "dec": -34.38472,
+        "mag": 1.85
+      },
+      {
+        "name": "Nunki",
+        "ru": "Нунки",
+        "ra": 283.81633,
+        "dec": -26.29667,
+        "mag": 2.05
+      },
+      {
+        "name": "Ascella",
+        "ru": "Асцелла",
+        "ra": 285.65292,
+        "dec": -29.88028,
+        "mag": 2.6
+      },
+      {
+        "name": "Kaus Media",
+        "ru": "Каус Медиа",
+        "ra": 275.24833,
+        "dec": -29.82806,
+        "mag": 2.7
+      },
+      {
+        "name": "Kaus Borealis",
+        "ru": "Каус Бореалис",
+        "ra": 276.9925,
+        "dec": -25.42167,
+        "mag": 2.81
+      },
+      {
+        "name": "Alnasl",
+        "ru": "Альнасл",
+        "ra": 271.45208,
+        "dec": -30.42417,
+        "mag": 2.99
+      },
+      {
+        "name": "Phi Sagittarii",
+        "ru": "Фи Стрельца",
+        "ra": 281.41417,
+        "dec": -26.99083,
+        "mag": 3.17
+      },
+      {
+        "name": "Tau Sagittarii",
+        "ru": "Тау Стрельца",
+        "ra": 286.735,
+        "dec": -27.67056,
+        "mag": 3.32
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "capricornus",
+    "name": {
+      "ru": "Козерог",
+      "en": "Capricornus",
+      "is": "Steingeitin",
+      "nl": "Steenbok"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 315,
+      "dec": -18
+    },
+    "photoFovDeg": 26,
+    "radiusArcmin": 1170,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 4.2,
+      "patternCm": 7.5,
+      "maxMm": 1.9,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Deneb Algedi",
+        "ru": "Денеб Альгеди",
+        "ra": 326.76017,
+        "dec": -16.12733,
+        "mag": 2.85
+      },
+      {
+        "name": "Dabih",
+        "ru": "Дабих",
+        "ra": 305.25278,
+        "dec": -14.78139,
+        "mag": 3.05
+      },
+      {
+        "name": "Algedi",
+        "ru": "Альгеди",
+        "ra": 304.51361,
+        "dec": -12.54472,
+        "mag": 3.57
+      },
+      {
+        "name": "Nashira",
+        "ru": "Нашира",
+        "ra": 325.02283,
+        "dec": -16.66236,
+        "mag": 3.69
+      },
+      {
+        "name": "Zeta Capricorni",
+        "ru": "Дзета Козерога",
+        "ra": 321.66667,
+        "dec": -22.41139,
+        "mag": 3.74
+      },
+      {
+        "name": "Theta Capricorni",
+        "ru": "Тета Козерога",
+        "ra": 316.487,
+        "dec": -17.23278,
+        "mag": 4.07
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "aquarius",
+    "name": {
+      "ru": "Водолей",
+      "en": "Aquarius",
+      "is": "Vatnsberinn",
+      "nl": "Waterman"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 333,
+      "dec": -7
+    },
+    "photoFovDeg": 32,
+    "radiusArcmin": 1440,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 3.95,
+      "patternCm": 8.5,
+      "maxMm": 2,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Sadalsuud",
+        "ru": "Садальсууд",
+        "ra": 322.88972,
+        "dec": -5.57117,
+        "mag": 2.9
+      },
+      {
+        "name": "Sadalmelik",
+        "ru": "Садальмелик",
+        "ra": 331.446,
+        "dec": -0.31986,
+        "mag": 2.95
+      },
+      {
+        "name": "Skat",
+        "ru": "Скат",
+        "ra": 343.66258,
+        "dec": -15.82083,
+        "mag": 3.27
+      },
+      {
+        "name": "Zeta Aquarii",
+        "ru": "Дзета Водолея",
+        "ra": 337.21042,
+        "dec": -0.02014,
+        "mag": 3.65
+      },
+      {
+        "name": "Lambda Aquarii",
+        "ru": "Лямбда Водолея",
+        "ra": 343.15358,
+        "dec": -7.57944,
+        "mag": 3.73
+      },
+      {
+        "name": "Albali",
+        "ru": "Альбали",
+        "ra": 311.91917,
+        "dec": -9.49583,
+        "mag": 3.77
+      },
+      {
+        "name": "Sadachbia",
+        "ru": "Садахбия",
+        "ra": 335.41417,
+        "dec": -1.38722,
+        "mag": 3.84
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
+  },
+  {
+    "id": "pisces",
+    "name": {
+      "ru": "Рыбы",
+      "en": "Pisces",
+      "is": "Fiskarnir",
+      "nl": "Vissen"
+    },
+    "subtitle": {
+      "ru": "Знак зодиака",
+      "en": "Zodiac sign",
+      "is": "Stjörnumerki dýrahringsins",
+      "nl": "Sterrenbeeld van de dierenriem"
+    },
+    "center": {
+      "ra": 5,
+      "dec": 9
+    },
+    "photoFovDeg": 36,
+    "radiusArcmin": 1620,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "preset": {
+      "magLimit": 4.35,
+      "patternCm": 9,
+      "maxMm": 1.7,
+      "minMm": 0.5,
+      "contrast": 0.45,
+      "stepMm": 0.25,
+      "quantize": true,
+      "showLines": true,
+      "lineMm": 0.3,
+      "backgroundStars": "fade",
+      "labels": "names"
+    },
+    "named": [
+      {
+        "name": "Alpherg",
+        "ru": "Альферг",
+        "ra": 22.87083,
+        "dec": 15.34583,
+        "mag": 3.62
+      },
+      {
+        "name": "Gamma Piscium",
+        "ru": "Гамма Рыб",
+        "ra": 349.29167,
+        "dec": 3.28222,
+        "mag": 3.69
+      },
+      {
+        "name": "Alrescha",
+        "ru": "Альриша",
+        "ra": 30.51194,
+        "dec": 2.76389,
+        "mag": 3.82
+      },
+      {
+        "name": "Omega Piscium",
+        "ru": "Омега Рыб",
+        "ra": 359.82833,
+        "dec": 6.86333,
+        "mag": 4.01
+      },
+      {
+        "name": "Iota Piscium",
+        "ru": "Йота Рыб",
+        "ra": 354.9875,
+        "dec": 5.62639,
+        "mag": 4.13
+      },
+      {
+        "name": "Epsilon Piscium",
+        "ru": "Эпсилон Рыб",
+        "ra": 15.73583,
+        "dec": 7.89,
+        "mag": 4.27
+      }
+    ],
+    "source": "hipparcos",
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "zodiac": true
   }
 ]

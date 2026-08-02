@@ -65,6 +65,8 @@ export interface Target {
     photoFovDeg: number;
     named: NamedStar[];
     markers?: Marker[];
+    /** Знак зодиака — выносится в отдельный ряд */
+    zodiac?: boolean;
 }
 
 export interface CatalogStar {
@@ -97,6 +99,10 @@ for (const target of TARGETS) {
 export function starName(name: string, lang: string): string {
     return lang === 'ru' ? RU_STAR_NAMES[name] ?? name : name;
 }
+
+/** Обычные объекты и знаки зодиака показываются отдельными рядами */
+export const MAIN_TARGETS = TARGETS.filter(t => !t.zodiac);
+export const ZODIAC_TARGETS = TARGETS.filter(t => t.zodiac);
 
 export const rad = (deg: number): number => (deg * Math.PI) / 180;
 

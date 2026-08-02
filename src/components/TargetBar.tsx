@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { TARGETS } from '../lib/catalog';
+import type { Target } from '../lib/catalog';
 import { pick } from '../i18n';
 import type { Lang } from '../i18n';
 import { TargetThumb } from './TargetThumb';
@@ -8,6 +8,11 @@ interface Props {
     current: string;
     onSelect: (id: string) => void;
     lang: Lang;
+    targets: Target[];
+    /** Подпись ряда слева; у основного ряда её нет */
+    title?: string;
+    /** Компактный ряд — для зодиака */
+    compact?: boolean;
 }
 
 /** На сколько прокручивать полосу кнопками-стрелками */
@@ -15,10 +20,10 @@ const SCROLL_STEP = 320;
 
 /** Карточки вынесены в memo: при прокрутке меняется только состояние краёв,
  *  и без этого React перерисовывал бы все миниатюры на каждое событие */
-const TargetCards = memo(function TargetCards({ current, onSelect, lang }: Props) {
+const TargetCards = memo(function TargetCards({ current, onSelect, lang, targets }: Props) {
     return (
         <>
-            {TARGETS.map(t => (
+            {targets.map(t => (
                 <button
                     key={t.id}
                     className={t.id === current ? 'target-card active' : 'target-card'}
@@ -33,7 +38,7 @@ const TargetCards = memo(function TargetCards({ current, onSelect, lang }: Props
     );
 });
 
-export function TargetBar({ current, onSelect, lang }: Props) {
+export function TargetBar({ current, onSelect, lang, targets, title, compact }: Props) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [edges, setEdges] = useState({ left: false, right: false });
 
@@ -68,7 +73,8 @@ export function TargetBar({ current, onSelect, lang }: Props) {
     };
 
     return (
-        <header className="topbar">
+        <header className={compact ? 'topbar compact' : 'topbar'}>
+            {title && <span className="topbar-title">{title}</span>}
             <div
                 className={
                     'topbar-viewport' +
@@ -77,7 +83,7 @@ export function TargetBar({ current, onSelect, lang }: Props) {
                 }
             >
                 <div className="topbar-scroll" ref={scrollRef} onScroll={updateEdges}>
-                    <TargetCards current={current} onSelect={onSelect} lang={lang} />
+                    <TargetCards current={current} onSelect={onSelect} lang={lang} targets={targets} />
                 </div>
 
                 {edges.left && (

@@ -25,6 +25,7 @@ const ru = {
     defaultViewHint:
         'Диапазон звёзд, размер рисунка, точки и линии — как принято рисовать этот объект',
 
+    zodiac: 'Зодиак',
     stars: 'Звёзды',
     magLimit: 'Предел яркости',
     inField: 'В поле',
@@ -148,6 +149,7 @@ const en: Record<StringKey, string> = {
     defaultViewHint:
         'Star range, drawing size, dots and lines — the way this object is usually drawn',
 
+    zodiac: 'Zodiac',
     stars: 'Stars',
     magLimit: 'Magnitude limit',
     inField: 'In view',
@@ -269,6 +271,7 @@ const is: Record<StringKey, string> = {
     defaultViewHint:
         'Birtumörk, stærð myndar, punktar og línur — eins og þetta fyrirbæri er venjulega teiknað',
 
+    zodiac: 'Dýrahringurinn',
     stars: 'Stjörnur',
     magLimit: 'Birtumörk',
     inField: 'Í sýn',
@@ -390,6 +393,7 @@ const nl: Record<StringKey, string> = {
     defaultViewHint:
         'Helderheidsgrens, tekengrootte, stippen en lijnen — zoals dit object gewoonlijk getekend wordt',
 
+    zodiac: 'Dierenriem',
     stars: 'Sterren',
     magLimit: 'Helderheidsgrens',
     inField: 'In beeld',

@@ -9,7 +9,9 @@ import {
     Check, Chip, Segmented, Slider, Swatches,
 } from './components/controls';
 import { INKS, SKIN_TONES } from './lib/palette';
-import { getCatalog, getLines, getTarget, magForCount } from './lib/catalog';
+import {
+    MAIN_TARGETS, ZODIAC_TARGETS, getCatalog, getLines, getTarget, magForCount,
+} from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
 import { settingsFromQuery, shareUrl } from './lib/url';
@@ -220,7 +222,21 @@ export default function App() {
                 </div>
             </header>
 
-            <TargetBar current={settings.targetId} onSelect={handleTargetChange} lang={lang} />
+            <TargetBar
+                current={settings.targetId}
+                onSelect={handleTargetChange}
+                lang={lang}
+                targets={MAIN_TARGETS}
+            />
+
+            <TargetBar
+                current={settings.targetId}
+                onSelect={handleTargetChange}
+                lang={lang}
+                targets={ZODIAC_TARGETS}
+                title={tr('zodiac')}
+                compact
+            />
 
             <aside className="sidebar left">
                 <section className="group current-target">

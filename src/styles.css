@@ -59,6 +59,8 @@ body {
 .app {
     --appbar-h: 39px;
     --topbar-h: 127px;
+    /* две ленты объектов: обычная и зодиак */
+    --bars-h: 197px;
     display: grid;
     grid-template-columns: 230px minmax(0, 1fr) 230px 230px;
     grid-template-rows: auto minmax(0, 1fr);
@@ -118,6 +120,50 @@ body {
     z-index: 10;
     background: var(--panel);
     border-bottom: 1px solid var(--border);
+}
+
+/* второй ряд — знаки зодиака: компактнее и с подписью слева */
+.topbar.compact {
+    top: var(--topbar-h);
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 10px;
+}
+
+.topbar.compact .topbar-viewport {
+    flex: 1;
+    min-width: 0;
+}
+
+.topbar-title {
+    flex: none;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+}
+
+.topbar.compact .topbar-scroll {
+    padding: 5px 6px;
+}
+
+.topbar.compact .target-card {
+    width: 58px;
+    gap: 2px;
+    padding: 3px 2px;
+}
+
+.topbar.compact .target-thumb {
+    width: 32px;
+    height: 32px;
+}
+
+.topbar.compact .target-name {
+    font-size: 9px;
+    max-height: 12px;
 }
 
 .topbar-viewport {
@@ -254,9 +300,9 @@ body {
     background: var(--panel);
     padding: 14px 14px 20px;
     overflow-y: auto;
-    height: calc(100vh - var(--topbar-h));
+    height: calc(100vh - var(--bars-h));
     position: sticky;
-    top: var(--topbar-h);
+    top: var(--bars-h);
 }
 
 .sidebar.left {
@@ -859,7 +905,7 @@ select {
 .preview-wrap {
     width: 100%;
     max-width: 900px;
-    max-height: calc(100vh - var(--topbar-h) - 150px);
+    max-height: calc(100vh - var(--bars-h) - 150px);
     overflow: auto;
     overscroll-behavior: contain;
 }
@@ -946,7 +992,8 @@ select {
     .stage { display: contents; }
 
     .appbar { order: 1; }
-    .topbar { order: 2; }
+    .topbar { order: 2; position: static; }
+    .topbar.compact { order: 2; }
     .preview-wrap { order: 3; margin: 10px 10px 0; }
     .mobile-only { order: 4; margin: 8px 10px 0; }
     .sidebar.left { order: 5; }
