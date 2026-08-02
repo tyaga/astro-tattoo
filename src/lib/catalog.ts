@@ -67,6 +67,17 @@ export function getPhotoUrl(id: string): string | null {
     return photoFiles[`../data/photos/${id}.jpg`] ?? null;
 }
 
+// линии фигур созвездий: пары индексов в тот же массив звёзд,
+// подготовлены скриптом выгрузки по данным d3-celestial (BSD-3)
+const lineFiles = import.meta.glob<[number, number][]>('../data/lines/*.json', {
+    eager: true,
+    import: 'default',
+});
+
+export function getLines(id: string): [number, number][] {
+    return lineFiles[`../data/lines/${id}.json`] ?? [];
+}
+
 export function getTarget(id: string): Target {
     return TARGETS.find(t => t.id === id) ?? TARGETS[0];
 }

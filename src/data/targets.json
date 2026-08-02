@@ -69,7 +69,8 @@
       }
     ],
     "photoSurvey": "CDS/P/DSS2/color",
-    "photoFovDeg": 2.2
+    "photoFovDeg": 2.2,
+    "lines": false
   },
   {
     "id": "orion-belt",
@@ -615,7 +616,8 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 16
+    "photoFovDeg": 16,
+    "lines": false
   },
   {
     "id": "beehive",
@@ -639,7 +641,8 @@
       }
     ],
     "photoSurvey": "CDS/P/DSS2/color",
-    "photoFovDeg": 2.4
+    "photoFovDeg": 2.4,
+    "lines": false
   },
   {
     "id": "scorpius",
@@ -1233,7 +1236,8 @@
         "dec": 28.26833,
         "mag": 4.35
       }
-    ]
+    ],
+    "lines": false
   },
   {
     "id": "double-cluster",
@@ -1250,6 +1254,7 @@
     "defaultMagLimit": 9.5,
     "photoSurvey": "CDS/P/DSS2/color",
     "photoFovDeg": 2.6,
-    "named": []
+    "named": [],
+    "lines": false
   }
 ]

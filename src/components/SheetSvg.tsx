@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { getPhotoUrl, getTarget, rad } from '../lib/catalog';
+import { getLines, getPhotoUrl, getTarget, rad } from '../lib/catalog';
 import { sheetSize } from '../lib/model';
 import { isDark } from '../lib/palette';
 import type { DrawnStar, Settings, WristImage } from '../lib/types';
@@ -142,6 +142,30 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                     ))}
                 </g>
             )}
+
+            {settings.showLines && (() => {
+                // линию рисуем, только когда обе её звезды попали на полотно,
+                // иначе фигура повиснет обрывками
+                const byIndex = new Map(drawn.map(s => [s.i, s]));
+                const segments = getLines(target.id)
+                    .map(([a, b]) => [byIndex.get(a), byIndex.get(b)] as const)
+                    .filter(([a, b]) => a && b);
+                if (segments.length === 0) return null;
+                return (
+                    <g
+                        clipPath="url(#sheet)"
+                        data-role="lines"
+                        stroke={skyPhoto ? '#ff4d5e' : settings.inkColor}
+                        strokeWidth={settings.lineMm}
+                        strokeLinecap="round"
+                        opacity={skyPhoto ? 1 : settings.inkOpacity}
+                    >
+                        {segments.map(([a, b], i) => (
+                            <line key={i} x1={a!.X} y1={a!.Y} x2={b!.X} y2={b!.Y} />
+                        ))}
+                    </g>
+                );
+            })()}
 
             <g clipPath="url(#sheet)">
                 {drawn.map((s, i) =>

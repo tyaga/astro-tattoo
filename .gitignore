@@ -1,6 +1,7 @@
 node_modules/
 dist/
 
-# каталоги и снимки выгружаются скриптом из CDS при сборке
+# каталоги, снимки и линии выгружаются скриптом из сети при сборке
 src/data/catalogs/
 src/data/photos/
+src/data/lines/

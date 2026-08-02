@@ -32,7 +32,8 @@ export function computeDrawn(s: Settings): DrawnStar[] {
     const brightest = catalog[0].mag;
     const drawn: DrawnStar[] = [];
 
-    for (const star of catalog) {
+    for (let index = 0; index < catalog.length; index++) {
+        const star = catalog[index];
         if (star.mag > s.magLimit) break; // каталог отсортирован по яркости
         // вид «как на небе»: север вверху, восток слева
         let x0 = -star.u;
@@ -46,7 +47,7 @@ export function computeDrawn(s: Settings): DrawnStar[] {
         const d = starDiameterMm(s, star.mag, brightest);
         const r = d / 2;
         if (X < -r || X > W + r || Y < -r || Y > H + r) continue;
-        drawn.push({ X, Y, d, mag: star.mag, name: star.name });
+        drawn.push({ i: index, X, Y, d, mag: star.mag, name: star.name });
     }
     return drawn;
 }

@@ -29,6 +29,8 @@ export const DEFAULTS: Settings = {
     quantize: true,
     labels: 'names',
     gridMm: 1,
+    showLines: false,
+    lineMm: 0.3,
     previewZoom: 1,
     theme: 'auto',
     skinTone: '#efcbb0',

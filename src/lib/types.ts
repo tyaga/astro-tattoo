@@ -33,6 +33,10 @@ export interface Settings {
     quantize: boolean;
     labels: LabelsMode;
     gridMm: GridMm;
+    /** Соединять звёзды линиями фигуры созвездия */
+    showLines: boolean;
+    /** Толщина линий фигуры, мм */
+    lineMm: number;
     /** Экранный масштаб предпросмотра (на эскиз не влияет) */
     previewZoom: number;
     /** Тема интерфейса — на эскиз и экспорт не влияет */
@@ -80,6 +84,8 @@ export interface WristImage {
 }
 
 export interface DrawnStar {
+    /** индекс звезды в каталоге объекта — по нему находятся линии фигуры */
+    i: number;
     /** мм от левого края полотна */
     X: number;
     /** мм от верхнего края полотна */

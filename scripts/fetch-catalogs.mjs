@@ -14,6 +14,15 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const TARGETS_PATH = join(ROOT, 'src/data/targets.json');
 const OUT_DIR = join(ROOT, 'src/data/catalogs');
 const PHOTO_DIR = join(ROOT, 'src/data/photos');
+const LINES_DIR = join(ROOT, 'src/data/lines');
+
+/** Линии фигур созвездий: d3-celestial Олафа Фрона, лицензия BSD-3.
+ *  Координаты вершин — позиции самих звёзд, поэтому их можно привязать
+ *  к нашему каталогу поиском ближайшей звезды. */
+const LINES_URL =
+    'https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.lines.json';
+/** Допуск привязки вершины линии к звезде каталога, градусы */
+const LINE_SNAP_DEG = 0.25;
 
 /** Сервис CDS рендерит участок неба в гномонической (TAN) проекции —
  *  той же, в которой строится эскиз, поэтому подложка совпадает со звёздами
@@ -169,6 +178,54 @@ function assignNames(stars, named) {
 
 const round = (v, digits) => Number(v.toFixed(digits));
 
+/** Угловое расстояние в градусах (малые углы, плоское приближение) */
+function angularDist(ra1, dec1, ra2, dec2) {
+    let dra = ra1 - ra2;
+    if (dra > 180) dra -= 360;
+    if (dra < -180) dra += 360;
+    const cosDec = Math.cos((((dec1 + dec2) / 2) * Math.PI) / 180);
+    const dde = dec1 - dec2;
+    return Math.hypot(dra * cosDec, dde);
+}
+
+/** Привязывает линии фигур к звёздам каталога: возвращает пары индексов.
+ *  Индексы указывают в тот же массив, что уходит в catalogs/<id>.json. */
+function snapLines(stars, features) {
+    const nearest = (ra, dec) => {
+        let best = -1;
+        let bestD = Infinity;
+        for (let i = 0; i < stars.length; i++) {
+            const d = angularDist(ra, dec, stars[i].ra, stars[i].dec);
+            if (d < bestD) {
+                bestD = d;
+                best = i;
+            }
+        }
+        return bestD <= LINE_SNAP_DEG ? best : -1;
+    };
+
+    const seen = new Set();
+    const pairs = [];
+    for (const feature of features) {
+        for (const line of feature.geometry?.coordinates ?? []) {
+            let prev = -1;
+            for (const [lon, dec] of line) {
+                const ra = lon < 0 ? lon + 360 : lon;
+                const idx = nearest(ra, dec);
+                if (prev >= 0 && idx >= 0 && prev !== idx) {
+                    const key = prev < idx ? `${prev}-${idx}` : `${idx}-${prev}`;
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        pairs.push([prev, idx]);
+                    }
+                }
+                prev = idx;
+            }
+        }
+    }
+    return pairs;
+}
+
 async function fetchPhoto(target) {
     const outPath = join(PHOTO_DIR, `${target.id}.jpg`);
     if (!force && existsSync(outPath)) return true;
@@ -187,17 +244,29 @@ async function fetchPhoto(target) {
     }
 }
 
+/** Линии фигур скачиваются один раз на весь запуск */
+let lineFeatures = null;
+async function getLineFeatures() {
+    if (lineFeatures) return lineFeatures;
+    const raw = await fetchWithRetry(LINES_URL);
+    lineFeatures = JSON.parse(raw).features ?? [];
+    return lineFeatures;
+}
+
 async function main() {
     const targets = JSON.parse(await readFile(TARGETS_PATH, 'utf8'));
     await mkdir(OUT_DIR, { recursive: true });
     await mkdir(PHOTO_DIR, { recursive: true });
+    await mkdir(LINES_DIR, { recursive: true });
 
     let failed = 0;
     for (const target of targets) {
         const outPath = join(OUT_DIR, `${target.id}.json`);
+        const linesPath = join(LINES_DIR, `${target.id}.json`);
         const haveCatalog = existsSync(outPath);
         const havePhoto = existsSync(join(PHOTO_DIR, `${target.id}.jpg`));
-        if (!force && haveCatalog && havePhoto) {
+        const haveLines = existsSync(linesPath);
+        if (!force && haveCatalog && havePhoto && haveLines) {
             console.log(`• ${target.id}: уже выгружен, пропускаю`);
             continue;
         }
@@ -238,6 +307,23 @@ async function main() {
             );
             if (missing.length) {
                 console.warn(`  ! не нашлись по координатам: ${missing.join(', ')}`);
+            }
+        }
+
+        if (force || !haveLines) {
+            // у скоплений фигуры нет — кладём пустой список, чтобы не качать зря
+            if (target.lines === false) {
+                await writeFile(linesPath, '[]');
+            } else {
+                try {
+                    const stars = JSON.parse(await readFile(outPath, 'utf8'));
+                    const pairs = snapLines(stars, await getLineFeatures());
+                    await writeFile(linesPath, JSON.stringify(pairs));
+                    console.log(`  ✓ линий фигуры: ${pairs.length}`);
+                } catch (e) {
+                    console.error(`  ✗ линии не построены: ${e.message}`);
+                    failed++;
+                }
             }
         }
 

@@ -22,6 +22,10 @@ function toBlackAndWhite(svg: SVGSVGElement): void {
     svg.querySelectorAll('[data-role="info"]').forEach(el =>
         el.setAttribute('fill', '#8a8b96'),
     );
+    svg.querySelectorAll('[data-role="lines"]').forEach(el => {
+        el.setAttribute('stroke', '#000000');
+        el.removeAttribute('opacity');
+    });
     svg.querySelectorAll('[data-role="chrome"]').forEach(el =>
         el.setAttribute('stroke', '#c9cad4'),
     );

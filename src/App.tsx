@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Legend } from './components/Legend';
 import { Presets } from './components/Presets';
 import { Preview } from './components/Preview';
+import { TargetBar } from './components/TargetBar';
+import { TargetThumb } from './components/TargetThumb';
 import { Check, Chip, Slider, Swatches } from './components/controls';
 import { INKS, SKIN_TONES } from './lib/palette';
-import { TARGETS, getCatalog, getTarget, magForCount } from './lib/catalog';
+import { getCatalog, getLines, getTarget, magForCount } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
 import {
@@ -66,8 +68,9 @@ export default function App() {
     }, [settings.theme]);
 
     /** Смена объекта поверх текущих настроек: новый объект занимает
-     *  на полотне столько же миллиметров, сколько занимал прежний */
-    const handleTargetChange = (targetId: string) => {
+     *  на полотне столько же миллиметров, сколько занимал прежний.
+     *  Ссылка стабильна, иначе memo на карточках объектов не сработает. */
+    const handleTargetChange = useCallback((targetId: string) => {
         setSettings(s => {
             const keepMm = patternSizeMm(s);
             const next: Settings = {
@@ -82,7 +85,7 @@ export default function App() {
                 fovDeg: keepMm > 0 ? fovForPatternMm(next, keepMm) : fitFovDeg(next),
             };
         });
-    };
+    }, []);
 
     const handleSavePreset = (name: string) => {
         const id = `${Date.now().toString(36)}-${name.length}`;
@@ -108,6 +111,7 @@ export default function App() {
     const drawn = useMemo(() => computeDrawn(settings), [settings]);
     const classes = useMemo(() => sizeClasses(drawn), [drawn]);
     const patternCm = useMemo(() => patternSizeMm(settings) / 10, [settings]);
+    const hasLines = getLines(target.id).length > 0;
 
     const set = <K extends keyof Settings>(key: K) => (value: Settings[K]) =>
         setSettings(s => ({ ...s, [key]: value }));
@@ -147,6 +151,8 @@ export default function App() {
 
     return (
         <div className="app">
+            <TargetBar current={settings.targetId} onSelect={handleTargetChange} />
+
             <aside className="sidebar left">
                 <header className="sidebar-header">
                     <div className="header-row">
@@ -168,21 +174,12 @@ export default function App() {
                     <p>Эскизы созвездий по данным Gaia и Hipparcos</p>
                 </header>
 
-                <section className="group">
-                    <h2>Объект</h2>
-                    <div className="control">
-                        <select
-                            value={settings.targetId}
-                            onChange={e => handleTargetChange(e.target.value)}
-                        >
-                            {TARGETS.map(t => (
-                                <option key={t.id} value={t.id}>
-                                    {t.name}
-                                </option>
-                            ))}
-                        </select>
+                <section className="group current-target">
+                    <TargetThumb id={target.id} className="current-thumb" />
+                    <div className="current-text">
+                        <b>{target.name}</b>
+                        <span className="stat">{target.subtitle}</span>
                     </div>
-                    <p className="stat">{target.subtitle}</p>
                 </section>
 
                 <section className="group">
@@ -386,6 +383,22 @@ export default function App() {
                             <option value="full">Имена + параметры</option>
                         </select>
                     </div>
+                    <Check
+                        label={
+                            hasLines ? 'Линии фигуры' : 'Линии фигуры — у скопления их нет'
+                        }
+                        checked={settings.showLines && hasLines}
+                        onChange={set('showLines')}
+                    />
+                    {settings.showLines && hasLines && (
+                        <Slider
+                            label="Толщина линий"
+                            value={settings.lineMm}
+                            min={0.1} max={1.5} step={0.05}
+                            format={v => v.toFixed(2) + ' мм'}
+                            onChange={set('lineMm')}
+                        />
+                    )}
                     <div className="control">
                         <label>Сетка</label>
                         <div className="chips">
