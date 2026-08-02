@@ -5,6 +5,9 @@ export type LabelsMode = 'none' | 'names' | 'full';
 /** Что делать со звёздами, не входящими в фигуру */
 export type BackgroundMode = 'show' | 'fade' | 'hide';
 
+/** Каким рисовать «Вояджер» у Глизе 445 */
+export type MarkerIcon = 'silhouette' | 'schema' | 'minimal' | 'record' | 'classic';
+
 /** Тема интерфейса; auto — следовать системной настройке */
 export type Theme = 'auto' | 'light' | 'dark';
 
@@ -44,6 +47,8 @@ export interface Settings {
     lineMm: number;
     /** Звёзды вне фигуры: показывать, приглушить или убрать совсем */
     backgroundStars: BackgroundMode;
+    /** Значок особой точки: у Жирафа это «Вояджер» */
+    markerIcon: MarkerIcon;
     /** Экранный масштаб предпросмотра (на эскиз не влияет) */
     previewZoom: number;
     /** Тема интерфейса — на эскиз и экспорт не влияет */

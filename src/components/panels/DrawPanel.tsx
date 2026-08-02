@@ -1,10 +1,21 @@
 import { getCatalog, magForCount, pickName } from '../../lib/catalog';
 import { Chip, Segmented, Slider } from '../controls';
 import { TargetThumb } from '../TargetThumb';
+import { VoyagerGlyph } from '../VoyagerIcon';
 import type { PanelProps } from './types';
-import type { BackgroundMode } from '../../lib/types';
+import type { BackgroundMode, MarkerIcon } from '../../lib/types';
+import type { StringKey } from '../../i18n';
 
 const STAR_COUNTS = [5, 7, 9, 14, 25, 50, 120];
+
+/** Варианты значка «Вояджера» в порядке от самого плотного к самому лёгкому */
+const MARKER_ICONS: { value: MarkerIcon; key: StringKey }[] = [
+    { value: 'silhouette', key: 'iconSilhouette' },
+    { value: 'schema', key: 'iconSchema' },
+    { value: 'minimal', key: 'iconMinimal' },
+    { value: 'record', key: 'iconRecord' },
+    { value: 'classic', key: 'iconClassic' },
+];
 
 /** Что рисуем: объект, сколько звёзд, линии фигуры */
 export function DrawPanel({
@@ -93,6 +104,28 @@ export function DrawPanel({
                     />
                 </section>
             )}
+
+            {/* особая точка есть только у Жирафа: там «Вояджер» у Глизе 445 */}
+            {target.markers?.length ? (
+                <section className="group">
+                    <h2 title={tr('markerIconHint')}>{tr('markerIcon')}</h2>
+                    <div className="glyphs">
+                        {MARKER_ICONS.map(({ value, key }) => (
+                            <button
+                                key={value}
+                                className={
+                                    settings.markerIcon === value ? 'glyph active' : 'glyph'
+                                }
+                                title={tr(key)}
+                                onClick={() => set('markerIcon')(value)}
+                            >
+                                <VoyagerGlyph variant={value} className="glyph-img" />
+                                <span>{tr(key)}</span>
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ) : null}
 
             <button className="btn ghost" title={tr('defaultViewHint')} onClick={onApplyDefaults}>
                 {tr('defaultView')}

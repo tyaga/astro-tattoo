@@ -32,6 +32,7 @@ export const DEFAULTS: Settings = {
     stepMm: 1.0,
     quantize: true,
     labels: 'names',
+    markerIcon: 'silhouette',
     gridMm: 1,
     showLines: false,
     lineMm: 0.3,

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { CSSProperties } from 'react';
 
 interface SliderProps {
     label: string;
@@ -72,6 +73,8 @@ export function Slider({
                 max={max}
                 step={step}
                 value={value}
+                // доля пройденной шкалы — по ней красится дорожка
+                style={{ '--fill': `${((value - min) / (max - min)) * 100}%` } as CSSProperties}
                 onChange={e => onChange(parseFloat(e.target.value))}
             />
         </div>

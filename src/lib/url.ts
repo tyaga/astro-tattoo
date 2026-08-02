@@ -1,9 +1,11 @@
 import { getTarget } from './catalog';
 import { applyTargetPreset } from './model';
 import { DEFAULTS } from './state';
-import type { BackgroundMode, GridMm, LabelsMode, Settings } from './types';
+import type { BackgroundMode, GridMm, LabelsMode, MarkerIcon, Settings } from './types';
 import { LANGS } from '../i18n/strings';
 import type { Lang } from '../i18n/strings';
+
+const ICONS: MarkerIcon[] = ['silhouette', 'schema', 'minimal', 'record', 'classic'];
 
 /** Короткие имена параметров: ссылка должна оставаться читаемой */
 const NUM: Record<string, keyof Settings> = {
@@ -36,6 +38,7 @@ export function settingsToQuery(s: Settings): string {
     p.set('ln', s.showLines ? '1' : '0');
     p.set('bg', s.backgroundStars);
     p.set('lb', s.labels);
+    p.set('vi', s.markerIcon);
     p.set('g', String(s.gridMm));
     p.set('sk', s.skinTone.replace('#', ''));
     p.set('ik', s.inkColor.replace('#', ''));
@@ -85,6 +88,9 @@ export function settingsFromQuery(search: string, local: Settings): Settings | n
 
     const bg = p.get('bg');
     if (bg === 'show' || bg === 'fade' || bg === 'hide') s.backgroundStars = bg as BackgroundMode;
+
+    const icon = p.get('vi');
+    if (icon && ICONS.includes(icon as MarkerIcon)) s.markerIcon = icon as MarkerIcon;
 
     const labels = p.get('lb');
     if (labels === 'none' || labels === 'names' || labels === 'full') {

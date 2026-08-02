@@ -208,6 +208,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                     {markers.map(m => (
                         <g key={m.id}>
                             <VoyagerIcon
+                                variant={settings.markerIcon}
                                 x={m.X} y={m.Y}
                                 size={Math.max(3, settings.maxMm * 2.2)}
                                 color={skyPhoto ? '#ff4d5e' : settings.inkColor}

@@ -1,44 +1,64 @@
 :root,
 :root[data-theme='dark'] {
-    --bg: #0e1018;
-    --panel: #171a26;
-    --panel-2: #1e2232;
-    --border: #2a2f42;
-    --text: #e7e9f0;
-    --muted: #8f94a8;
-    --accent: #7c7ff2;
-    --accent-soft: rgba(124, 127, 242, 0.16);
-    --danger: #e2707f;
-    --preview-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+    --bg: #0a0c15;
+    --panel: #151827;
+    --panel-2: #1d2133;
+    --border: #2b3049;
+    --text: #eceef7;
+    --muted: #949ab5;
+    /* два акцента: фиолет уходит в бирюзу — по ним построены заливки и свечения */
+    --accent: #8b7bff;
+    --accent-2: #35d3e8;
+    --accent-soft: rgba(139, 123, 255, 0.18);
+    --accent-ink: #ffffff;
+    --danger: #ff6b81;
+    --glow: 0 0 0 1px rgba(139, 123, 255, 0.45), 0 6px 22px rgba(89, 74, 220, 0.35);
+    --preview-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+    /* мягкие пятна на фоне сцены: «космос» за листом */
+    --space:
+        radial-gradient(70% 55% at 18% 8%, rgba(139, 123, 255, 0.20), transparent 70%),
+        radial-gradient(60% 50% at 88% 92%, rgba(53, 211, 232, 0.14), transparent 70%);
     color-scheme: dark;
 }
 
 :root[data-theme='light'] {
-    --bg: #f2f3f7;
+    --bg: #f4f5fb;
     --panel: #ffffff;
-    --panel-2: #eceef4;
-    --border: #d7dae4;
-    --text: #1a1c26;
-    --muted: #6c7183;
-    --accent: #5a5ee0;
-    --accent-soft: rgba(90, 94, 224, 0.12);
-    --danger: #cf4a5c;
-    --preview-shadow: 0 8px 28px rgba(26, 28, 38, 0.16);
+    --panel-2: #eef0f8;
+    --border: #d9dcea;
+    --text: #171930;
+    --muted: #6a7091;
+    --accent: #5b4ef0;
+    --accent-2: #00a7c4;
+    --accent-soft: rgba(91, 78, 240, 0.13);
+    --accent-ink: #ffffff;
+    --danger: #e04358;
+    --glow: 0 0 0 1px rgba(91, 78, 240, 0.35), 0 6px 20px rgba(91, 78, 240, 0.20);
+    --preview-shadow: 0 14px 40px rgba(23, 25, 48, 0.18);
+    --space:
+        radial-gradient(70% 55% at 18% 8%, rgba(91, 78, 240, 0.13), transparent 70%),
+        radial-gradient(60% 50% at 88% 92%, rgba(0, 167, 196, 0.12), transparent 70%);
     color-scheme: light;
 }
 
 @media (prefers-color-scheme: light) {
     :root[data-theme='auto'] {
-        --bg: #f2f3f7;
+        --bg: #f4f5fb;
         --panel: #ffffff;
-        --panel-2: #eceef4;
-        --border: #d7dae4;
-        --text: #1a1c26;
-        --muted: #6c7183;
-        --accent: #5a5ee0;
-        --accent-soft: rgba(90, 94, 224, 0.12);
-        --danger: #cf4a5c;
-        --preview-shadow: 0 8px 28px rgba(26, 28, 38, 0.16);
+        --panel-2: #eef0f8;
+        --border: #d9dcea;
+        --text: #171930;
+        --muted: #6a7091;
+        --accent: #5b4ef0;
+        --accent-2: #00a7c4;
+        --accent-soft: rgba(91, 78, 240, 0.13);
+        --accent-ink: #ffffff;
+        --danger: #e04358;
+        --glow: 0 0 0 1px rgba(91, 78, 240, 0.35), 0 6px 20px rgba(91, 78, 240, 0.20);
+        --preview-shadow: 0 14px 40px rgba(23, 25, 48, 0.18);
+        --space:
+            radial-gradient(70% 55% at 18% 8%, rgba(91, 78, 240, 0.13), transparent 70%),
+            radial-gradient(60% 50% at 88% 92%, rgba(0, 167, 196, 0.12), transparent 70%);
         color-scheme: light;
     }
 }
@@ -54,6 +74,11 @@ body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+}
+
+/* пятна за листом: сцена перестаёт быть серым прямоугольником */
+.stage {
+    background: var(--space), var(--bg);
 }
 
 
@@ -79,6 +104,8 @@ body {
     padding: 7px 14px;
     background: var(--panel);
     border-bottom: 1px solid var(--border);
+    /* тонкая цветная нить под шапкой */
+    box-shadow: 0 1px 0 0 rgba(139, 123, 255, 0.35);
 }
 
 .stage {
@@ -142,7 +169,9 @@ body {
 
 .tab.active {
     color: var(--text);
-    border-bottom-color: var(--accent);
+    border-bottom-color: transparent;
+    background:
+        linear-gradient(135deg, var(--accent), var(--accent-2)) bottom / 100% 2px no-repeat;
 }
 
 .panel-body {
@@ -218,6 +247,213 @@ body {
 .target-button-more {
     flex: none;
     font-size: 11px;
+    color: var(--accent);
+}
+
+/* ---------- лента объектов над эскизом (десктоп) ---------- */
+
+.targetbar {
+    /* во всю ширину колонки: гасим отступы .stage */
+    display: flex;
+    align-items: center;
+    width: calc(100% + 32px);
+    margin: -16px -16px 0;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+}
+
+.targetbar + .targetbar {
+    margin-top: 0;
+}
+
+/* второй ряд — знаки зодиака: компактнее и с подписью слева */
+.targetbar.compact {
+    gap: 8px;
+    padding-left: 10px;
+}
+
+.targetbar.compact .targetbar-viewport {
+    flex: 1;
+    min-width: 0;
+}
+
+.targetbar-title {
+    flex: none;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+}
+
+.targetbar.compact .targetbar-scroll {
+    padding: 5px 6px;
+}
+
+.targetbar.compact .target-card {
+    width: 58px;
+    gap: 2px;
+    padding: 3px 2px;
+}
+
+.targetbar.compact .target-thumb {
+    width: 32px;
+    height: 32px;
+}
+
+.targetbar.compact .target-name {
+    font-size: 9px;
+    max-height: 12px;
+}
+
+.targetbar .target-card {
+    flex: none;
+    width: 76px;
+}
+
+.targetbar-viewport {
+    position: relative;
+}
+
+.targetbar-scroll {
+    display: flex;
+    gap: 4px;
+    padding: 8px 10px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scroll-padding: 0 44px;
+}
+
+/* тени по краям подсказывают, что полоса прокручивается */
+.targetbar-viewport::before,
+.targetbar-viewport::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 56px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.18s;
+    z-index: 1;
+}
+
+.targetbar-viewport::before {
+    left: 0;
+    background: linear-gradient(to right, var(--panel) 20%, transparent);
+}
+
+.targetbar-viewport::after {
+    right: 0;
+    background: linear-gradient(to left, var(--panel) 20%, transparent);
+}
+
+.targetbar-viewport.fade-left::before,
+.targetbar-viewport.fade-right::after {
+    opacity: 1;
+}
+
+.targetbar-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    line-height: 1;
+    padding-bottom: 2px;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.targetbar-arrow:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.targetbar-arrow.left {
+    left: 6px;
+}
+
+.targetbar-arrow.right {
+    right: 6px;
+}
+
+/* поиск по названию — тридцать объектов лентой не окинуть взглядом */
+.targetbar > .targetbar-viewport {
+    flex: 1;
+    min-width: 0;
+}
+
+.targetbar-search {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    font-size: 17px;
+    line-height: 1;
+    color: var(--muted);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.targetbar-search:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* выбор значка особой точки: сами значки и есть подписи */
+.glyphs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.glyph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 56px;
+    padding: 5px 2px 4px;
+    font: 500 9px 'Inter', sans-serif;
+    color: var(--muted);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.glyph:hover {
+    color: var(--text);
+    border-color: var(--accent);
+}
+
+.glyph.active {
+    color: var(--text);
+    background: var(--accent-soft);
+    border-color: transparent;
+    box-shadow: var(--glow);
+}
+
+.glyph-img {
+    width: 26px;
+    height: 26px;
+    color: var(--text);
+}
+
+.glyph.active .glyph-img {
     color: var(--accent);
 }
 
@@ -408,6 +644,19 @@ body {
     .picker-grid {
         grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
     }
+
+    /* лента объектов — только для десктопа */
+    .targetbar,
+    .targetbar.compact {
+        display: none;
+    }
+}
+
+/* на десктопе объект виден в ленте, дублировать его кнопкой незачем */
+@media (min-width: 821px) {
+    .target-button {
+        display: none;
+    }
 }
 
 /* ---------- шапка ---------- */
@@ -424,6 +673,10 @@ body {
     font-weight: 700;
     letter-spacing: 0.02em;
     white-space: nowrap;
+    background: linear-gradient(100deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .appbar-brand p {
@@ -461,7 +714,8 @@ body {
 
 .target-card.active {
     background: var(--accent-soft);
-    border-color: var(--accent);
+    border-color: transparent;
+    box-shadow: var(--glow);
 }
 
 .target-thumb {
@@ -531,8 +785,9 @@ body {
 }
 
 .seg-btn.active {
-    color: #fff;
-    background: var(--accent);
+    color: var(--accent-ink);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
 /* вариант для иконок — круглые кнопки без боковых отступов */
@@ -673,12 +928,24 @@ button.value {
 }
 
 .group h2 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.09em;
-    color: var(--muted);
+    color: var(--text);
     margin-bottom: 8px;
+}
+
+/* засечка акцентом слева от заголовка — блоки читаются с одного взгляда */
+.group h2::before {
+    content: '';
+    width: 3px;
+    height: 11px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
 }
 
 /* chips */
@@ -707,9 +974,10 @@ button.value {
 }
 
 .chip.active {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: var(--accent-ink);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
 /* controls */
@@ -741,7 +1009,10 @@ input[type="range"] {
     width: 100%;
     height: 3px;
     border-radius: 2px;
-    background: var(--panel-2);
+    /* пройденная часть шкалы залита акцентом: видно, где стоит значение */
+    background:
+        linear-gradient(90deg, var(--accent), var(--accent-2)) 0 / var(--fill, 0%) 100% no-repeat,
+        var(--panel-2);
     outline: none;
     cursor: pointer;
 }
@@ -999,13 +1270,15 @@ select {
 }
 
 .btn.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    color: var(--accent-ink);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.22);
 }
 
 .btn.primary:hover {
-    filter: brightness(1.1);
+    filter: brightness(1.08);
+    box-shadow: var(--glow);
 }
 
 .btn.ghost {
@@ -1082,6 +1355,7 @@ select {
     height: 100%;
     border-radius: 5px;
     box-shadow: var(--preview-shadow);
+    border-radius: 2px;
 }
 
 .hint {
@@ -1119,7 +1393,9 @@ select {
     input[type="range"]::-webkit-slider-runnable-track {
         height: 4px;
         border-radius: 2px;
-        background: var(--panel-2);
+        background:
+            linear-gradient(90deg, var(--accent), var(--accent-2)) 0 / var(--fill, 0%) 100% no-repeat,
+            var(--panel-2);
     }
 
     input[type="range"]::-webkit-slider-thumb {
@@ -1131,7 +1407,9 @@ select {
     input[type="range"]::-moz-range-track {
         height: 4px;
         border-radius: 2px;
-        background: var(--panel-2);
+        background:
+            linear-gradient(90deg, var(--accent), var(--accent-2)) 0 / var(--fill, 0%) 100% no-repeat,
+            var(--panel-2);
     }
 
     input[type="range"]::-moz-range-thumb {

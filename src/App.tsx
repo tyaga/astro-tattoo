@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Preview } from './components/Preview';
 import { ResetButton } from './components/ResetButton';
 import { SummaryLine } from './components/SummaryLine';
+import { TargetBar } from './components/TargetBar';
 import { TabIcon } from './components/TabIcon';
 import { TargetPicker } from './components/TargetPicker';
 import { Segmented } from './components/controls';
@@ -11,7 +12,7 @@ import { LookPanel } from './components/panels/LookPanel';
 import { PrintPanel } from './components/panels/PrintPanel';
 import { TABS } from './components/panels/types';
 import type { PanelProps, Tab } from './components/panels/types';
-import { getLines, getTarget } from './lib/catalog';
+import { MAIN_TARGETS, ZODIAC_TARGETS, getLines, getTarget } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
 import {
@@ -244,6 +245,25 @@ export default function App() {
             </header>
 
             <main className="stage">
+                {/* на десктопе объект выбирают лентой над эскизом,
+                    на телефоне она скрыта — там полноэкранное окно выбора */}
+                <TargetBar
+                    current={settings.targetId}
+                    onSelect={handleTargetChange}
+                    lang={lang}
+                    targets={MAIN_TARGETS}
+                    onSearch={() => setPicking(true)}
+                    tr={tr}
+                />
+                <TargetBar
+                    current={settings.targetId}
+                    onSelect={handleTargetChange}
+                    lang={lang}
+                    targets={ZODIAC_TARGETS}
+                    title={tr('groupZodiac')}
+                    compact
+                />
+
                 <Preview
                     settings={settings}
                     setSettings={setSettings}
