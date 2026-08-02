@@ -1,3 +1,4 @@
+import { autoPreset } from './autopreset';
 import { getCatalog, getLines, getTarget } from './catalog';
 import { computeDrawn, fovForPatternMm } from './model';
 import { DEFAULTS } from './state';
@@ -25,14 +26,15 @@ export function thumbnail(id: string): Thumbnail {
 
     const target = getTarget(id);
     const catalog = getCatalog(id);
-    const linked = new Set(target.preset.showLines ? getLines(id).flat() : []);
+    const preset = autoPreset(id);
+    const linked = new Set(preset.showLines ? getLines(id).flat() : []);
 
     // предел яркости — по самой тусклой звезде фигуры
     let figureMag = target.named.reduce((m, n) => Math.max(m, n.mag), 0);
     for (const i of linked) figureMag = Math.max(figureMag, catalog[i]?.mag ?? 0);
     const magLimit = figureMag
-        ? Math.min(target.preset.magLimit, figureMag + 0.05)
-        : target.preset.magLimit;
+        ? Math.min(preset.magLimit, figureMag + 0.05)
+        : preset.magLimit;
 
     const base: Settings = {
         ...DEFAULTS,
@@ -60,7 +62,7 @@ export function thumbnail(id: string): Thumbnail {
         .map(([a, b]) => [byIndex.get(a), byIndex.get(b)] as const)
         .filter((pair): pair is [DrawnStar, DrawnStar] => Boolean(pair[0] && pair[1]));
 
-    const result: Thumbnail = { dots, segments: target.preset.showLines ? segments : [] };
+    const result: Thumbnail = { dots, segments: preset.showLines ? segments : [] };
     cache.set(id, result);
     return result;
 }

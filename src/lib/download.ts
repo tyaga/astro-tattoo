@@ -21,7 +21,7 @@ function toBlackAndWhite(svg: SVGSVGElement): void {
     svg.querySelectorAll('[data-role="name"]').forEach(el =>
         el.setAttribute('fill', '#33343d'),
     );
-    svg.querySelectorAll('[data-role="info"]').forEach(el =>
+    svg.querySelectorAll('[data-role="info"], [data-role="scale"]').forEach(el =>
         el.setAttribute('fill', '#8a8b96'),
     );
     svg.querySelectorAll('[data-role="lines"]').forEach(el => {
@@ -37,16 +37,36 @@ function toBlackAndWhite(svg: SVGSVGElement): void {
     });
 }
 
+interface ExportOptions {
+    blackAndWhite?: boolean;
+    /** Оставить фото тела: получается примерка, а не эскиз для мастера */
+    withWrist?: boolean;
+    /** Только точки: ни линий фигуры, ни подписей, ни сетки */
+    dotsOnly?: boolean;
+}
+
 /** Сериализует отрисованный SVG в автономный файл с физическими размерами в мм.
  *  Узлы с data-export="exclude" (фото-подложки) в файл не попадают. */
 export function svgToStandalone(
     svg: SVGSVGElement,
     widthMm: number,
     heightMm: number,
-    { blackAndWhite = false }: { blackAndWhite?: boolean } = {},
+    { blackAndWhite = false, withWrist = false, dotsOnly = false }: ExportOptions = {},
 ): string {
     const clone = svg.cloneNode(true) as SVGSVGElement;
+    // снимок неба остаётся служебным всегда, фото тела — по запросу
+    if (withWrist) {
+        clone.querySelectorAll('[data-role="wrist"]').forEach(el =>
+            el.removeAttribute('data-export'),
+        );
+    }
     clone.querySelectorAll('[data-export="exclude"]').forEach(el => el.remove());
+    if (dotsOnly) {
+        clone
+            .querySelectorAll('[data-role="lines"], [data-role="name"], ' +
+                '[data-role="info"], [data-role="grid"]')
+            .forEach(el => el.remove());
+    }
     if (blackAndWhite) toBlackAndWhite(clone);
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     clone.setAttribute('width', `${widthMm}mm`);

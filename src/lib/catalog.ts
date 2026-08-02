@@ -1,6 +1,8 @@
 import targetsJson from '../data/targets.json';
 import type { BackgroundMode, LabelsMode } from './types';
 
+export { pickName } from '../i18n';
+
 export interface NamedStar {
     /** Каноническое (латинское) имя — оно же попадает в каталог */
     name: string;
@@ -12,7 +14,8 @@ export interface NamedStar {
 }
 
 /** Настройки объекта по умолчанию: с них он выглядит так, как созвездие
- *  принято рисовать — фигура собрана, помещается и звёзды соразмерны */
+ *  принято рисовать — фигура собрана, помещается и звёзды соразмерны.
+ *  Считается по данным объекта, см. autopreset.ts */
 export interface TargetPreset {
     /** Предел яркости: чуть слабее самой тусклой звезды фигуры */
     magLimit: number;
@@ -58,7 +61,9 @@ export interface Target {
     radiusArcmin: number;
     fetchMagLimit: number;
     maxRows: number;
-    preset: TargetPreset;
+    /** Ручная поправка к посчитанному пресету — только то, чего не выведешь
+     *  из каталога: привычный разворот фигуры, сдвиг поля */
+    preset?: Partial<TargetPreset>;
     /** HiPS-обзор, из которого отрендерен снимок объекта */
     photoSurvey: string;
     /** Угловая ширина снимка, градусы (он в той же TAN-проекции, что и эскиз) */

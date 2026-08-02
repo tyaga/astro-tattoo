@@ -50,9 +50,11 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
     const skyPhoto = settings.showPhoto && Boolean(photoUrl);
 
     // звёзды фигуры: остальные можно приглушить, чтобы рисунок читался
-    const lines = settings.showLines ? getLines(target.id) : [];
+    // линии объекта нужны и с выключенным показом: по ним видно,
+    // какие звёзды входят в фигуру, а какие — фон
+    const lines = getLines(target.id);
     const linked = new Set(lines.flat());
-    const fading = settings.showLines && settings.backgroundStars === 'fade' && linked.size > 0;
+    const fading = settings.backgroundStars === 'fade' && linked.size > 0;
     const starOpacity = (star: DrawnStar) =>
         fading && !linked.has(star.i) ? settings.inkOpacity * 0.3 : settings.inkOpacity;
     // подписи и разметка подстраиваются под тёмный фон: кожу или снимок неба
@@ -82,7 +84,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 const cx = W / 2 + settings.wristOffX;
                 const cy = H / 2 + settings.wristOffY;
                 return (
-                    <g clipPath="url(#sheet)" data-export="exclude">
+                    <g clipPath="url(#sheet)" data-role="wrist" data-export="exclude">
                         <g
                             transform={
                                 `translate(${cx} ${cy}) rotate(${settings.wristRotDeg}) ` +
@@ -114,7 +116,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 const cy = H / 2 + settings.panY;
                 const rot = -settings.rotation;
                 return (
-                    <g clipPath="url(#sheet)" data-export="exclude">
+                    <g clipPath="url(#sheet)" data-role="sky" data-export="exclude">
                         <g
                             transform={
                                 `translate(${cx} ${cy}) rotate(${rot}) scale(${fx} ${fy}) ` +
@@ -269,7 +271,7 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 <line x1={bx + 10} y1={by - 0.8} x2={bx + 10} y2={by + 0.8} />
             </g>
             <text
-                data-role="info"
+                data-role="scale"
                 x={bx + 5} y={by - 1.4}
                 fontFamily={FONT} fontSize={1.7}
                 fill={infoFill} textAnchor="middle"

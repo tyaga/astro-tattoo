@@ -95,11 +95,16 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
         el.scrollTop = (el.scrollTop + anchor.y) * k - anchor.y;
     }, [settings.previewZoom]);
 
-    /** Сколько миллиметров полотна в экранном пикселе */
+    /** Сколько миллиметров полотна в экранном пикселе.
+     *  Лист вписан в окно предпросмотра, поэтому масштаб задаёт та сторона,
+     *  которая упёрлась в край: по другой остаются поля. */
     const mmPerPx = () => {
         const svg = zoomRef.current?.querySelector('svg');
         if (!svg) return 1;
-        return sheetSize(settings).W / svg.getBoundingClientRect().width;
+        const box = svg.getBoundingClientRect();
+        const { W, H } = sheetSize(settings);
+        const pxPerMm = Math.min(box.width / W, box.height / H);
+        return pxPerMm > 0 ? 1 / pxPerMm : 1;
     };
 
     const twoPointers = () => {
@@ -214,9 +219,12 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
             <div
                 ref={zoomRef}
                 className="preview"
-                // масштаб задаём шириной контента: SVG тянется за ней,
-                // а контейнер получает настоящую полосу прокрутки
-                style={{ width: `${settings.previewZoom * 100}%` }}
+                // при zoom = 1 лист вписан целиком; дальше контент растёт
+                // по обеим осям, и контейнер получает полосы прокрутки
+                style={{
+                    width: `${settings.previewZoom * 100}%`,
+                    height: `${settings.previewZoom * 100}%`,
+                }}
                 onPointerDown={onPointerDown}
                 onPointerMove={onPointerMove}
                 onPointerUp={endDrag}

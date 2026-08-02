@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getTarget } from '../lib/catalog';
-import { pick, t as tr } from '../i18n';
+import { pickName, t as tr } from '../i18n';
 import type { Lang } from '../i18n';
 import type { Preset, Settings } from '../lib/types';
 
@@ -17,7 +17,7 @@ export function Presets({ lang, presets, settings, onSave, onLoad, onDelete }: P
     const [name, setName] = useState('');
 
     const submit = () => {
-        const trimmed = name.trim() || pick(getTarget(settings.targetId).name, lang);
+        const trimmed = name.trim() || pickName(getTarget(settings.targetId).name, lang);
         onSave(trimmed);
         setName('');
     };
@@ -48,12 +48,12 @@ export function Presets({ lang, presets, settings, onSave, onLoad, onDelete }: P
                         <div className="preset-row" key={p.id}>
                             <button
                                 className="preset-load"
-                                title={`${pick(getTarget(p.settings.targetId).name, lang)} · ${tr(lang, 'apply')}`}
+                                title={`${pickName(getTarget(p.settings.targetId).name, lang)} · ${tr(lang, 'apply')}`}
                                 onClick={() => onLoad(p)}
                             >
                                 <span className="preset-name">{p.name}</span>
                                 <span className="preset-target">
-                                    {pick(getTarget(p.settings.targetId).name, lang)}
+                                    {pickName(getTarget(p.settings.targetId).name, lang)}
                                 </span>
                             </button>
                             <button

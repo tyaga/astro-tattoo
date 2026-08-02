@@ -1,5 +1,6 @@
+import { autoPreset } from './autopreset';
 import { getCatalog, getLines, getTarget, projectPoint, rad, starName } from './catalog';
-import { pick, t as tr } from '../i18n';
+import { pickName, t as tr } from '../i18n';
 import type { DrawnStar, Settings } from './types';
 
 /** Дальше гномоническая проекция слишком растягивает углы полотна */
@@ -82,8 +83,10 @@ export function computeDrawn(s: Settings): DrawnStar[] {
     const sin = Math.sin(th);
     const brightest = referenceMag(s.targetId);
     // в режиме «только фигура» поле не рисуем совсем: тогда и легенда,
-    // и спецификация считают ровно те точки, что уйдут на кожу
-    const figureOnly = s.backgroundStars === 'hide' && s.showLines;
+    // и спецификация считают ровно те точки, что уйдут на кожу.
+    // Линии при этом могут быть выключены — они всё равно задают, какие
+    // звёзды образуют фигуру, даже если сами не рисуются
+    const figureOnly = s.backgroundStars === 'hide';
     const linked = figureOnly ? new Set(getLines(s.targetId).flat()) : null;
     const drawn: DrawnStar[] = [];
 
@@ -146,16 +149,22 @@ export function fovForPatternMm(s: Settings, mm: number): number {
     return Math.min(MAX_FOV_DEG, Math.max(0.05, Math.round(fov * 100) / 100));
 }
 
-/** Поле зрения, при котором звёзды ярче предела вписываются в полотно */
+/** Поле зрения, при котором рисуемые звёзды вписываются в полотно.
+ *  Считаем по тем же звёздам, что попадут на кожу: в режиме «только фигура»
+ *  скрытое поле не должно ужимать рисунок. */
 export function fitFovDeg(s: Settings): number {
     const { W, H } = sheetSize(s);
     const catalog = getCatalog(s.targetId);
     const margin = Math.min(W, H) * 0.08;
+    const linked =
+        s.backgroundStars === 'hide' ? new Set(getLines(s.targetId).flat()) : null;
 
     let maxU = 0;
     let maxV = 0;
-    for (const star of catalog) {
+    for (let i = 0; i < catalog.length; i++) {
+        const star = catalog[i];
         if (star.mag > s.magLimit) break;
+        if (linked && !linked.has(i) && !star.name) continue;
         maxU = Math.max(maxU, Math.abs(star.u));
         maxV = Math.max(maxV, Math.abs(star.v));
     }
@@ -175,7 +184,7 @@ export function fitFovDeg(s: Settings): number {
  *  рисунка, размеры точек и линии фигуры. Полотно, кожа, чернила, сетка
  *  и фото запястья не трогаются — они про место на теле, а не про объект. */
 export function applyTargetPreset(base: Settings, targetId: string): Settings {
-    const p = getTarget(targetId).preset;
+    const p = autoPreset(targetId);
     const next: Settings = {
         ...base,
         targetId,
@@ -193,7 +202,12 @@ export function applyTargetPreset(base: Settings, targetId: string): Settings {
         panX: p.panX ?? 0,
         panY: p.panY ?? 0,
     };
-    return { ...next, fovDeg: fovForPatternMm(next, p.patternCm * 10) };
+    const sized = { ...next, fovDeg: fovForPatternMm(next, p.patternCm * 10) };
+    // рисунок нужного размера может не поместиться на маленьком полотне —
+    // тогда ужимаем его до листа, иначе фигура обрежется по краю. Меряем
+    // по фигуре: приглушённому полю вылезать за край не жалко
+    const fit = fitFovDeg({ ...sized, backgroundStars: 'hide' });
+    return { ...sized, fovDeg: Math.max(sized.fovDeg, fit) };
 }
 
 export interface SizeClass {
@@ -221,8 +235,8 @@ export function buildSpec(s: Settings, drawn: DrawnStar[]): string {
 
     const lines: string[] = [];
     const mm = tr(lang, 'mm');
-    lines.push(`${pick(target.name, lang)} — ${tr(lang, 'specTitle')}`);
-    lines.push(pick(target.subtitle, lang));
+    lines.push(`${pickName(target.name, lang)} — ${tr(lang, 'specTitle')}`);
+    lines.push(pickName(target.subtitle, lang));
     lines.push(`${tr(lang, 'specSheet')}: ${W} × ${H} ${mm}. ${tr(lang, 'specCoords')}`);
     lines.push(`${tr(lang, 'specStars')}: ${drawn.length}. ${tr(lang, 'specData')}: ${source}.`);
     lines.push('');

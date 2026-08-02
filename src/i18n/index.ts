@@ -22,6 +22,6 @@ export function detectLang(): Lang {
 }
 
 /** Значение из словаря вида { ru, en, is, nl } */
-export function pick(dict: Record<string, string>, lang: Lang): string {
+export function pickName(dict: Record<string, string>, lang: Lang): string {
     return dict[lang] ?? dict.en ?? dict.ru ?? '';
 }

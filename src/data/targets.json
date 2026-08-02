@@ -88,20 +88,7 @@
     ],
     "photoSurvey": "CDS/P/DSS2/color",
     "photoFovDeg": 2.2,
-    "lines": false,
-    "preset": {
-      "magLimit": 6.1,
-      "patternCm": 4.5,
-      "maxMm": 1.8,
-      "minMm": 0.35,
-      "contrast": 0.28,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": false,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "show"
-    }
+    "lines": false
   },
   {
     "id": "orion",
@@ -184,20 +171,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 28,
-    "preset": {
-      "magLimit": 4.65,
-      "patternCm": 9,
-      "maxMm": 2.2,
-      "minMm": 0.4,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "show"
-    }
+    "photoFovDeg": 28
   },
   {
     "id": "big-dipper",
@@ -273,20 +247,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 34,
-    "preset": {
-      "magLimit": 4.6,
-      "patternCm": 8,
-      "maxMm": 2,
-      "minMm": 0.5,
-      "contrast": 0.35,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "show"
-    }
+    "photoFovDeg": 34
   },
   {
     "id": "cassiopeia",
@@ -348,20 +309,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 24,
-    "preset": {
-      "magLimit": 4.3,
-      "patternCm": 6.5,
-      "maxMm": 1.9,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 24
   },
   {
     "id": "southern-cross",
@@ -423,20 +371,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 13,
-    "preset": {
-      "magLimit": 3.7,
-      "patternCm": 5,
-      "maxMm": 2,
-      "minMm": 0.4,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 13
   },
   {
     "id": "lyra",
@@ -498,20 +433,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 14,
-    "preset": {
-      "magLimit": 4.4,
-      "patternCm": 5,
-      "maxMm": 2.2,
-      "minMm": 0.35,
-      "contrast": 0.25,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 14
   },
   {
     "id": "cygnus",
@@ -573,20 +495,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 30,
-    "preset": {
-      "magLimit": 4.85,
-      "patternCm": 8.5,
-      "maxMm": 2,
-      "minMm": 0.5,
-      "contrast": 0.35,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 30
   },
   {
     "id": "corona-borealis",
@@ -655,20 +564,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 13,
-    "preset": {
-      "magLimit": 4.7,
-      "patternCm": 5,
-      "maxMm": 1.8,
-      "minMm": 0.4,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 13
   },
   {
     "id": "delphinus",
@@ -730,20 +626,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 11,
-    "preset": {
-      "magLimit": 5.55,
-      "patternCm": 4,
-      "maxMm": 1.5,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 11
   },
   {
     "id": "little-dipper",
@@ -798,20 +681,7 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 32,
-    "preset": {
-      "magLimit": 6.25,
-      "patternCm": 7,
-      "maxMm": 2,
-      "minMm": 0.4,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    "photoFovDeg": 32
   },
   {
     "id": "scorpius",
@@ -896,18 +766,7 @@
       }
     ],
     "preset": {
-      "magLimit": 5.95,
-      "patternCm": 6.7,
-      "maxMm": 2.2,
-      "minMm": 0.45,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "rotation": 337,
-      "backgroundStars": "fade"
+      "rotation": 337
     },
     "zodiac": true
   },
@@ -986,19 +845,6 @@
         "ru": "Адхафера"
       }
     ],
-    "preset": {
-      "magLimit": 5.25,
-      "patternCm": 8.5,
-      "maxMm": 2,
-      "minMm": 0.45,
-      "contrast": 0.32,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    },
     "zodiac": true
   },
   {
@@ -1075,20 +921,7 @@
         "mag": 3.58,
         "ru": "Ро"
       }
-    ],
-    "preset": {
-      "magLimit": 4.55,
-      "patternCm": 8,
-      "maxMm": 2.2,
-      "minMm": 0.4,
-      "contrast": 0.26,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "gemini",
@@ -1172,19 +1005,6 @@
         "ru": "Вазат"
       }
     ],
-    "preset": {
-      "magLimit": 4.9,
-      "patternCm": 8.5,
-      "maxMm": 2,
-      "minMm": 0.45,
-      "contrast": 0.32,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    },
     "zodiac": true
   },
   {
@@ -1261,20 +1081,7 @@
         "mag": 3.17,
         "ru": "Хедус"
       }
-    ],
-    "preset": {
-      "magLimit": 5.6,
-      "patternCm": 7.5,
-      "maxMm": 2.1,
-      "minMm": 0.45,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "aquila",
@@ -1350,20 +1157,7 @@
         "mag": 3.71,
         "ru": "Альшаин"
       }
-    ],
-    "preset": {
-      "magLimit": 4.15,
-      "patternCm": 8,
-      "maxMm": 2,
-      "minMm": 0.4,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "sagitta",
@@ -1418,20 +1212,7 @@
         "mag": 4.37,
         "ru": "Бета"
       }
-    ],
-    "preset": {
-      "magLimit": 4.65,
-      "patternCm": 3.5,
-      "maxMm": 1.4,
-      "minMm": 0.5,
-      "contrast": 0.45,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "camelopardalis",
@@ -1495,17 +1276,6 @@
       }
     ],
     "preset": {
-      "magLimit": 5.25,
-      "patternCm": 5,
-      "maxMm": 1.4,
-      "minMm": 0.5,
-      "contrast": 0.5,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade",
       "panX": 7,
       "panY": 26
     },
@@ -1621,20 +1391,7 @@
         "mag": 3.92,
         "ru": "Эпсилон"
       }
-    ],
-    "preset": {
-      "magLimit": 4.35,
-      "patternCm": 9,
-      "maxMm": 1.8,
-      "minMm": 0.45,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "corona-australis",
@@ -1710,20 +1467,7 @@
         "mag": 4.83,
         "ru": "Эпсилон"
       }
-    ],
-    "preset": {
-      "magLimit": 4.9,
-      "patternCm": 4,
-      "maxMm": 1.3,
-      "minMm": 0.5,
-      "contrast": 0.5,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "lepus",
@@ -1806,20 +1550,7 @@
         "mag": 3.81,
         "ru": "Дельта"
       }
-    ],
-    "preset": {
-      "magLimit": 4.85,
-      "patternCm": 6,
-      "maxMm": 1.8,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "grus",
@@ -1902,20 +1633,7 @@
         "mag": 4.28,
         "ru": "Тета"
       }
-    ],
-    "preset": {
-      "magLimit": 4.8,
-      "patternCm": 7,
-      "maxMm": 2,
-      "minMm": 0.4,
-      "contrast": 0.32,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "labels": "names",
-      "backgroundStars": "fade"
-    }
+    ]
   },
   {
     "id": "aries",
@@ -1939,19 +1657,6 @@
     "radiusArcmin": 810,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 3.95,
-      "patternCm": 6,
-      "maxMm": 1.9,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Hamal",
@@ -2008,19 +1713,6 @@
     "radiusArcmin": 1260,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 3.85,
-      "patternCm": 8,
-      "maxMm": 2.2,
-      "minMm": 0.45,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Aldebaran",
@@ -2105,19 +1797,6 @@
     "radiusArcmin": 990,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 4.75,
-      "patternCm": 6.5,
-      "maxMm": 1.6,
-      "minMm": 0.5,
-      "contrast": 0.45,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Tarf",
@@ -2181,19 +1860,6 @@
     "radiusArcmin": 1620,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 4.15,
-      "patternCm": 9,
-      "maxMm": 2.2,
-      "minMm": 0.45,
-      "contrast": 0.3,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Spica",
@@ -2278,19 +1944,6 @@
     "radiusArcmin": 1170,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 3.95,
-      "patternCm": 7,
-      "maxMm": 2,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Zubeneschamali",
@@ -2361,19 +2014,6 @@
     "radiusArcmin": 1170,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 3.4,
-      "patternCm": 7.5,
-      "maxMm": 2.1,
-      "minMm": 0.45,
-      "contrast": 0.35,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Kaus Australis",
@@ -2458,19 +2098,6 @@
     "radiusArcmin": 1170,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 4.2,
-      "patternCm": 7.5,
-      "maxMm": 1.9,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Deneb Algedi",
@@ -2541,19 +2168,6 @@
     "radiusArcmin": 1440,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 3.95,
-      "patternCm": 8.5,
-      "maxMm": 2,
-      "minMm": 0.5,
-      "contrast": 0.4,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Sadalsuud",
@@ -2631,19 +2245,6 @@
     "radiusArcmin": 1620,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "preset": {
-      "magLimit": 4.35,
-      "patternCm": 9,
-      "maxMm": 1.7,
-      "minMm": 0.5,
-      "contrast": 0.45,
-      "stepMm": 0.25,
-      "quantize": true,
-      "showLines": true,
-      "lineMm": 0.3,
-      "backgroundStars": "fade",
-      "labels": "names"
-    },
     "named": [
       {
         "name": "Alpherg",
