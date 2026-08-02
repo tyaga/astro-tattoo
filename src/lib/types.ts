@@ -1,5 +1,8 @@
 export type LabelsMode = 'none' | 'names' | 'full';
 
+/** Тема интерфейса; auto — следовать системной настройке */
+export type Theme = 'auto' | 'light' | 'dark';
+
 /** Шаг миллиметровой сетки; 0 — сетка выключена */
 export type GridMm = 0 | 1 | 2 | 5;
 
@@ -32,6 +35,8 @@ export interface Settings {
     gridMm: GridMm;
     /** Экранный масштаб предпросмотра (на эскиз не влияет) */
     previewZoom: number;
+    /** Тема интерфейса — на эскиз и экспорт не влияет */
+    theme: Theme;
     /** Цвет полотна — оттенок кожи */
     skinTone: string;
     /** Цвет чернил */

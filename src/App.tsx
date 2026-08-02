@@ -15,7 +15,9 @@ import {
     DEFAULTS, clearSettings, loadPresets, loadSettings, loadWrist,
     savePresets, saveSettings, saveWrist,
 } from './lib/state';
-import type { GridMm, LabelsMode, Preset, Settings, WristImage } from './lib/types';
+import type {
+    GridMm, LabelsMode, Preset, Settings, Theme, WristImage,
+} from './lib/types';
 
 const STAR_COUNTS = [5, 7, 9, 14, 25, 50, 120];
 
@@ -25,6 +27,12 @@ const mergePreset = (preset: Preset) => (): Settings => ({
     ...DEFAULTS,
     ...preset.settings,
 });
+
+const THEMES: { value: Theme; icon: string; title: string }[] = [
+    { value: 'auto', icon: '◐', title: 'Как в системе' },
+    { value: 'light', icon: '☀', title: 'Светлая тема' },
+    { value: 'dark', icon: '☾', title: 'Тёмная тема' },
+];
 
 const GRID_OPTIONS: { value: GridMm; label: string }[] = [
     { value: 0, label: 'нет' },
@@ -52,6 +60,10 @@ export default function App() {
     useEffect(() => {
         savePresets(presets);
     }, [presets]);
+
+    useEffect(() => {
+        document.documentElement.dataset.theme = settings.theme;
+    }, [settings.theme]);
 
     /** Смена объекта поверх текущих настроек: новый объект занимает
      *  на полотне столько же миллиметров, сколько занимал прежний */
@@ -137,7 +149,22 @@ export default function App() {
         <div className="app">
             <aside className="sidebar left">
                 <header className="sidebar-header">
-                    <h1>Астро·тату</h1>
+                    <div className="header-row">
+                        <h1>Астро·тату</h1>
+                        <div className="theme-switch">
+                            {THEMES.map(t => (
+                                <button
+                                    key={t.value}
+                                    className={settings.theme === t.value ? 'theme-btn active' : 'theme-btn'}
+                                    title={t.title}
+                                    aria-label={t.title}
+                                    onClick={() => set('theme')(t.value)}
+                                >
+                                    {t.icon}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <p>Эскизы созвездий по данным Gaia и Hipparcos</p>
                 </header>
 

@@ -30,6 +30,7 @@ export const DEFAULTS: Settings = {
     labels: 'names',
     gridMm: 1,
     previewZoom: 1,
+    theme: 'auto',
     skinTone: '#efcbb0',
     inkColor: '#1e2127',
     inkOpacity: 0.92,
