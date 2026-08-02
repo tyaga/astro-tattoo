@@ -8,7 +8,8 @@ import { TARGETS, getCatalog, getTarget, magForCount } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
 import {
-    buildSpec, computeDrawn, fitFovDeg, sheetSize, sizeClasses,
+    buildSpec, computeDrawn, fitFovDeg, fovForPatternMm, patternSizeMm,
+    sheetSize, sizeClasses,
 } from './lib/model';
 import {
     DEFAULTS, clearSettings, loadPresets, loadSettings, loadWrist,
@@ -52,10 +53,11 @@ export default function App() {
         savePresets(presets);
     }, [presets]);
 
-    /** Смена объекта поверх текущих настроек: меняем только то,
-     *  что привязано к конкретному участку неба */
+    /** Смена объекта поверх текущих настроек: новый объект занимает
+     *  на полотне столько же миллиметров, сколько занимал прежний */
     const handleTargetChange = (targetId: string) => {
         setSettings(s => {
+            const keepMm = patternSizeMm(s);
             const next: Settings = {
                 ...s,
                 targetId,
@@ -63,7 +65,10 @@ export default function App() {
                 panX: 0,
                 panY: 0,
             };
-            return { ...next, fovDeg: fitFovDeg(next) };
+            return {
+                ...next,
+                fovDeg: keepMm > 0 ? fovForPatternMm(next, keepMm) : fitFovDeg(next),
+            };
         });
     };
 
@@ -90,6 +95,7 @@ export default function App() {
 
     const drawn = useMemo(() => computeDrawn(settings), [settings]);
     const classes = useMemo(() => sizeClasses(drawn), [drawn]);
+    const patternCm = useMemo(() => patternSizeMm(settings) / 10, [settings]);
 
     const set = <K extends keyof Settings>(key: K) => (value: Settings[K]) =>
         setSettings(s => ({ ...s, [key]: value }));
@@ -196,11 +202,13 @@ export default function App() {
                         onChange={set('heightCm')}
                     />
                     <Slider
-                        label="Поле зрения"
-                        value={settings.fovDeg}
-                        min={0.2} max={30} step={0.05}
-                        format={v => v.toFixed(2) + '°'}
-                        onChange={set('fovDeg')}
+                        label="Размер рисунка"
+                        value={patternCm}
+                        min={0.5} max={25} step={0.1}
+                        format={v => v.toFixed(1) + ' см'}
+                        onChange={cm =>
+                            setSettings(s => ({ ...s, fovDeg: fovForPatternMm(s, cm * 10) }))
+                        }
                     />
                     <button
                         className="btn ghost"
@@ -215,6 +223,7 @@ export default function App() {
                     >
                         Вписать в полотно
                     </button>
+                    <p className="stat">Поле зрения: {settings.fovDeg.toFixed(2)}°</p>
                     <Slider
                         label="Поворот"
                         value={settings.rotation}
@@ -480,8 +489,8 @@ export default function App() {
                     )}
                 </section>
 
-                <section className="group" hidden={!target.photo}>
-                    <h2>Снимок объекта</h2>
+                <section className="group">
+                    <h2>Снимок неба</h2>
                     <Check
                         label="Показать фото на фоне"
                         checked={settings.showPhoto}
@@ -497,11 +506,11 @@ export default function App() {
                                 onChange={set('photoOpacity')}
                             />
                             <Slider
-                                label="Масштаб фото"
-                                value={settings.photoFovDeg}
-                                min={0.6} max={3} step={0.05}
-                                format={v => v.toFixed(2) + '°'}
-                                onChange={set('photoFovDeg')}
+                                label="Подгонка масштаба"
+                                value={settings.photoScale}
+                                min={0.8} max={1.25} step={0.005}
+                                format={v => Math.round(v * 1000) / 10 + '%'}
+                                onChange={set('photoScale')}
                             />
                             <Slider
                                 label="Поворот фото"

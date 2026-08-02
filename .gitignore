@@ -1,5 +1,6 @@
 node_modules/
 dist/
 
-# каталоги звёзд выгружаются скриптом из VizieR при сборке
+# каталоги и снимки выгружаются скриптом из CDS при сборке
 src/data/catalogs/
+src/data/photos/

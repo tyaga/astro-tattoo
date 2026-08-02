@@ -1,18 +1,10 @@
 import { forwardRef } from 'react';
-import photoUrl from '../assets/pleiades.jpg';
-import { getTarget, rad } from '../lib/catalog';
+import { getPhotoUrl, getTarget, rad } from '../lib/catalog';
 import { sheetSize } from '../lib/model';
 import { isDark } from '../lib/palette';
 import type { DrawnStar, Settings, WristImage } from '../lib/types';
 
 const FONT = 'Helvetica, Arial, sans-serif';
-
-// пропорции src/assets/pleiades.jpg (1280×923)
-const PHOTO_ASPECT = 923 / 1280;
-
-// Центр снимка не совпадает с центроидом именованных звёзд —
-// сдвиг подобран по совмещению ярких звёзд (тангенс-единицы: u — восток, v — север)
-const PHOTO_CENTER = { du: 0.00131, dv: -0.00115 };
 
 interface Props {
     settings: Settings;
@@ -49,8 +41,9 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
     const bx = W - 13;
     const by = H - 3;
 
-    // снимок неба есть не у каждого объекта
-    const skyPhoto = settings.showPhoto && Boolean(getTarget(settings.targetId).photo);
+    const target = getTarget(settings.targetId);
+    const photoUrl = getPhotoUrl(target.id);
+    const skyPhoto = settings.showPhoto && Boolean(photoUrl);
     // подписи и разметка подстраиваются под тёмный фон: кожу или снимок неба
     const onDark = skyPhoto || isDark(settings.skinTone);
     const nameFill = onDark ? '#f0f0f5' : '#33343d';
@@ -98,32 +91,29 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
             })()}
 
             {skyPhoto && (() => {
-                // фото привязано к небу: центр — центроид скопления,
-                // трансформации те же, что у звёзд (fov, pan, rotation, flips)
+                // снимок отрендерен в той же TAN-проекции и с тем же центром,
+                // что и эскиз, поэтому геометрия точная: остаётся перевести
+                // угловой размер снимка в миллиметры полотна
                 const scale = Math.min(W, H) / 2 / Math.tan(rad(settings.fovDeg));
-                const wMm = 2 * Math.tan(rad(settings.photoFovDeg / 2)) * scale;
-                const hMm = wMm * PHOTO_ASPECT;
+                const halfDeg = (target.photoFovDeg * settings.photoScale) / 2;
+                const size = 2 * Math.tan(rad(halfDeg)) * scale; // снимок квадратный
                 const fx = settings.flipX ? -1 : 1;
                 const fy = settings.flipY ? -1 : 1;
-                // центр фото проходит ту же трансформацию, что и звезда с (u, v) = PHOTO_CENTER
-                const th = rad(settings.rotation);
-                const x0 = fx * -PHOTO_CENTER.du;
-                const y0 = fy * PHOTO_CENTER.dv;
-                const cx = W / 2 + settings.panX + (x0 * Math.cos(th) - y0 * Math.sin(th)) * scale;
-                const cy = H / 2 + settings.panY - (x0 * Math.sin(th) + y0 * Math.cos(th)) * scale;
+                const cx = W / 2 + settings.panX;
+                const cy = H / 2 + settings.panY;
                 const rot = -(settings.rotation + settings.photoRotDeg * fx * fy);
                 return (
                     <g clipPath="url(#sheet)" data-export="exclude">
                         <g
                             transform={
                                 `translate(${cx} ${cy}) rotate(${rot}) scale(${fx} ${fy}) ` +
-                                `translate(${-wMm / 2} ${-hMm / 2})`
+                                `translate(${-size / 2} ${-size / 2})`
                             }
                         >
                             <image
-                                href={photoUrl}
+                                href={photoUrl!}
                                 x={0} y={0}
-                                width={wMm} height={hMm}
+                                width={size} height={size}
                                 opacity={settings.photoOpacity}
                                 preserveAspectRatio="none"
                             />

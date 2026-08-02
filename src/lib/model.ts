@@ -51,6 +51,33 @@ export function computeDrawn(s: Settings): DrawnStar[] {
     return drawn;
 }
 
+/** Угловой радиус рисунка: самая далёкая от центра видимая звезда,
+ *  в тангенс-единицах. Не зависит от поворота и размера полотна. */
+export function patternRadiusTan(s: Settings): number {
+    let r = 0;
+    for (const star of getCatalog(s.targetId)) {
+        if (star.mag > s.magLimit) break;
+        r = Math.max(r, Math.hypot(star.u, star.v));
+    }
+    return r;
+}
+
+/** Поперечник рисунка на полотне, мм — «насколько велика татуировка» */
+export function patternSizeMm(s: Settings): number {
+    return 2 * patternRadiusTan(s) * projectionScale(s);
+}
+
+/** Обратная задача: поле зрения, при котором рисунок займёт заданный поперечник.
+ *  Так объект остаётся того же физического размера при смене цели. */
+export function fovForPatternMm(s: Settings, mm: number): number {
+    const { W, H } = sheetSize(s);
+    const r = patternRadiusTan(s);
+    if (r === 0 || mm <= 0) return s.fovDeg;
+    const scale = mm / (2 * r);
+    const fov = (Math.atan(Math.min(W, H) / 2 / scale) * 180) / Math.PI;
+    return Math.min(30, Math.max(0.05, Math.round(fov * 100) / 100));
+}
+
 /** Поле зрения, при котором звёзды ярче предела вписываются в полотно */
 export function fitFovDeg(s: Settings): number {
     const { W, H } = sheetSize(s);

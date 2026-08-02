@@ -18,8 +18,10 @@ export interface Target {
     fetchMagLimit: number;
     maxRows: number;
     defaultMagLimit: number;
-    /** Есть ли снимок объекта для сравнения */
-    photo?: boolean;
+    /** HiPS-обзор, из которого отрендерен снимок объекта */
+    photoSurvey: string;
+    /** Угловая ширина снимка, градусы (он в той же TAN-проекции, что и эскиз) */
+    photoFovDeg: number;
     named: NamedStar[];
 }
 
@@ -53,6 +55,16 @@ const catalogFiles = import.meta.glob<RawStar[]>('../data/catalogs/*.json', {
 
 function rawStars(id: string): RawStar[] {
     return catalogFiles[`../data/catalogs/${id}.json`] ?? [];
+}
+
+// снимки для предпросмотра рендерит CDS hips2fits — там же, в скрипте выгрузки
+const photoFiles = import.meta.glob<string>('../data/photos/*.jpg', {
+    eager: true,
+    import: 'default',
+});
+
+export function getPhotoUrl(id: string): string | null {
+    return photoFiles[`../data/photos/${id}.jpg`] ?? null;
 }
 
 export function getTarget(id: string): Target {

@@ -36,7 +36,7 @@ export const DEFAULTS: Settings = {
     exportBw: true,
     showPhoto: false,
     photoOpacity: 0.85,
-    photoFovDeg: 1.4,
+    photoScale: 1,
     photoRotDeg: 0,
     showWrist: true,
     wristWidthCm: 16.3,
