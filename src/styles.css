@@ -440,6 +440,11 @@ select {
     margin-right: 4px;
 }
 
+.export-bar .check {
+    margin-left: 2px;
+    color: var(--muted);
+}
+
 .export-bar .btn.danger {
     margin-left: auto;
 }

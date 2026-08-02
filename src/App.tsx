@@ -273,6 +273,11 @@ export default function App() {
                     <button className="btn primary" onClick={handleExportSvg}>SVG 1:1</button>
                     <button className="btn primary" onClick={handleExportPng}>PNG 300 dpi</button>
                     <button className="btn" onClick={handleExportSpec}>Спецификация .txt</button>
+                    <Check
+                        label="чёрным по белому"
+                        checked={settings.exportBw}
+                        onChange={set('exportBw')}
+                    />
                     <button className="btn ghost danger" onClick={handleReset}>
                         Сбросить всё
                     </button>
@@ -337,11 +342,6 @@ export default function App() {
                         min={0.3} max={1} step={0.02}
                         format={v => Math.round(v * 100) + '%'}
                         onChange={set('inkOpacity')}
-                    />
-                    <Check
-                        label="Экспорт чёрным по белому"
-                        checked={settings.exportBw}
-                        onChange={set('exportBw')}
                     />
                 </section>
 
