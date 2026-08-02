@@ -169,11 +169,13 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
                 MAX_FOV,
                 Math.max(MIN_FOV, (Math.atan(tan) * 180) / Math.PI),
             );
-            // пальцы развернулись — на столько же поворачивается рисунок
+            // пальцы развернулись — на столько же поворачивается рисунок.
+            // Угол на экране растёт по часовой, а поворот рисунка — против,
+            // поэтому знак меняем, иначе фигура крутится в обратную сторону
             let turn = angle - pinch.angle;
             if (turn > 180) turn -= 360;
             if (turn < -180) turn += 360;
-            const rotation = ((pinch.rotation + turn) % 360 + 360) % 360;
+            const rotation = ((pinch.rotation - turn) % 360 + 360) % 360;
 
             setSettings(s => ({
                 ...s,
@@ -190,7 +192,7 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
         const dx = e.clientX - drag.startX;
         const dy = e.clientY - drag.startY;
         if (drag.rotating) {
-            const rotation = ((drag.rotation + dx * 0.5) % 360 + 360) % 360;
+            const rotation = ((drag.rotation - dx * 0.5) % 360 + 360) % 360;
             setSettings(s => ({ ...s, rotation }));
         } else {
             setSettings(s => ({

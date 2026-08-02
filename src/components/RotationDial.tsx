@@ -26,8 +26,9 @@ export function RotationDial({ value, onChange, lang, label }: Props) {
         if (!rect) return;
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        // ноль сверху, отсчёт по часовой стрелке — как поворот самого рисунка
-        let deg = (Math.atan2(e.clientX - cx, cy - e.clientY) * 180) / Math.PI;
+        // ноль сверху, отсчёт против часовой — в ту же сторону,
+        // в какую поворачивается сам рисунок
+        let deg = (Math.atan2(cx - e.clientX, cy - e.clientY) * 180) / Math.PI;
         if (e.shiftKey) deg = Math.round(deg / 15) * 15;
         onChange(norm(deg));
     };
@@ -39,9 +40,10 @@ export function RotationDial({ value, onChange, lang, label }: Props) {
         setDraft(null);
     };
 
-    const th = ((value - 90) * Math.PI) / 180;
-    const handleX = 20 + 14 * Math.cos(th);
-    const handleY = 20 + 14 * Math.sin(th);
+    // ручка стоит там же, куда смотрит рисунок: против часовой от «вверх»
+    const th = (value * Math.PI) / 180;
+    const handleX = 20 - 14 * Math.sin(th);
+    const handleY = 20 - 14 * Math.cos(th);
 
     return (
         <div className="control">
@@ -93,20 +95,22 @@ export function RotationDial({ value, onChange, lang, label }: Props) {
                     }}
                     onKeyDown={e => {
                         const step = e.shiftKey ? 15 : 1;
-                        if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') onChange(norm(value - step));
-                        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') onChange(norm(value + step));
+                        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') onChange(norm(value + step));
+                        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') onChange(norm(value - step));
                     }}
                 >
                     <title>{t(lang, 'dialHint')}</title>
                     <circle className="dial-face" cx="20" cy="20" r="17" />
                     {[0, 90, 180, 270].map(a => {
-                        const r = ((a - 90) * Math.PI) / 180;
+                        const r = (a * Math.PI) / 180;
+                        const sx = -Math.sin(r);
+                        const sy = -Math.cos(r);
                         return (
                             <line
                                 key={a}
                                 className="dial-tick"
-                                x1={20 + 15 * Math.cos(r)} y1={20 + 15 * Math.sin(r)}
-                                x2={20 + 17 * Math.cos(r)} y2={20 + 17 * Math.sin(r)}
+                                x1={20 + 15 * sx} y1={20 + 15 * sy}
+                                x2={20 + 17 * sx} y2={20 + 17 * sy}
                             />
                         );
                     })}
