@@ -190,6 +190,22 @@ function angularDist(ra1, dec1, ra2, dec2) {
     return Math.hypot(dra * cosDec, dde);
 }
 
+/** Оставляет только те созвездия, которым принадлежат именованные звёзды
+ *  объекта: в широкое поле выборки попадают куски соседних фигур,
+ *  а на эскизе нужна фигура выбранного объекта */
+function ownFeatures(target, features) {
+    const named = target.named ?? [];
+    if (named.length === 0) return [];
+    return features.filter(f =>
+        (f.geometry?.coordinates ?? []).some(line =>
+            line.some(([lon, dec]) => {
+                const ra = lon < 0 ? lon + 360 : lon;
+                return named.some(n => angularDist(ra, dec, n.ra, n.dec) <= LINE_SNAP_DEG);
+            }),
+        ),
+    );
+}
+
 /** Привязывает линии фигур к звёздам каталога: возвращает пары индексов.
  *  Индексы указывают в тот же массив, что уходит в catalogs/<id>.json. */
 function snapLines(stars, features) {
@@ -324,9 +340,13 @@ async function main() {
             } else {
                 try {
                     const stars = JSON.parse(await readFile(outPath, 'utf8'));
-                    const pairs = snapLines(stars, await getLineFeatures());
+                    const features = ownFeatures(target, await getLineFeatures());
+                    const pairs = snapLines(stars, features);
                     await writeFile(linesPath, JSON.stringify(pairs));
-                    console.log(`  ✓ линий фигуры: ${pairs.length}`);
+                    console.log(
+                        `  ✓ линий фигуры: ${pairs.length} ` +
+                        `(созвездий: ${features.map(f => f.id).join(', ') || '—'})`,
+                    );
                 } catch (e) {
                     console.error(`  ✗ линии не построены: ${e.message}`);
                     failed++;

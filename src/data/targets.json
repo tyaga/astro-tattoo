@@ -1256,5 +1256,53 @@
     "photoFovDeg": 2.6,
     "named": [],
     "lines": false
+  },
+  {
+    "id": "camelopardalis",
+    "name": "Жираф",
+    "subtitle": "Camelopardalis · северное созвездие",
+    "source": "hipparcos",
+    "center": {
+      "ra": 66.7,
+      "dec": 62.4
+    },
+    "radiusArcmin": 1170,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.7,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 26,
+    "named": [
+      {
+        "name": "Бета",
+        "ra": 75.85458,
+        "dec": 60.44225,
+        "mag": 4.03
+      },
+      {
+        "name": "CS Жирафа",
+        "ra": 52.26721,
+        "dec": 59.94033,
+        "mag": 4.21
+      },
+      {
+        "name": "Альфа",
+        "ra": 73.5125,
+        "dec": 66.34267,
+        "mag": 4.29
+      },
+      {
+        "name": "7 Жирафа",
+        "ra": 74.32162,
+        "dec": 53.75208,
+        "mag": 4.43
+      },
+      {
+        "name": "Гамма",
+        "ra": 57.58979,
+        "dec": 71.33228,
+        "mag": 4.59
+      }
+    ]
   }
 ]
