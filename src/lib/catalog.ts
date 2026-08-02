@@ -1,10 +1,28 @@
 import targetsJson from '../data/targets.json';
+import type { LabelsMode } from './types';
 
 export interface NamedStar {
     name: string;
     ra: number;
     dec: number;
     mag: number;
+}
+
+/** Настройки объекта по умолчанию: с них он выглядит так, как созвездие
+ *  принято рисовать — фигура собрана, помещается и звёзды соразмерны */
+export interface TargetPreset {
+    /** Предел яркости: чуть слабее самой тусклой звезды фигуры */
+    magLimit: number;
+    /** Поперечник рисунка на коже, см */
+    patternCm: number;
+    maxMm: number;
+    minMm: number;
+    /** Чем теснее диапазон яркостей фигуры, тем выше контраст */
+    contrast: number;
+    stepMm: number;
+    quantize: boolean;
+    showLines: boolean;
+    labels: LabelsMode;
 }
 
 export interface Target {
@@ -17,7 +35,7 @@ export interface Target {
     radiusArcmin: number;
     fetchMagLimit: number;
     maxRows: number;
-    defaultMagLimit: number;
+    preset: TargetPreset;
     /** HiPS-обзор, из которого отрендерен снимок объекта */
     photoSurvey: string;
     /** Угловая ширина снимка, градусы (он в той же TAN-проекции, что и эскиз) */

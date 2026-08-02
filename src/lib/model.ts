@@ -1,6 +1,9 @@
 import { getCatalog, getTarget, rad } from './catalog';
 import type { DrawnStar, Settings } from './types';
 
+/** Дальше гномоническая проекция слишком растягивает углы полотна */
+export const MAX_FOV_DEG = 45;
+
 export function sheetSize(s: Settings): { W: number; H: number } {
     return { W: s.widthCm * 10, H: s.heightCm * 10 };
 }
@@ -97,7 +100,7 @@ export function fovForPatternMm(s: Settings, mm: number): number {
     if (r === 0 || mm <= 0) return s.fovDeg;
     const scale = mm / (2 * r);
     const fov = (Math.atan(Math.min(W, H) / 2 / scale) * 180) / Math.PI;
-    return Math.min(30, Math.max(0.05, Math.round(fov * 100) / 100));
+    return Math.min(MAX_FOV_DEG, Math.max(0.05, Math.round(fov * 100) / 100));
 }
 
 /** Поле зрения, при котором звёзды ярче предела вписываются в полотно */
@@ -122,7 +125,30 @@ export function fitFovDeg(s: Settings): number {
     );
     const tan = Math.min(W, H) / 2 / scaleLimit;
     const fov = (Math.atan(tan) * 180) / Math.PI;
-    return Math.min(30, Math.max(0.2, Math.round(fov * 20) / 20));
+    return Math.min(MAX_FOV_DEG, Math.max(0.2, Math.round(fov * 20) / 20));
+}
+
+/** Подставляет настройки объекта по умолчанию: диапазон звёзд, размер
+ *  рисунка, размеры точек и линии фигуры. Полотно, кожа, чернила, сетка
+ *  и фото запястья не трогаются — они про место на теле, а не про объект. */
+export function applyTargetPreset(base: Settings, targetId: string): Settings {
+    const p = getTarget(targetId).preset;
+    const next: Settings = {
+        ...base,
+        targetId,
+        magLimit: p.magLimit,
+        maxMm: p.maxMm,
+        minMm: p.minMm,
+        contrast: p.contrast,
+        stepMm: p.stepMm,
+        quantize: p.quantize,
+        showLines: p.showLines,
+        labels: p.labels,
+        rotation: 0,
+        panX: 0,
+        panY: 0,
+    };
+    return { ...next, fovDeg: fovForPatternMm(next, p.patternCm * 10) };
 }
 
 export interface SizeClass {

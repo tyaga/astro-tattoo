@@ -313,6 +313,12 @@ body {
     line-height: 1.2;
 }
 
+.current-text .link-btn {
+    font-size: 11px;
+    text-align: left;
+    margin-top: 1px;
+}
+
 .group.first {
     margin-top: 0;
 }

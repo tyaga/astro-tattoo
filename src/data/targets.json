@@ -11,7 +11,6 @@
     "radiusArcmin": 120,
     "fetchMagLimit": 14,
     "maxRows": 5000,
-    "defaultMagLimit": 6.1,
     "named": [
       {
         "name": "Альциона",
@@ -70,7 +69,18 @@
     ],
     "photoSurvey": "CDS/P/DSS2/color",
     "photoFovDeg": 2.2,
-    "lines": false
+    "lines": false,
+    "preset": {
+      "magLimit": 6.1,
+      "patternCm": 4.5,
+      "maxMm": 1.8,
+      "minMm": 0.35,
+      "contrast": 0.28,
+      "stepMm": 0.25,
+      "showLines": false,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "orion",
@@ -84,7 +94,6 @@
     "radiusArcmin": 1260,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4,
     "named": [
       {
         "name": "Бетельгейзе",
@@ -136,7 +145,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 28
+    "photoFovDeg": 28,
+    "preset": {
+      "magLimit": 4,
+      "patternCm": 9,
+      "maxMm": 2.2,
+      "minMm": 0.4,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "big-dipper",
@@ -150,7 +170,6 @@
     "radiusArcmin": 1530,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4,
     "named": [
       {
         "name": "Дубхе",
@@ -196,7 +215,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 34
+    "photoFovDeg": 34,
+    "preset": {
+      "magLimit": 3.4,
+      "patternCm": 8,
+      "maxMm": 2,
+      "minMm": 0.5,
+      "contrast": 0.35,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "cassiopeia",
@@ -210,7 +240,6 @@
     "radiusArcmin": 1080,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4,
     "named": [
       {
         "name": "Шедар",
@@ -244,7 +273,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 24
+    "photoFovDeg": 24,
+    "preset": {
+      "magLimit": 3.5,
+      "patternCm": 6.5,
+      "maxMm": 1.9,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "southern-cross",
@@ -258,7 +298,6 @@
     "radiusArcmin": 585,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.5,
     "named": [
       {
         "name": "Акрукс",
@@ -292,7 +331,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 13
+    "photoFovDeg": 13,
+    "preset": {
+      "magLimit": 3.7,
+      "patternCm": 5,
+      "maxMm": 2,
+      "minMm": 0.4,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "lyra",
@@ -306,7 +356,6 @@
     "radiusArcmin": 630,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.5,
     "named": [
       {
         "name": "Вега",
@@ -340,7 +389,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 14
+    "photoFovDeg": 14,
+    "preset": {
+      "magLimit": 4.4,
+      "patternCm": 5,
+      "maxMm": 2.2,
+      "minMm": 0.35,
+      "contrast": 0.25,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "cygnus",
@@ -354,7 +414,6 @@
     "radiusArcmin": 1350,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4,
     "named": [
       {
         "name": "Денеб",
@@ -388,7 +447,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 30
+    "photoFovDeg": 30,
+    "preset": {
+      "magLimit": 3.2,
+      "patternCm": 8.5,
+      "maxMm": 2,
+      "minMm": 0.5,
+      "contrast": 0.35,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "corona-borealis",
@@ -402,7 +472,6 @@
     "radiusArcmin": 585,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 5,
     "named": [
       {
         "name": "Альфекка",
@@ -442,7 +511,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 13
+    "photoFovDeg": 13,
+    "preset": {
+      "magLimit": 4.7,
+      "patternCm": 5,
+      "maxMm": 1.8,
+      "minMm": 0.4,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "delphinus",
@@ -456,7 +536,6 @@
     "radiusArcmin": 495,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 5,
     "named": [
       {
         "name": "Ротанев",
@@ -490,7 +569,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 11
+    "photoFovDeg": 11,
+    "preset": {
+      "magLimit": 4.5,
+      "patternCm": 4,
+      "maxMm": 1.5,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "little-dipper",
@@ -504,7 +594,6 @@
     "radiusArcmin": 1440,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 5,
     "named": [
       {
         "name": "Полярная",
@@ -532,7 +621,18 @@
       }
     ],
     "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 32
+    "photoFovDeg": 32,
+    "preset": {
+      "magLimit": 4.4,
+      "patternCm": 7,
+      "maxMm": 2,
+      "minMm": 0.4,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "scorpius",
@@ -546,7 +646,6 @@
     "radiusArcmin": 1530,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 34,
     "named": [
@@ -598,7 +697,18 @@
         "dec": -26.11417,
         "mag": 2.89
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.2,
+      "patternCm": 9,
+      "maxMm": 2.2,
+      "minMm": 0.45,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "leo",
@@ -612,7 +722,6 @@
     "radiusArcmin": 1530,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3.5,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 34,
     "named": [
@@ -658,7 +767,18 @@
         "dec": 23.41722,
         "mag": 3.44
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.6,
+      "patternCm": 8.5,
+      "maxMm": 2,
+      "minMm": 0.45,
+      "contrast": 0.32,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "bootes",
@@ -672,7 +792,6 @@
     "radiusArcmin": 1350,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3.6,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 30,
     "named": [
@@ -718,7 +837,18 @@
         "dec": 30.37139,
         "mag": 3.58
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.6,
+      "patternCm": 8,
+      "maxMm": 2.2,
+      "minMm": 0.4,
+      "contrast": 0.26,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "gemini",
@@ -732,7 +862,6 @@
     "radiusArcmin": 1350,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3.6,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 30,
     "named": [
@@ -784,7 +913,18 @@
         "dec": 21.98222,
         "mag": 3.53
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.6,
+      "patternCm": 8.5,
+      "maxMm": 2,
+      "minMm": 0.45,
+      "contrast": 0.32,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "auriga",
@@ -798,7 +938,6 @@
     "radiusArcmin": 1170,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3.2,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 26,
     "named": [
@@ -844,7 +983,18 @@
         "dec": 41.23444,
         "mag": 3.17
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.3,
+      "patternCm": 7.5,
+      "maxMm": 2.1,
+      "minMm": 0.45,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "aquila",
@@ -858,7 +1008,6 @@
     "radiusArcmin": 1260,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3.9,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 28,
     "named": [
@@ -904,7 +1053,18 @@
         "dec": 6.40667,
         "mag": 3.71
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.9,
+      "patternCm": 8,
+      "maxMm": 2,
+      "minMm": 0.4,
+      "contrast": 0.3,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "sagitta",
@@ -918,7 +1078,6 @@
     "radiusArcmin": 450,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.5,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 10,
     "named": [
@@ -946,7 +1105,18 @@
         "dec": 17.47611,
         "mag": 4.37
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 4.5,
+      "patternCm": 3.5,
+      "maxMm": 1.4,
+      "minMm": 0.5,
+      "contrast": 0.45,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "camelopardalis",
@@ -960,7 +1130,6 @@
     "radiusArcmin": 1170,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.7,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 26,
     "named": [
@@ -994,7 +1163,18 @@
         "dec": 71.33228,
         "mag": 4.59
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 4.7,
+      "patternCm": 6,
+      "maxMm": 1.4,
+      "minMm": 0.5,
+      "contrast": 0.5,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "hercules",
@@ -1008,7 +1188,6 @@
     "radiusArcmin": 1620,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.2,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 36,
     "named": [
@@ -1078,7 +1257,18 @@
         "dec": 30.92639,
         "mag": 3.92
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 4.2,
+      "patternCm": 9,
+      "maxMm": 1.8,
+      "minMm": 0.45,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "corona-australis",
@@ -1092,7 +1282,6 @@
     "radiusArcmin": 540,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.9,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 12,
     "named": [
@@ -1138,7 +1327,18 @@
         "dec": -37.10722,
         "mag": 4.83
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 4.9,
+      "patternCm": 4,
+      "maxMm": 1.3,
+      "minMm": 0.5,
+      "contrast": 0.5,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "lepus",
@@ -1152,7 +1352,6 @@
     "radiusArcmin": 810,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 3.9,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 18,
     "named": [
@@ -1204,7 +1403,18 @@
         "dec": -20.87917,
         "mag": 3.81
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 3.9,
+      "patternCm": 6,
+      "maxMm": 1.8,
+      "minMm": 0.5,
+      "contrast": 0.4,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   },
   {
     "id": "grus",
@@ -1218,7 +1428,6 @@
     "radiusArcmin": 1080,
     "fetchMagLimit": 7,
     "maxRows": 3000,
-    "defaultMagLimit": 4.3,
     "photoSurvey": "CDS/P/Mellinger/color",
     "photoFovDeg": 24,
     "named": [
@@ -1270,6 +1479,17 @@
         "dec": -43.52028,
         "mag": 4.28
       }
-    ]
+    ],
+    "preset": {
+      "magLimit": 4.3,
+      "patternCm": 7,
+      "maxMm": 2,
+      "minMm": 0.4,
+      "contrast": 0.32,
+      "stepMm": 0.25,
+      "showLines": true,
+      "labels": "names",
+      "quantize": true
+    }
   }
 ]

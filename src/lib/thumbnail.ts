@@ -18,7 +18,7 @@ export function thumbnailDots(id: string): DrawnStar[] {
     const base: Settings = {
         ...DEFAULTS,
         targetId: id,
-        magLimit: target.defaultMagLimit,
+        magLimit: target.preset.magLimit,
         widthCm: THUMB_BOX / 10,
         heightCm: THUMB_BOX / 10,
         rotation: 0,

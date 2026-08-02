@@ -10,8 +10,8 @@ import { getCatalog, getLines, getTarget, magForCount } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToWristImage } from './lib/image';
 import {
-    buildSpec, computeDrawn, fitFovDeg, fovForPatternMm, patternSizeMm,
-    sheetSize, sizeClasses,
+    applyTargetPreset, buildSpec, computeDrawn, fitFovDeg, fovForPatternMm,
+    patternSizeMm, sheetSize, sizeClasses,
 } from './lib/model';
 import {
     DEFAULTS, clearSettings, loadPresets, loadSettings, loadWrist,
@@ -76,7 +76,7 @@ export default function App() {
             const next: Settings = {
                 ...s,
                 targetId,
-                magLimit: getTarget(targetId).defaultMagLimit,
+                magLimit: getTarget(targetId).preset.magLimit,
                 panX: 0,
                 panY: 0,
             };
@@ -146,7 +146,7 @@ export default function App() {
 
     const handleReset = () => {
         clearSettings();
-        setSettings({ ...DEFAULTS });
+        setSettings(s => applyTargetPreset({ ...DEFAULTS }, s.targetId));
     };
 
     return (
@@ -179,6 +179,13 @@ export default function App() {
                     <div className="current-text">
                         <b>{target.name}</b>
                         <span className="stat">{target.subtitle}</span>
+                        <button
+                            className="link-btn"
+                            title="Диапазон звёзд, размер рисунка, точки и линии — как принято рисовать этот объект"
+                            onClick={() => setSettings(s => applyTargetPreset(s, s.targetId))}
+                        >
+                            вид по умолчанию
+                        </button>
                     </div>
                 </section>
 
