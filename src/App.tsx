@@ -78,6 +78,7 @@ export default function App() {
         },
     );
     const [linkCopied, setLinkCopied] = useState(false);
+    const [showAll, setShowAll] = useState(false);
     const [wrist, setWrist] = useState<WristImage | null>(loadWrist);
     const [presets, setPresets] = useState<Preset[]>(loadPresets);
     const perTargetRef = useRef(loadPerTarget());
@@ -198,7 +199,7 @@ export default function App() {
     };
 
     return (
-        <div className="app">
+        <div className={showAll ? 'app show-all' : 'app'}>
             <header className="appbar">
                 <div className="appbar-brand">
                     <h1>{tr('brand')}</h1>
@@ -344,6 +345,13 @@ export default function App() {
                     )}
                 </p>
 
+                <button
+                    className="btn ghost mobile-only"
+                    onClick={() => setShowAll(v => !v)}
+                >
+                    {showAll ? tr('lessSettings') : tr('moreSettings')}
+                </button>
+
                 <div className="export-bar">
                     <span className="export-label">{tr('exportTitle')}</span>
                     <button className="btn primary" onClick={handleExportSvg}>SVG 1:1</button>
@@ -364,7 +372,7 @@ export default function App() {
             </main>
 
             <aside className="sidebar right">
-                <section className="group first">
+                <section className="group first" data-adv>
                     <h2>{tr('dots')}</h2>
                     <Slider
                         label={tr('maxDiameter')}
@@ -493,12 +501,12 @@ export default function App() {
                     </div>
                 </section>
 
-                <section className="group">
+                <section className="group" data-adv>
                     <h2>{tr('sizeClasses')}</h2>
                     <Legend classes={classes} lang={lang} />
                 </section>
 
-                <section className="group">
+                <section className="group" data-adv>
                     <h2>{tr('presets')}</h2>
                     <Presets
                         lang={lang}
@@ -513,7 +521,7 @@ export default function App() {
             </aside>
 
             <aside className="sidebar photos">
-                <section className="group first">
+                <section className="group first" data-adv>
                     <div className="group-head">
                         <h2>{tr('wrist')}</h2>
                         {wrist && (
@@ -594,7 +602,7 @@ export default function App() {
                     )}
                 </section>
 
-                <section className="group">
+                <section className="group" data-adv>
                     <div className="group-head">
                         <h2>{tr('skyPhoto')}</h2>
                         <Segmented

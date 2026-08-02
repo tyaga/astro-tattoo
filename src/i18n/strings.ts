@@ -110,6 +110,8 @@ const ru = {
     exportSpec: 'Спецификация .txt',
     exportBw: 'чёрным по белому',
     copyLink: 'Ссылка',
+    moreSettings: 'Все настройки',
+    lessSettings: 'Свернуть настройки',
     linkCopied: 'скопировано',
     resetAll: 'Сбросить всё',
 
@@ -232,6 +234,8 @@ const en: Record<StringKey, string> = {
     exportBw: 'black on white',
     copyLink: 'Link',
     linkCopied: 'copied',
+    moreSettings: 'All settings',
+    lessSettings: 'Hide extra settings',
     resetAll: 'Reset everything',
 
     on: 'on',
@@ -350,6 +354,8 @@ const is: Record<StringKey, string> = {
     exportSpec: 'Lýsing .txt',
     exportBw: 'svart á hvítu',
     copyLink: 'Tengill',
+    moreSettings: 'Allar stillingar',
+    lessSettings: 'Fela stillingar',
     linkCopied: 'afritað',
     resetAll: 'Núllstilla allt',
 
@@ -470,6 +476,8 @@ const nl: Record<StringKey, string> = {
     exportBw: 'zwart op wit',
     copyLink: 'Link',
     linkCopied: 'gekopieerd',
+    moreSettings: 'Alle instellingen',
+    lessSettings: 'Verberg instellingen',
     resetAll: 'Alles resetten',
 
     on: 'aan',

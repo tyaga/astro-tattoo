@@ -926,3 +926,96 @@ select {
         max-height: none;
     }
 }
+
+/* ---------- телефон: упрощённый режим ---------- */
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    /* порядок задаём явно: сначала эскиз, панели под ним */
+    .app {
+        display: flex;
+        flex-direction: column;
+        --topbar-h: 0px;
+    }
+
+    .appbar { order: 1; }
+    .topbar { order: 2; }
+    .stage { order: 3; }
+    .sidebar.left { order: 4; }
+    .sidebar.right { order: 5; }
+    .sidebar.photos { order: 6; }
+
+    /* панели идут обычным потоком под превью */
+    .sidebar {
+        position: static;
+        height: auto;
+        padding: 12px 12px 16px;
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid var(--border);
+    }
+
+    .appbar {
+        padding: 6px 10px;
+    }
+
+    .appbar-brand p {
+        display: none;
+    }
+
+    .topbar {
+        position: static;
+    }
+
+    .target-card {
+        width: 64px;
+    }
+
+    .target-thumb {
+        width: 38px;
+        height: 38px;
+    }
+
+    .stage {
+        padding: 10px 10px 4px;
+        gap: 8px;
+    }
+
+    .preview-wrap {
+        max-height: 52vh;
+        overflow: hidden;
+    }
+
+    /* вертикальный свайп листает страницу, горизонтальный двигает эскиз:
+       иначе палец «залипает» в превью и до настроек не добраться */
+    .preview {
+        touch-action: pan-y;
+    }
+
+    .hint {
+        display: none;
+    }
+
+    .mobile-only {
+        display: inline-flex;
+        align-self: stretch;
+        justify-content: center;
+    }
+
+    /* тонкая настройка прячется, пока её не попросят */
+    .app:not(.show-all) [data-adv] {
+        display: none;
+    }
+
+    .export-bar {
+        gap: 6px;
+        padding: 8px 10px;
+    }
+
+    .export-bar .btn.danger {
+        margin-left: 0;
+    }
+}
