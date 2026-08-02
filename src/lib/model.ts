@@ -13,6 +13,16 @@ export function starDiameterMm(s: Settings, mag: number, brightest: number): num
     return Math.max(s.stepMm, Math.round(clamped / s.stepMm) * s.stepMm);
 }
 
+/** Опорная яркость для размера точек — ярчайшая звезда самой фигуры.
+ *  В широкое поле попадают чужие светила (Вега в поле Геркулеса, Ригель
+ *  у Зайца); если равняться на них, звёзды фигуры схлопнутся к минимуму.
+ *  Такие соседи просто упрутся в максимальный диаметр. */
+function referenceMag(targetId: string): number {
+    const catalog = getCatalog(targetId);
+    const named = catalog.filter(s => s.name);
+    return named.length >= 3 ? named[0].mag : catalog[0].mag;
+}
+
 /** Масштаб проекции: мм полотна на единицу тангенса */
 function projectionScale(s: Settings): number {
     const { W, H } = sheetSize(s);
@@ -29,7 +39,7 @@ export function computeDrawn(s: Settings): DrawnStar[] {
     const th = rad(s.rotation);
     const cos = Math.cos(th);
     const sin = Math.sin(th);
-    const brightest = catalog[0].mag;
+    const brightest = referenceMag(s.targetId);
     const drawn: DrawnStar[] = [];
 
     for (let index = 0; index < catalog.length; index++) {

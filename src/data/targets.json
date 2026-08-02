@@ -73,42 +73,6 @@
     "lines": false
   },
   {
-    "id": "orion-belt",
-    "name": "Пояс Ориона",
-    "subtitle": "Три Волхва · астеризм",
-    "source": "hipparcos",
-    "center": {
-      "ra": 84.1,
-      "dec": -1.15
-    },
-    "radiusArcmin": 315,
-    "fetchMagLimit": 7,
-    "maxRows": 3000,
-    "defaultMagLimit": 5,
-    "named": [
-      {
-        "name": "Альнитак",
-        "ra": 85.18969,
-        "dec": -1.94257,
-        "mag": 1.77
-      },
-      {
-        "name": "Альнилам",
-        "ra": 84.05339,
-        "dec": -1.20192,
-        "mag": 1.69
-      },
-      {
-        "name": "Минтака",
-        "ra": 83.00167,
-        "dec": -0.29909,
-        "mag": 2.25
-      }
-    ],
-    "photoSurvey": "CDS/P/DSS2/color",
-    "photoFovDeg": 7
-  },
-  {
     "id": "orion",
     "name": "Орион",
     "subtitle": "Созвездие целиком",
@@ -571,80 +535,6 @@
     "photoFovDeg": 32
   },
   {
-    "id": "hyades",
-    "name": "Гиады",
-    "subtitle": "V-образное скопление с Альдебараном",
-    "source": "hipparcos",
-    "center": {
-      "ra": 67,
-      "dec": 16.5
-    },
-    "radiusArcmin": 720,
-    "fetchMagLimit": 7.5,
-    "maxRows": 3000,
-    "defaultMagLimit": 5.5,
-    "named": [
-      {
-        "name": "Альдебаран",
-        "ra": 68.98016,
-        "dec": 16.5093,
-        "mag": 0.87
-      },
-      {
-        "name": "Тета² Тельца",
-        "ra": 67.16542,
-        "dec": 15.87083,
-        "mag": 3.4
-      },
-      {
-        "name": "Гамма Тельца",
-        "ra": 64.94833,
-        "dec": 15.62778,
-        "mag": 3.65
-      },
-      {
-        "name": "Дельта Тельца",
-        "ra": 65.73375,
-        "dec": 17.5425,
-        "mag": 3.76
-      },
-      {
-        "name": "Эпсилон Тельца",
-        "ra": 67.15417,
-        "dec": 19.18028,
-        "mag": 3.53
-      }
-    ],
-    "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 16,
-    "lines": false
-  },
-  {
-    "id": "beehive",
-    "name": "Ясли",
-    "subtitle": "M44 · рассеянное скопление",
-    "source": "gaia",
-    "center": {
-      "ra": 130.1,
-      "dec": 19.667
-    },
-    "radiusArcmin": 108,
-    "fetchMagLimit": 13.5,
-    "maxRows": 5000,
-    "defaultMagLimit": 8,
-    "named": [
-      {
-        "name": "Эпсилон Рака",
-        "ra": 130.15375,
-        "dec": 19.84028,
-        "mag": 6.29
-      }
-    ],
-    "photoSurvey": "CDS/P/DSS2/color",
-    "photoFovDeg": 2.4,
-    "lines": false
-  },
-  {
     "id": "scorpius",
     "name": "Скорпион",
     "subtitle": "С Антаресом · созвездие",
@@ -767,114 +657,6 @@
         "ra": 154.1725,
         "dec": 23.41722,
         "mag": 3.44
-      }
-    ]
-  },
-  {
-    "id": "teapot",
-    "name": "Чайник",
-    "subtitle": "Астеризм в Стрельце",
-    "source": "hipparcos",
-    "center": {
-      "ra": 280,
-      "dec": -29
-    },
-    "radiusArcmin": 990,
-    "fetchMagLimit": 7,
-    "maxRows": 3000,
-    "defaultMagLimit": 3.4,
-    "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 22,
-    "named": [
-      {
-        "name": "Каус Аустралис",
-        "ra": 276.043,
-        "dec": -34.38472,
-        "mag": 1.85
-      },
-      {
-        "name": "Нунки",
-        "ra": 283.81633,
-        "dec": -26.29667,
-        "mag": 2.05
-      },
-      {
-        "name": "Асцелла",
-        "ra": 285.65292,
-        "dec": -29.88028,
-        "mag": 2.6
-      },
-      {
-        "name": "Каус Медиа",
-        "ra": 275.24833,
-        "dec": -29.82806,
-        "mag": 2.7
-      },
-      {
-        "name": "Каус Бореалис",
-        "ra": 276.9925,
-        "dec": -25.42167,
-        "mag": 2.81
-      },
-      {
-        "name": "Альнасл",
-        "ra": 271.45208,
-        "dec": -30.42417,
-        "mag": 2.99
-      },
-      {
-        "name": "Фи",
-        "ra": 281.41417,
-        "dec": -26.99083,
-        "mag": 3.17
-      },
-      {
-        "name": "Тау",
-        "ra": 286.735,
-        "dec": -27.67056,
-        "mag": 3.32
-      }
-    ]
-  },
-  {
-    "id": "great-square",
-    "name": "Квадрат Пегаса",
-    "subtitle": "Большой квадрат · астеризм",
-    "source": "hipparcos",
-    "center": {
-      "ra": 354.5,
-      "dec": 22
-    },
-    "radiusArcmin": 1260,
-    "fetchMagLimit": 7,
-    "maxRows": 3000,
-    "defaultMagLimit": 3,
-    "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 28,
-    "named": [
-      {
-        "name": "Альферац",
-        "ra": 2.09722,
-        "dec": 29.09056,
-        "mag": 2.06
-      },
-      {
-        "name": "Шеат",
-        "ra": 345.94375,
-        "dec": 28.08278,
-        "mag": 2.44
-      },
-      {
-        "name": "Маркаб",
-        "ra": 346.19042,
-        "dec": 15.20528,
-        "mag": 2.49
-      },
-      {
-        "name": "Альгениб",
-        "ra": 3.30917,
-        "dec": 15.18361,
-        "mag": 2.83
       }
     ]
   },
@@ -1125,54 +907,6 @@
     ]
   },
   {
-    "id": "corvus",
-    "name": "Ворон",
-    "subtitle": "Парус · компактный четырёхугольник",
-    "source": "hipparcos",
-    "center": {
-      "ra": 185,
-      "dec": -20.5
-    },
-    "radiusArcmin": 675,
-    "fetchMagLimit": 7,
-    "maxRows": 3000,
-    "defaultMagLimit": 4.1,
-    "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 15,
-    "named": [
-      {
-        "name": "Гиенах",
-        "ra": 183.95167,
-        "dec": -17.54194,
-        "mag": 2.59
-      },
-      {
-        "name": "Крас",
-        "ra": 188.59667,
-        "dec": -23.39667,
-        "mag": 2.65
-      },
-      {
-        "name": "Алгораб",
-        "ra": 187.46625,
-        "dec": -16.51556,
-        "mag": 2.95
-      },
-      {
-        "name": "Минкар",
-        "ra": 182.53125,
-        "dec": -22.61972,
-        "mag": 3.02
-      },
-      {
-        "name": "Альхиба",
-        "ra": 182.10333,
-        "dec": -24.72889,
-        "mag": 4.02
-      }
-    ]
-  },
-  {
     "id": "sagitta",
     "name": "Стрела",
     "subtitle": "Самое маленькое созвездие-стрела",
@@ -1213,49 +947,6 @@
         "mag": 4.37
       }
     ]
-  },
-  {
-    "id": "coma",
-    "name": "Волосы Вероники",
-    "subtitle": "Melotte 111 · рассеянное скопление",
-    "source": "hipparcos",
-    "center": {
-      "ra": 186,
-      "dec": 25.8
-    },
-    "radiusArcmin": 495,
-    "fetchMagLimit": 8,
-    "maxRows": 3000,
-    "defaultMagLimit": 6.5,
-    "photoSurvey": "CDS/P/Mellinger/color",
-    "photoFovDeg": 11,
-    "named": [
-      {
-        "name": "Гамма",
-        "ra": 186.73458,
-        "dec": 28.26833,
-        "mag": 4.35
-      }
-    ],
-    "lines": false
-  },
-  {
-    "id": "double-cluster",
-    "name": "Двойное скопление",
-    "subtitle": "h и χ Персея · NGC 869 и 884",
-    "source": "gaia",
-    "center": {
-      "ra": 35.16,
-      "dec": 57.14
-    },
-    "radiusArcmin": 117,
-    "fetchMagLimit": 13,
-    "maxRows": 5000,
-    "defaultMagLimit": 9.5,
-    "photoSurvey": "CDS/P/DSS2/color",
-    "photoFovDeg": 2.6,
-    "named": [],
-    "lines": false
   },
   {
     "id": "camelopardalis",
@@ -1302,6 +993,282 @@
         "ra": 57.58979,
         "dec": 71.33228,
         "mag": 4.59
+      }
+    ]
+  },
+  {
+    "id": "hercules",
+    "name": "Геркулес",
+    "subtitle": "Замковый камень · созвездие",
+    "source": "hipparcos",
+    "center": {
+      "ra": 258,
+      "dec": 30
+    },
+    "radiusArcmin": 1620,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.2,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 36,
+    "named": [
+      {
+        "name": "Корнефорос",
+        "ra": 247.555,
+        "dec": 21.48972,
+        "mag": 2.78
+      },
+      {
+        "name": "Дзета",
+        "ra": 250.32167,
+        "dec": 31.60278,
+        "mag": 2.81
+      },
+      {
+        "name": "Сарин",
+        "ra": 258.75792,
+        "dec": 24.83917,
+        "mag": 3.12
+      },
+      {
+        "name": "Пи",
+        "ra": 258.76167,
+        "dec": 36.80917,
+        "mag": 3.16
+      },
+      {
+        "name": "Рас Альгети",
+        "ra": 258.66208,
+        "dec": 14.39028,
+        "mag": 3.35
+      },
+      {
+        "name": "Мю",
+        "ra": 266.61458,
+        "dec": 27.72083,
+        "mag": 3.42
+      },
+      {
+        "name": "Эта",
+        "ra": 250.72417,
+        "dec": 38.92222,
+        "mag": 3.48
+      },
+      {
+        "name": "Гамма",
+        "ra": 245.48,
+        "dec": 19.15306,
+        "mag": 3.75
+      },
+      {
+        "name": "Йота",
+        "ra": 264.86625,
+        "dec": 46.00639,
+        "mag": 3.8
+      },
+      {
+        "name": "Тета",
+        "ra": 269.06333,
+        "dec": 37.25056,
+        "mag": 3.86
+      },
+      {
+        "name": "Эпсилон",
+        "ra": 255.0725,
+        "dec": 30.92639,
+        "mag": 3.92
+      }
+    ]
+  },
+  {
+    "id": "corona-australis",
+    "name": "Южная Корона",
+    "subtitle": "Изящная дуга · созвездие",
+    "source": "hipparcos",
+    "center": {
+      "ra": 285.5,
+      "dec": -39.5
+    },
+    "radiusArcmin": 540,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.9,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 12,
+    "named": [
+      {
+        "name": "Альфекка Южная",
+        "ra": 287.36833,
+        "dec": -37.90444,
+        "mag": 4.1
+      },
+      {
+        "name": "Бета",
+        "ra": 287.50708,
+        "dec": -39.34083,
+        "mag": 4.11
+      },
+      {
+        "name": "Гамма",
+        "ra": 286.60458,
+        "dec": -37.06333,
+        "mag": 4.2
+      },
+      {
+        "name": "Дельта",
+        "ra": 287.08625,
+        "dec": -40.49972,
+        "mag": 4.59
+      },
+      {
+        "name": "Тета",
+        "ra": 278.37583,
+        "dec": -42.3125,
+        "mag": 4.62
+      },
+      {
+        "name": "Дзета",
+        "ra": 285.77875,
+        "dec": -42.095,
+        "mag": 4.74
+      },
+      {
+        "name": "Эпсилон",
+        "ra": 284.67958,
+        "dec": -37.10722,
+        "mag": 4.83
+      }
+    ]
+  },
+  {
+    "id": "lepus",
+    "name": "Заяц",
+    "subtitle": "Под ногами Ориона · созвездие",
+    "source": "hipparcos",
+    "center": {
+      "ra": 83.5,
+      "dec": -18.5
+    },
+    "radiusArcmin": 810,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "defaultMagLimit": 3.9,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 18,
+    "named": [
+      {
+        "name": "Арнеб",
+        "ra": 83.1825,
+        "dec": -17.82222,
+        "mag": 2.58
+      },
+      {
+        "name": "Нихаль",
+        "ra": 82.06125,
+        "dec": -20.75944,
+        "mag": 2.84
+      },
+      {
+        "name": "Эпсилон",
+        "ra": 76.36542,
+        "dec": -22.37111,
+        "mag": 3.19
+      },
+      {
+        "name": "Мю",
+        "ra": 78.23333,
+        "dec": -16.20556,
+        "mag": 3.31
+      },
+      {
+        "name": "Дзета",
+        "ra": 86.73875,
+        "dec": -14.82194,
+        "mag": 3.55
+      },
+      {
+        "name": "Гамма",
+        "ra": 86.11583,
+        "dec": -22.44833,
+        "mag": 3.6
+      },
+      {
+        "name": "Эта",
+        "ra": 89.1,
+        "dec": -14.16778,
+        "mag": 3.71
+      },
+      {
+        "name": "Дельта",
+        "ra": 87.83042,
+        "dec": -20.87917,
+        "mag": 3.81
+      }
+    ]
+  },
+  {
+    "id": "grus",
+    "name": "Журавль",
+    "subtitle": "Изогнутая цепочка · южное созвездие",
+    "source": "hipparcos",
+    "center": {
+      "ra": 339,
+      "dec": -46
+    },
+    "radiusArcmin": 1080,
+    "fetchMagLimit": 7,
+    "maxRows": 3000,
+    "defaultMagLimit": 4.3,
+    "photoSurvey": "CDS/P/Mellinger/color",
+    "photoFovDeg": 24,
+    "named": [
+      {
+        "name": "Альнаир",
+        "ra": 332.05833,
+        "dec": -46.96111,
+        "mag": 1.74
+      },
+      {
+        "name": "Тиаки",
+        "ra": 340.66667,
+        "dec": -46.88472,
+        "mag": 2.07
+      },
+      {
+        "name": "Альданаб",
+        "ra": 328.48208,
+        "dec": -37.36472,
+        "mag": 3
+      },
+      {
+        "name": "Эпсилон",
+        "ra": 342.13875,
+        "dec": -51.31694,
+        "mag": 3.49
+      },
+      {
+        "name": "Йота",
+        "ra": 347.58958,
+        "dec": -45.24667,
+        "mag": 3.9
+      },
+      {
+        "name": "Дельта",
+        "ra": 337.3175,
+        "dec": -43.49556,
+        "mag": 3.97
+      },
+      {
+        "name": "Дзета",
+        "ra": 345.21958,
+        "dec": -52.75417,
+        "mag": 4.11
+      },
+      {
+        "name": "Тета",
+        "ra": 346.71958,
+        "dec": -43.52028,
+        "mag": 4.28
       }
     ]
   }

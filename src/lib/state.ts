@@ -1,3 +1,4 @@
+import { TARGETS } from './catalog';
 import type { Preset, Settings, WristImage } from './types';
 
 const SETTINGS_KEY = 'astro-tattoo-settings';
@@ -72,7 +73,12 @@ export function mergeSettings(saved: unknown): Settings {
 export function loadSettings(): Settings {
     const saved =
         readJson<unknown>(SETTINGS_KEY) ?? readJson<unknown>(LEGACY_SETTINGS_KEY);
-    return mergeSettings(saved);
+    const settings = mergeSettings(saved);
+    // объект мог исчезнуть из списка с прошлого визита
+    if (!TARGETS.some(t => t.id === settings.targetId)) {
+        settings.targetId = DEFAULTS.targetId;
+    }
+    return settings;
 }
 
 export function saveSettings(settings: Settings): void {
