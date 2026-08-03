@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- Разметка статична и написана по-русски, поэтому lang="ru";
+     при запуске приложение ставит выбранный язык само -->
 <html lang="ru">
 
 <head>
@@ -7,10 +9,24 @@
     <title>Астро·тату — эскизы созвездий</title>
     <meta name="description"
         content="Генератор эскизов татуировок созвездий, астеризмов и звёздных скоплений по данным Gaia DR3 и Hipparcos" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet" />
+
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f4f5fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0c15" media="(prefers-color-scheme: dark)" />
+
+    <!-- Превью ссылки. Картинка собирается из настоящего каталога
+         скриптом scripts/make-og.mjs, поэтому адрес абсолютный. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Астро·тату" />
+    <meta property="og:title" content="Астро·тату — эскизы созвездий для татуировки" />
+    <meta property="og:description"
+        content="Строит эскиз татуировки созвездия по реальным координатам звёзд, нормирует размер в сантиметрах и готовит файлы для мастера" />
+    <meta property="og:url" content="https://tyaga.github.io/astro-tattoo/" />
+    <meta property="og:image" content="https://tyaga.github.io/astro-tattoo/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Фигура Ориона точками разного размера" />
+    <meta name="twitter:card" content="summary_large_image" />
 </head>
 
 <body>

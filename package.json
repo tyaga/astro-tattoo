@@ -6,11 +6,12 @@
   "scripts": {
     "fetch": "node scripts/fetch-catalogs.mjs",
     "fetch:force": "node scripts/fetch-catalogs.mjs --force",
-    "predev": "npm run fetch",
+    "predev": "npm run fetch && node scripts/make-og.mjs",
     "dev": "vite",
-    "prebuild": "npm run fetch",
+    "prebuild": "npm run fetch && node scripts/make-og.mjs",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "og": "node scripts/make-og.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

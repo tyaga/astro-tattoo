@@ -152,6 +152,9 @@ npm run fetch         # докачать недостающее
 npm run fetch:force   # перекачать всё заново
 ```
 
+Перед сборкой рисуется и превью ссылки — `public/og.png` со фигурой Ориона
+из того же каталога (`npm run og`, растеризация без сторонних библиотек).
+
 Туда же скрипт кладёт `src/data/voyager.json` — положение «Вояджеров»
 из JPL Horizons на день сборки. Если сети нет, приложение берёт запасной
 снимок из кода: по небу аппараты смещаются примерно на четверть градуса в год.
@@ -172,6 +175,10 @@ npm run fetch:force   # перекачать всё заново
 - Положение «Вояджеров»: [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/)
   (NASA/JPL-Caltech), эфемериды объектов −31 и −32 для наблюдателя
   в центре Земли.
+- Шрифты лежат в репозитории и раздаются вместе с приложением:
+  [Inter](https://github.com/rsms/inter) © Rasmus Andersson и
+  [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) © JetBrains,
+  оба под SIL Open Font License 1.1.
 - Снимки неба: [hips2fits](https://alasky.cds.unistra.fr/hips-image-services/hips2fits)
   (CDS) по обзорам DSS2 color (STScI/ESO) для тесных полей и
   Mellinger «Milky Way Panorama» для широких.
