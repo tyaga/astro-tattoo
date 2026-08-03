@@ -248,7 +248,9 @@ function gnomonic(
  *  достаточно, иначе по центру выборки. Усреднение векторное — наивное
  *  среднее RA разваливается на границе 0h (например, у Квадрата Пегаса).
  *  Та же логика продублирована в scripts/fetch-catalogs.mjs. */
-function projectionCenter(target: Target): { ra: number; dec: number } {
+/** Центр проекции: средний вектор именованных звёзд, а не center из json —
+ *  так фигура не разъезжается на границе 0 часов */
+export function projectionCenter(target: Target): { ra: number; dec: number } {
     if (target.named.length < 3) return target.center;
     let x = 0;
     let y = 0;
