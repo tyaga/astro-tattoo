@@ -24,6 +24,7 @@ import {
     loadSettings, loadWrist, pickTargetState, savePerTarget, savePresets,
     saveSettings, saveWrist,
 } from './lib/state';
+import { resetTab } from './lib/reset';
 import { settingsFromQuery, shareUrl } from './lib/url';
 import type { Preset, Settings, Theme, WristImage } from './lib/types';
 import { LANGS, LANG_LABELS, LANG_TITLES, t } from './i18n';
@@ -307,8 +308,16 @@ export default function App() {
                 <div className="panel-body">
                     <ActivePanel {...panel} />
                 </div>
-                {/* сброс нужен из любой вкладки, поэтому живёт в подвале панели */}
+                {/* сбросы живут в подвале: слева — только эта вкладка,
+                    справа — всё сразу */}
                 <div className="panel-foot">
+                    <button
+                        className="btn ghost"
+                        title={tr('resetTabHint')}
+                        onClick={() => setSettings(s => resetTab(s, tab))}
+                    >
+                        {tr('resetTab')}
+                    </button>
                     <ResetButton tr={tr} onReset={panel.onReset} />
                 </div>
             </aside>
