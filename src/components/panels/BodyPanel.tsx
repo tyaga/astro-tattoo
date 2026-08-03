@@ -4,9 +4,9 @@ import { Segmented, Slider, Swatches } from '../controls';
 import { RotationDial } from '../RotationDial';
 import type { PanelProps } from './types';
 
-/** На чём: кожа, чернила, фото своего тела, снимок неба для сверки */
+/** На чём: кожа, чернила, фото места на теле, снимок неба для сверки */
 export function BodyPanel({
-    settings, set, lang, tr, target, wrist, onWristFile, onWristRemove,
+    settings, set, lang, tr, target, bodyPhoto, onBodyPhotoFile, onBodyPhotoRemove,
 }: PanelProps) {
     const cm = tr('cm');
     const mm = tr('mm');
@@ -50,76 +50,76 @@ export function BodyPanel({
 
             <section className="group">
                 <div className="group-head">
-                    <h2>{tr('wrist')}</h2>
-                    {wrist && (
+                    <h2>{tr('bodyPlace')}</h2>
+                    {bodyPhoto && (
                         <Segmented
                             options={onOff}
-                            value={settings.showWrist}
-                            onChange={set('showWrist')}
+                            value={settings.showBodyPhoto}
+                            onChange={set('showBodyPhoto')}
                         />
                     )}
                 </div>
                 <div className="row wrap">
                     <label className="btn file-btn">
-                        {wrist ? tr('replacePhoto') : tr('uploadPhoto')}
+                        {bodyPhoto ? tr('replacePhoto') : tr('uploadPhoto')}
                         <input
                             type="file"
                             accept="image/*"
                             hidden
                             onChange={e => {
-                                onWristFile(e.target.files?.[0]);
+                                onBodyPhotoFile(e.target.files?.[0]);
                                 e.target.value = '';
                             }}
                         />
                     </label>
-                    {wrist && (
-                        <button className="btn ghost" onClick={onWristRemove}>
+                    {bodyPhoto && (
+                        <button className="btn ghost" onClick={onBodyPhotoRemove}>
                             {tr('removePhoto')}
                         </button>
                     )}
                 </div>
 
-                {!wrist && <p className="stat">{tr('wristHint')}</p>}
+                {!bodyPhoto && <p className="stat">{tr('bodyPlaceHint')}</p>}
 
-                {wrist && settings.showWrist && (
+                {bodyPhoto && settings.showBodyPhoto && (
                     <>
                         <Slider
                             label={tr('frameSize')}
-                            value={settings.wristWidthCm}
+                            value={settings.bodyWidthCm}
                             min={3} max={30} step={0.1}
                             format={v => v.toFixed(1) + ' ' + cm}
                             editHint={tr('typeValueHint')}
-                            onChange={set('wristWidthCm')}
+                            onChange={set('bodyWidthCm')}
                         />
                         <Slider
                             label={tr('offsetX')}
-                            value={settings.wristOffX}
+                            value={settings.bodyOffX}
                             min={-100} max={100} step={1}
                             format={v => Math.round(v) + ' ' + mm}
                             editHint={tr('typeValueHint')}
-                            onChange={set('wristOffX')}
+                            onChange={set('bodyOffX')}
                         />
                         <Slider
                             label={tr('offsetY')}
-                            value={settings.wristOffY}
+                            value={settings.bodyOffY}
                             min={-100} max={100} step={1}
                             format={v => Math.round(v) + ' ' + mm}
                             editHint={tr('typeValueHint')}
-                            onChange={set('wristOffY')}
+                            onChange={set('bodyOffY')}
                         />
                         <RotationDial
-                            value={settings.wristRotDeg}
-                            onChange={set('wristRotDeg')}
+                            value={settings.bodyRotDeg}
+                            onChange={set('bodyRotDeg')}
                             lang={lang}
                         />
                         <Slider
                             label={tr('opacity')}
-                            value={settings.wristOpacity}
+                            value={settings.bodyOpacity}
                             min={0.2} max={1} step={0.05}
                             format={v => Math.round(v * 100) + '%'}
                             editScale={100}
                             editHint={tr('typeValueHint')}
-                            onChange={set('wristOpacity')}
+                            onChange={set('bodyOpacity')}
                         />
                     </>
                 )}

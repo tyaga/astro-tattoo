@@ -1,4 +1,5 @@
-import { getCatalog, getTarget, magForCount, pickName } from '../../lib/catalog';
+import { getCatalog, getTarget, pickName } from '../../lib/catalog';
+import { NAKED_EYE_MAG, drawableCount, magForDrawnCount, magRange } from '../../lib/model';
 import { PROBE_TARGET, VOYAGERS, VOYAGER_EPOCH } from '../../lib/voyager';
 import { Check, Chip, Segmented, Slider } from '../controls';
 import { RotationDial } from '../RotationDial';
@@ -8,7 +9,9 @@ import type { PanelProps } from './types';
 import type { BackgroundMode, MarkerIcon } from '../../lib/types';
 import type { StringKey } from '../../i18n';
 
-const STAR_COUNTS = [5, 7, 9, 14, 25, 50, 120];
+/** Лестница количеств: у объекта остаются только те ступени, которые
+ *  укладываются в его диапазон яркости */
+const STAR_COUNTS = [3, 4, 5, 7, 9, 14, 25, 50, 120, 250];
 
 /** Варианты значка «Вояджера» в порядке от самого плотного к самому лёгкому */
 const MARKER_ICONS: { value: MarkerIcon; key: StringKey }[] = [
@@ -25,6 +28,16 @@ export function DrawPanel({
     settings, set, lang, tr, target, drawn, hasLines,
     onPickTarget, onSelectTarget, onApplyDefaults,
 }: PanelProps) {
+    // шкала своя у каждого объекта: у Жирафа всё начинается с 4ᵐ,
+    // у Ориона — с 0.2ᵐ, и общая шкала 0…7 была бы наполовину мёртвой
+    const range = magRange(target.id, settings.magLimit);
+    // кнопки — только достижимые количества: больше, чем есть звёзд,
+    // и ярче, чем начинается шкала, не бывает
+    const available = drawableCount(settings);
+    const counts = STAR_COUNTS.filter(
+        n => n <= available && magForDrawnCount(settings, n) <= range.max,
+    );
+
     const backgrounds: { value: BackgroundMode; label: string; title: string }[] = [
         { value: 'show', label: tr('bgShow'), title: tr('bgShowHint') },
         { value: 'fade', label: tr('bgFade'), title: tr('bgFadeHint') },
@@ -45,21 +58,26 @@ export function DrawPanel({
             <section className="group">
                 <h2>{tr('stars')}</h2>
                 <div className="chips">
-                    {STAR_COUNTS.map(n => (
+                    {counts.map(n => (
                         <Chip
                             key={n}
                             label={String(n)}
-                            active={Math.abs(settings.magLimit - magForCount(target.id, n)) < 1e-9}
-                            onClick={() => set('magLimit')(magForCount(target.id, n))}
+                            active={
+                                Math.abs(settings.magLimit - magForDrawnCount(settings, n)) < 1e-9
+                            }
+                            onClick={() => set('magLimit')(magForDrawnCount(settings, n))}
                         />
                     ))}
                 </div>
                 <Slider
                     label={tr('magLimit')}
                     value={settings.magLimit}
-                    min={0} max={target.fetchMagLimit} step={0.05}
+                    min={range.min} max={range.max} step={0.05}
                     format={v => v.toFixed(2) + 'ᵐ'}
                     editHint={tr('typeValueHint')}
+                    stops={[{ value: NAKED_EYE_MAG, title: tr('nakedEyeHint') }]}
+                    invert
+                    ends={{ left: tr('magFaint'), right: tr('magBright') }}
                     onChange={set('magLimit')}
                 />
                 <p className="stat">
@@ -113,7 +131,7 @@ export function DrawPanel({
                 уезжают в свои созвездия, поэтому блок остаётся видимым */}
             {target.markers?.length || settings.voyagerReal ? (
                 <section className="group">
-                    <h2>{tr('markerIcon')}</h2>
+                    <h2 title={tr('markerIconHint')}>{tr('markerIcon')}</h2>
                     <div className="glyphs">
                         {MARKER_ICONS.map(({ value, key }) => (
                             <button
@@ -152,6 +170,7 @@ export function DrawPanel({
 
                     <Check
                         label={tr('voyagerAspect')}
+                        title={tr('voyagerAspectHint')}
                         checked={settings.voyagerAspect}
                         onChange={set('voyagerAspect')}
                     />
@@ -159,6 +178,7 @@ export function DrawPanel({
 
                     <Check
                         label={tr('voyagerReal')}
+                        title={tr('voyagerRealHint')}
                         checked={settings.voyagerReal}
                         onChange={set('voyagerReal')}
                     />

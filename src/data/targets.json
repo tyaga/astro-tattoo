@@ -4,12 +4,14 @@
     "name": {
       "ru": "Плеяды",
       "en": "Pleiades",
+      "es": "Pléyades",
       "is": "Sjöstirnið",
       "nl": "Plejaden"
     },
     "subtitle": {
       "ru": "M45 · рассеянное скопление",
       "en": "M45 · open cluster",
+      "es": "M45 · cúmulo abierto",
       "is": "M45 · lausþyrping",
       "nl": "M45 · open sterrenhoop"
     },
@@ -95,12 +97,14 @@
     "name": {
       "ru": "Орион",
       "en": "Orion",
+      "es": "Orión",
       "is": "Óríon",
       "nl": "Orion"
     },
     "subtitle": {
       "ru": "Созвездие целиком",
       "en": "The whole constellation",
+      "es": "La constelación completa",
       "is": "Allt stjörnumerkið",
       "nl": "Het hele sterrenbeeld"
     },
@@ -178,12 +182,14 @@
     "name": {
       "ru": "Большая Медведица",
       "en": "Big Dipper",
+      "es": "Carro Mayor",
       "is": "Karlsvagninn",
       "nl": "Grote Beer"
     },
     "subtitle": {
       "ru": "Ковш · астеризм",
       "en": "The Plough · asterism",
+      "es": "El Carro · asterismo",
       "is": "Stjörnumynstur",
       "nl": "Steelpan · asterisme"
     },
@@ -254,12 +260,14 @@
     "name": {
       "ru": "Кассиопея",
       "en": "Cassiopeia",
+      "es": "Casiopea",
       "is": "Kassíópeia",
       "nl": "Cassiopeia"
     },
     "subtitle": {
       "ru": "Небесная W · созвездие",
       "en": "The celestial W",
+      "es": "La W celeste",
       "is": "Himin-W",
       "nl": "De hemelse W"
     },
@@ -316,12 +324,14 @@
     "name": {
       "ru": "Южный Крест",
       "en": "Southern Cross",
+      "es": "Cruz del Sur",
       "is": "Suðurkrossinn",
       "nl": "Zuiderkruis"
     },
     "subtitle": {
       "ru": "Crux · созвездие",
       "en": "Crux · constellation",
+      "es": "Crux · constelación",
       "is": "Crux · stjörnumerki",
       "nl": "Crux · sterrenbeeld"
     },
@@ -378,12 +388,14 @@
     "name": {
       "ru": "Лира",
       "en": "Lyra",
+      "es": "Lira",
       "is": "Harpan",
       "nl": "Lier"
     },
     "subtitle": {
       "ru": "С Вегой · созвездие",
       "en": "With Vega",
+      "es": "Con Vega",
       "is": "Með Vegu",
       "nl": "Met Wega"
     },
@@ -440,12 +452,14 @@
     "name": {
       "ru": "Лебедь",
       "en": "Cygnus",
+      "es": "Cisne",
       "is": "Svanurinn",
       "nl": "Zwaan"
     },
     "subtitle": {
       "ru": "Северный Крест · созвездие",
       "en": "The Northern Cross",
+      "es": "La Cruz del Norte",
       "is": "Norðurkrossinn",
       "nl": "Het Noorderkruis"
     },
@@ -502,12 +516,14 @@
     "name": {
       "ru": "Северная Корона",
       "en": "Northern Crown",
+      "es": "Corona Boreal",
       "is": "Kórónan",
       "nl": "Noorderkroon"
     },
     "subtitle": {
       "ru": "Полукруг · созвездие",
       "en": "A half-circle of stars",
+      "es": "Un semicírculo de estrellas",
       "is": "Hálfhringur stjarna",
       "nl": "Halve cirkel van sterren"
     },
@@ -571,12 +587,14 @@
     "name": {
       "ru": "Дельфин",
       "en": "Delphinus",
+      "es": "Delfín",
       "is": "Höfrungurinn",
       "nl": "Dolfijn"
     },
     "subtitle": {
       "ru": "Ромб Иова · созвездие",
       "en": "Job's Coffin · constellation",
+      "es": "El Ataúd de Job · constelación",
       "is": "Kista Jobs",
       "nl": "Grafkist van Job"
     },
@@ -633,12 +651,14 @@
     "name": {
       "ru": "Малая Медведица",
       "en": "Little Dipper",
+      "es": "Carro Menor",
       "is": "Litli vagninn",
       "nl": "Kleine Beer"
     },
     "subtitle": {
       "ru": "С Полярной звездой · астеризм",
       "en": "With the North Star",
+      "es": "Con la Estrella Polar · asterismo",
       "is": "Með Pólstjörnunni",
       "nl": "Met de Poolster"
     },
@@ -688,12 +708,14 @@
     "name": {
       "ru": "Змееносец",
       "en": "Ophiuchus",
+      "es": "Ofiuco",
       "is": "Naðurvaldi",
       "nl": "Slangendrager"
     },
     "subtitle": {
       "ru": "Тринадцатое зодиакальное · созвездие",
       "en": "The Serpent Bearer",
+      "es": "El Portador de la Serpiente",
       "is": "Höggormsberinn",
       "nl": "De Slangendrager"
     },
@@ -785,12 +807,14 @@
     "name": {
       "ru": "Павлин",
       "en": "Pavo",
+      "es": "Pavo Real",
       "is": "Páfuglinn",
       "nl": "Pauw"
     },
     "subtitle": {
       "ru": "Южное созвездие",
       "en": "The Peacock",
+      "es": "Constelación austral",
       "is": "Páfuglinn",
       "nl": "De Pauw"
     },
@@ -889,12 +913,14 @@
     "name": {
       "ru": "Скорпион",
       "en": "Scorpius",
+      "es": "Escorpio",
       "is": "Sporðdrekinn",
       "nl": "Schorpioen"
     },
     "subtitle": {
       "ru": "С Антаресом · созвездие",
       "en": "With Antares",
+      "es": "Con Antares",
       "is": "Með Antares",
       "nl": "Met Antares"
     },
@@ -976,12 +1002,14 @@
     "name": {
       "ru": "Лев",
       "en": "Leo",
+      "es": "Leo",
       "is": "Ljónið",
       "nl": "Leeuw"
     },
     "subtitle": {
       "ru": "Серп и Регул · созвездие",
       "en": "The Sickle and Regulus",
+      "es": "La Hoz y Régulo",
       "is": "Sigðin og Regúlus",
       "nl": "De Sikkel en Regulus"
     },
@@ -1053,12 +1081,14 @@
     "name": {
       "ru": "Волопас",
       "en": "Boötes",
+      "es": "Boyero",
       "is": "Hjarðmaðurinn",
       "nl": "Ossenhoeder"
     },
     "subtitle": {
       "ru": "Воздушный змей с Арктуром",
       "en": "A kite with Arcturus",
+      "es": "Una cometa con Arturo",
       "is": "Flugdreki með Arktúrusi",
       "nl": "Vlieger met Arcturus"
     },
@@ -1129,12 +1159,14 @@
     "name": {
       "ru": "Близнецы",
       "en": "Gemini",
+      "es": "Géminis",
       "is": "Tvíburarnir",
       "nl": "Tweelingen"
     },
     "subtitle": {
       "ru": "Кастор и Поллукс · созвездие",
       "en": "Castor and Pollux",
+      "es": "Cástor y Pólux",
       "is": "Kastor og Pollux",
       "nl": "Castor en Pollux"
     },
@@ -1213,12 +1245,14 @@
     "name": {
       "ru": "Возничий",
       "en": "Auriga",
+      "es": "Auriga",
       "is": "Ökumaðurinn",
       "nl": "Voerman"
     },
     "subtitle": {
       "ru": "Пятиугольник с Капеллой",
       "en": "A pentagon with Capella",
+      "es": "Un pentágono con Capella",
       "is": "Fimmhyrningur með Kapellu",
       "nl": "Vijfhoek met Capella"
     },
@@ -1289,12 +1323,14 @@
     "name": {
       "ru": "Орёл",
       "en": "Aquila",
+      "es": "Águila",
       "is": "Örninn",
       "nl": "Arend"
     },
     "subtitle": {
       "ru": "С Альтаиром · созвездие",
       "en": "With Altair",
+      "es": "Con Altair",
       "is": "Með Altair",
       "nl": "Met Altair"
     },
@@ -1365,12 +1401,14 @@
     "name": {
       "ru": "Стрела",
       "en": "Sagitta",
+      "es": "Flecha",
       "is": "Örin",
       "nl": "Pijl"
     },
     "subtitle": {
       "ru": "Самое маленькое созвездие-стрела",
       "en": "The little arrow",
+      "es": "La constelación más pequeña",
       "is": "Litla örin",
       "nl": "De kleine pijl"
     },
@@ -1420,12 +1458,14 @@
     "name": {
       "ru": "Жираф",
       "en": "Camelopardalis",
+      "es": "Jirafa",
       "is": "Gíraffinn",
       "nl": "Giraffe"
     },
     "subtitle": {
       "ru": "Camelopardalis · северное созвездие",
       "en": "A faint northern constellation",
+      "es": "Camelopardalis · constelación boreal",
       "is": "Dauft norðlægt stjörnumerki",
       "nl": "Vaag noordelijk sterrenbeeld"
     },
@@ -1495,12 +1535,14 @@
     "name": {
       "ru": "Геркулес",
       "en": "Hercules",
+      "es": "Hércules",
       "is": "Herkúles",
       "nl": "Hercules"
     },
     "subtitle": {
       "ru": "Замковый камень · созвездие",
       "en": "The Keystone",
+      "es": "La Piedra Angular",
       "is": "Hvelfingarsteinninn",
       "nl": "De Sluitsteen"
     },
@@ -1599,12 +1641,14 @@
     "name": {
       "ru": "Южная Корона",
       "en": "Southern Crown",
+      "es": "Corona Austral",
       "is": "Suðurkórónan",
       "nl": "Zuiderkroon"
     },
     "subtitle": {
       "ru": "Изящная дуга · созвездие",
       "en": "A delicate arc",
+      "es": "Un arco delicado",
       "is": "Fíngerður bogi",
       "nl": "Een sierlijke boog"
     },
@@ -1675,12 +1719,14 @@
     "name": {
       "ru": "Заяц",
       "en": "Lepus",
+      "es": "Liebre",
       "is": "Hérinn",
       "nl": "Haas"
     },
     "subtitle": {
       "ru": "Под ногами Ориона · созвездие",
       "en": "At Orion's feet",
+      "es": "A los pies de Orión",
       "is": "Við fætur Óríons",
       "nl": "Aan de voeten van Orion"
     },
@@ -1758,12 +1804,14 @@
     "name": {
       "ru": "Журавль",
       "en": "Grus",
+      "es": "Grulla",
       "is": "Tranan",
       "nl": "Kraanvogel"
     },
     "subtitle": {
       "ru": "Изогнутая цепочка · южное созвездие",
       "en": "A curved chain of stars",
+      "es": "Una cadena curva de estrellas",
       "is": "Bogadregin stjörnuröð",
       "nl": "Een gebogen keten van sterren"
     },
@@ -1841,12 +1889,14 @@
     "name": {
       "ru": "Овен",
       "en": "Aries",
+      "es": "Aries",
       "is": "Hrúturinn",
       "nl": "Ram"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -1897,12 +1947,14 @@
     "name": {
       "ru": "Телец",
       "en": "Taurus",
+      "es": "Tauro",
       "is": "Nautið",
       "nl": "Stier"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -1981,12 +2033,14 @@
     "name": {
       "ru": "Рак",
       "en": "Cancer",
+      "es": "Cáncer",
       "is": "Krabbinn",
       "nl": "Kreeft"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -2044,12 +2098,14 @@
     "name": {
       "ru": "Дева",
       "en": "Virgo",
+      "es": "Virgo",
       "is": "Meyjan",
       "nl": "Maagd"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -2128,12 +2184,14 @@
     "name": {
       "ru": "Весы",
       "en": "Libra",
+      "es": "Libra",
       "is": "Vogin",
       "nl": "Weegschaal"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -2198,12 +2256,14 @@
     "name": {
       "ru": "Стрелец",
       "en": "Sagittarius",
+      "es": "Sagitario",
       "is": "Bogmaðurinn",
       "nl": "Boogschutter"
     },
     "subtitle": {
       "ru": "Знак зодиака · Чайник",
       "en": "Zodiac sign · the Teapot",
+      "es": "Signo del zodiaco · la Tetera",
       "is": "Stjörnumerki · Teketillinn",
       "nl": "Sterrenbeeld · de Theepot"
     },
@@ -2282,12 +2342,14 @@
     "name": {
       "ru": "Козерог",
       "en": "Capricornus",
+      "es": "Capricornio",
       "is": "Steingeitin",
       "nl": "Steenbok"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -2352,12 +2414,14 @@
     "name": {
       "ru": "Водолей",
       "en": "Aquarius",
+      "es": "Acuario",
       "is": "Vatnsberinn",
       "nl": "Waterman"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },
@@ -2429,12 +2493,14 @@
     "name": {
       "ru": "Рыбы",
       "en": "Pisces",
+      "es": "Piscis",
       "is": "Fiskarnir",
       "nl": "Vissen"
     },
     "subtitle": {
       "ru": "Знак зодиака",
       "en": "Zodiac sign",
+      "es": "Signo del zodiaco",
       "is": "Stjörnumerki dýrahringsins",
       "nl": "Sterrenbeeld van de dierenriem"
     },

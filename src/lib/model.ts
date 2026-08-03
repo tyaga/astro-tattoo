@@ -1,22 +1,80 @@
-import { autoPreset } from './autopreset';
+import { autoPreset, figureStars } from './autopreset';
+import { dotDiameterMm } from './dots';
 import { VOYAGERS, earthAspect } from './voyager';
-import { getCatalog, getLines, getTarget, projectPoint, rad, starName } from './catalog';
+import { getCatalog, getLines, getTarget, magForCount, projectPoint, rad, starName } from './catalog';
 import { pickName, t as tr } from '../i18n';
 import type { DrawnStar, Settings } from './types';
 
 /** Дальше гномоническая проекция слишком растягивает углы полотна */
-export const MAX_FOV_DEG = 45;
+const MAX_FOV_DEG = 45;
+
+/** Предел видимости невооружённым глазом: классическая шестая величина.
+ *  На этом значении у ползунка яркости стоит магнитная засечка. */
+export const NAKED_EYE_MAG = 6;
+
+/** Звёзды, которые попадут на эскиз при текущем режиме поля, по яркости.
+ *  В режиме «только фигура» это её вершины и именованные, иначе всё поле. */
+function drawable(s: Settings): number[] {
+    const catalog = getCatalog(s.targetId);
+    const linked =
+        s.backgroundStars === 'hide' ? new Set(getLines(s.targetId).flat()) : null;
+    return catalog
+        .filter((star, i) => !linked || linked.has(i) || star.name)
+        .map(star => star.mag);
+}
+
+/** Сколько точек вообще может появиться на эскизе */
+export function drawableCount(s: Settings): number {
+    return drawable(s).length;
+}
+
+/** Предел яркости, при котором на эскизе окажется n точек. Считаем по тем же
+ *  звёздам, что рисуются: иначе в тусклом созвездии кнопки обещали бы
+ *  количество, набранное чужими яркими светилами из широкого поля. */
+export function magForDrawnCount(s: Settings, n: number): number {
+    const mags = drawable(s);
+    if (mags.length === 0) return NAKED_EYE_MAG;
+    return Math.ceil(mags[Math.min(n, mags.length) - 1] / 0.05) * 0.05;
+}
+
+/** Докуда имеет смысл вести ползунок предела яркости у этого объекта.
+ *  У Жирафа самая яркая звезда 4.0ᵐ, и шкала от нуля была бы наполовину
+ *  мёртвой; у Ориона, наоборот, всё начинается с 0.2ᵐ. */
+export function magRange(targetId: string, current?: number): { min: number; max: number } {
+    const target = getTarget(targetId);
+    const catalog = getCatalog(targetId);
+    if (catalog.length === 0) return { min: 0, max: target.fetchMagLimit };
+
+    const figure = figureStars(targetId);
+    const faintestFigure = figure.reduce((m, s) => Math.max(m, s.mag), 0);
+    // левый край — по самой яркой звезде фигуры, а не каталога: в широкое поле
+    // залетают чужие светила (Капелла у Жирафа, Сириус у Ориона), и шкала
+    // от них начиналась бы там, где у объекта ещё ничего нет
+    const brightestFigure = figure.reduce((m, s) => Math.min(m, s.mag), 99);
+    // правый край: чтобы хватило и на фигуру с запасом, и на сотню звёзд поля,
+    // но не дальше того, что выгружено
+    // правый край чуть за предел глаза: так засечка на шестой величине
+    // остаётся внутри шкалы, а не превращается в её конец
+    const max = Math.min(
+        target.fetchMagLimit,
+        Math.max(NAKED_EYE_MAG + 0.5, faintestFigure + 0.75, magForCount(targetId, 120)),
+    );
+    const min = Math.floor(brightestFigure * 20) / 20;
+    return {
+        // текущее значение может быть за краями (например, у объекта с ручной
+        // правкой) — шкалу расширяем, чтобы ползунок не прыгал
+        min: Math.min(min, current ?? min),
+        max: Math.max(Math.ceil(max * 20) / 20, current ?? 0),
+    };
+}
 
 export function sheetSize(s: Settings): { W: number; H: number } {
     return { W: s.widthCm * 10, H: s.heightCm * 10 };
 }
 
-export function starDiameterMm(s: Settings, mag: number, brightest: number): number {
-    // диаметр пропорционален потоку в степени contrast
-    const raw = s.maxMm * Math.pow(10, -0.4 * (mag - brightest) * s.contrast);
-    const clamped = Math.min(s.maxMm, Math.max(s.minMm, raw));
-    if (!s.quantize) return clamped;
-    return Math.max(s.stepMm, Math.round(clamped / s.stepMm) * s.stepMm);
+/** Диаметр точки на полотне: настройки эскиза как раз задают шкалу */
+function starDiameterMm(s: Settings, mag: number, brightest: number): number {
+    return dotDiameterMm(s, mag, brightest);
 }
 
 /** Опорная яркость для размера точек — ярчайшая звезда самой фигуры.
@@ -189,7 +247,7 @@ export function fitFovDeg(s: Settings): number {
 
 /** Подставляет настройки объекта по умолчанию: диапазон звёзд, размер
  *  рисунка, размеры точек и линии фигуры. Полотно, кожа, чернила, сетка
- *  и фото запястья не трогаются — они про место на теле, а не про объект. */
+ *  и фото места на теле не трогаются — они про примерку, а не про объект. */
 export function applyTargetPreset(base: Settings, targetId: string): Settings {
     const p = autoPreset(targetId);
     const next: Settings = {

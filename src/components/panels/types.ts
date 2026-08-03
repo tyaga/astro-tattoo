@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { Target } from '../../lib/catalog';
 import type { SizeClass } from '../../lib/model';
-import type { DrawnStar, Preset, Settings, WristImage } from '../../lib/types';
+import type { DrawnStar, Preset, Settings, BodyPhoto } from '../../lib/types';
 import type { Lang, StringKey } from '../../i18n';
 
 /** Всё, что нужно панелям настроек. Один объект вместо двадцати пропсов. */
@@ -17,9 +17,9 @@ export interface PanelProps {
     patternCm: number;
     hasLines: boolean;
 
-    wrist: WristImage | null;
-    onWristFile: (file: File | undefined) => void;
-    onWristRemove: () => void;
+    bodyPhoto: BodyPhoto | null;
+    onBodyPhotoFile: (file: File | undefined) => void;
+    onBodyPhotoRemove: () => void;
 
     presets: Preset[];
     onPresetSave: (name: string) => void;

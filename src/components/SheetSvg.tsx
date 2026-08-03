@@ -3,7 +3,7 @@ import { getLines, getPhotoUrl, getTarget, rad, starName } from '../lib/catalog'
 import { markerRotation, sheetSize } from '../lib/model';
 import { isDark } from '../lib/palette';
 import { t } from '../i18n';
-import type { DrawnStar, Settings, WristImage } from '../lib/types';
+import type { DrawnStar, Settings, BodyPhoto } from '../lib/types';
 import type { DrawnMarker } from '../lib/model';
 import { VoyagerIcon } from './VoyagerIcon';
 
@@ -13,7 +13,7 @@ interface Props {
     settings: Settings;
     drawn: DrawnStar[];
     markers: DrawnMarker[];
-    wrist: WristImage | null;
+    bodyPhoto: BodyPhoto | null;
 }
 
 /** Сетка рисуется полупрозрачным контрастом к фону, чтобы читаться
@@ -28,7 +28,7 @@ function gridStroke(pos: number, stepMm: number, onDark: boolean): string {
 }
 
 export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
-    { settings, drawn, markers, wrist },
+    { settings, drawn, markers, bodyPhoto },
     ref,
 ) {
     const { W, H } = sheetSize(settings);
@@ -77,25 +77,25 @@ export const SheetSvg = forwardRef<SVGSVGElement, Props>(function SheetSvg(
                 fill={settings.skinTone}
             />
 
-            {settings.showWrist && wrist && (() => {
-                // фото запястья привязано к полотну: тату «лежит» на коже
-                const wMm = settings.wristWidthCm * 10;
-                const hMm = wMm * wrist.aspect; // пропорции снимка не искажаем
-                const cx = W / 2 + settings.wristOffX;
-                const cy = H / 2 + settings.wristOffY;
+            {settings.showBodyPhoto && bodyPhoto && (() => {
+                // фото места на теле привязано к полотну: тату «лежит» на коже
+                const wMm = settings.bodyWidthCm * 10;
+                const hMm = wMm * bodyPhoto.aspect; // пропорции снимка не искажаем
+                const cx = W / 2 + settings.bodyOffX;
+                const cy = H / 2 + settings.bodyOffY;
                 return (
-                    <g clipPath="url(#sheet)" data-role="wrist" data-export="exclude">
+                    <g clipPath="url(#sheet)" data-role="body-photo" data-export="exclude">
                         <g
                             transform={
-                                `translate(${cx} ${cy}) rotate(${settings.wristRotDeg}) ` +
+                                `translate(${cx} ${cy}) rotate(${settings.bodyRotDeg}) ` +
                                 `translate(${-wMm / 2} ${-hMm / 2})`
                             }
                         >
                             <image
-                                href={wrist.url}
+                                href={bodyPhoto.url}
                                 x={0} y={0}
                                 width={wMm} height={hMm}
-                                opacity={settings.wristOpacity}
+                                opacity={settings.bodyOpacity}
                                 preserveAspectRatio="none"
                             />
                         </g>

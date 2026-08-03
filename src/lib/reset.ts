@@ -15,7 +15,7 @@ const FIELDS: Record<Tab, (keyof Settings)[]> = {
     ],
     body: [
         'skinTone', 'inkColor', 'inkOpacity',
-        'showWrist', 'wristWidthCm', 'wristOffX', 'wristOffY', 'wristRotDeg', 'wristOpacity',
+        'showBodyPhoto', 'bodyWidthCm', 'bodyOffX', 'bodyOffY', 'bodyRotDeg', 'bodyOpacity',
         'showPhoto', 'photoOpacity',
     ],
     print: ['widthCm', 'heightCm', 'gridMm', 'exportBw'],

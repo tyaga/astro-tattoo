@@ -1,9 +1,10 @@
-export const LANGS = ['ru', 'en', 'is', 'nl'] as const;
+export const LANGS = ['ru', 'en', 'es', 'is', 'nl'] as const;
 export type Lang = (typeof LANGS)[number];
 
 export const LANG_LABELS: Record<Lang, string> = {
     ru: 'RU',
     en: 'EN',
+    es: 'ES',
     is: 'IS',
     nl: 'NL',
 };
@@ -11,6 +12,7 @@ export const LANG_LABELS: Record<Lang, string> = {
 export const LANG_TITLES: Record<Lang, string> = {
     ru: 'Русский',
     en: 'English',
+    es: 'Español',
     is: 'Íslenska',
     nl: 'Nederlands',
 };
@@ -41,6 +43,9 @@ const ru = {
     sheetToPattern: 'Лист по рисунку',
     stars: 'Звёзды',
     magLimit: 'Предел яркости',
+    nakedEyeHint: '6ᵐ — предел видимости невооружённым глазом',
+    magFaint: 'тусклые',
+    magBright: 'яркие',
     inField: 'В поле',
     inCatalog: 'в каталоге',
     starsShort: 'звёзд',
@@ -119,7 +124,7 @@ const ru = {
     apply: 'применить',
     delete: 'Удалить',
 
-    wrist: 'Запястье',
+    bodyPlace: 'Место на теле',
     uploadPhoto: 'Загрузить фото…',
     replacePhoto: 'Заменить фото…',
     removePhoto: 'Убрать',
@@ -127,8 +132,10 @@ const ru = {
     offsetX: 'Сдвиг по X',
     offsetY: 'Сдвиг по Y',
     opacity: 'Прозрачность',
-    wristHint:
-        'Сфотографируй внутреннюю сторону запястья (лучше с линейкой в кадре) и подгони ширину кадра до реального размера.',
+    bodyPlaceHint:
+        'Сфотографируй место, где будет тату — предплечье, ключицу, лопатку, '
+        + 'что угодно. Линейка в кадре поможет подогнать ширину кадра '
+        + 'до реального размера.',
 
     skyPhoto: 'Снимок неба',
 
@@ -196,6 +203,9 @@ const en: Record<StringKey, string> = {
     sheetToPattern: 'Fit sheet to drawing',
     stars: 'Stars',
     magLimit: 'Magnitude limit',
+    nakedEyeHint: '6ᵐ — the naked-eye limit',
+    magFaint: 'faint',
+    magBright: 'bright',
     inField: 'In view',
     inCatalog: 'in catalogue',
     starsShort: 'stars',
@@ -274,7 +284,7 @@ const en: Record<StringKey, string> = {
     apply: 'apply',
     delete: 'Delete',
 
-    wrist: 'Wrist',
+    bodyPlace: 'Body area',
     uploadPhoto: 'Upload photo…',
     replacePhoto: 'Replace photo…',
     removePhoto: 'Remove',
@@ -282,8 +292,10 @@ const en: Record<StringKey, string> = {
     offsetX: 'Offset X',
     offsetY: 'Offset Y',
     opacity: 'Opacity',
-    wristHint:
-        'Photograph the inside of your wrist (a ruler in frame helps) and set the frame width to its real size.',
+    bodyPlaceHint:
+        'Photograph the spot where the tattoo will go — forearm, collarbone, '
+        + 'shoulder blade, anything. A ruler in frame helps you set the frame '
+        + 'width to its real size.',
 
     skyPhoto: 'Sky image',
 
@@ -323,6 +335,169 @@ const en: Record<StringKey, string> = {
     specName: 'Name',
 };
 
+const es: Record<StringKey, string> = {
+    brand: 'Astro·tatuaje',
+    tagline: 'Bocetos de tatuajes de constelaciones con datos de Gaia e Hipparcos',
+    themeAuto: 'Como el sistema',
+    themeLight: 'Tema claro',
+    themeDark: 'Tema oscuro',
+    defaultView: 'vista por defecto',
+    defaultViewHint:
+        'Rango de estrellas, tamaño del dibujo, puntos y líneas: como se dibuja '
+        + 'habitualmente este objeto',
+
+    tabDraw: 'Dibujo',
+    tabLook: 'Aspecto',
+    tabBody: 'Cuerpo',
+    tabPrint: 'Imprimir',
+    changeObject: 'cambiar',
+    searchObject: 'Buscar objetos',
+    close: 'Cerrar',
+    nothingFound: 'No hay resultados',
+    groupZodiac: 'Signos del zodiaco',
+    groupConstellations: 'Constelaciones y asterismos',
+    groupClusters: 'Cúmulos',
+    placement: 'Tamaño y ángulo',
+    calibres: 'calibres',
+    sheetToPattern: 'Ajustar la hoja al dibujo',
+    stars: 'Estrellas',
+    magLimit: 'Magnitud límite',
+    nakedEyeHint: '6ᵐ: el límite de la vista sin telescopio',
+    magFaint: 'débiles',
+    magBright: 'brillantes',
+    inField: 'En el campo',
+    inCatalog: 'en el catálogo',
+    starsShort: 'estrellas',
+
+    sheet: 'Hoja',
+    width: 'Ancho',
+    height: 'Alto',
+    patternSize: 'Tamaño del dibujo',
+    fitToSheet: 'Ajustar a la hoja',
+    rotation: 'Giro',
+    mirrorH: 'Espejo ⟷',
+    mirrorV: 'Espejo ⟱',
+    center: 'Centrar',
+    dialHint: 'Arrastra alrededor del disco · Shift ajusta a 15°',
+    typeValueHint: 'Pulsa para escribir un valor',
+
+    dots: 'Puntos',
+    maxDiameter: 'Diámetro máximo',
+    minDiameter: 'Diámetro mínimo',
+    contrast: 'Contraste de tamaños',
+    quantStep: 'Paso de cuantización',
+    quantize: 'Cuantizar los tamaños',
+
+    skinAndInk: 'Piel y tinta',
+    skinTone: 'Tono de piel',
+    ink: 'Tinta',
+    inkOpacity: 'Densidad de la tinta',
+    ownColor: 'propio',
+    customColor: 'Color propio',
+
+    labels: 'Nombres de las estrellas',
+    labelsNone: 'ninguno',
+    labelsNames: 'nombres',
+    labelsFull: '+ mm',
+    labelsNoneHint: 'Sin etiquetas',
+    labelsNamesHint: 'Solo los nombres',
+    labelsFullHint: 'Nombre, magnitud y diámetro',
+    figureLines: 'Líneas de la figura',
+    noFigure: 'los cúmulos no las tienen',
+    lineWidth: 'Grosor de línea',
+    markerIcon: 'Marca de la Voyager',
+    markerSize: 'Tamaño de la marca',
+    markerRotation: 'Giro de la marca',
+    voyagerAspect: 'como mira a la Tierra',
+    voyagerAspectHint:
+        'La antena apunta siempre a la Tierra, así que un telescopio vería el plato '
+        + 'de frente; el alabeo se mantiene sobre Canopus',
+    voyagerReal: 'posición real',
+    voyagerRealHint: 'Colocar las sondas donde están ahora en el cielo',
+    jumpTo: 'mostrar',
+    au: 'UA',
+    markerIconHint: 'La sonda marca Gliese 445, la estrella a la que más se acercará',
+    iconSilhouette: 'Silueta',
+    iconSchema: 'Esquema',
+    iconMinimal: 'Mínimo',
+    iconFaceOn: 'De frente',
+    iconRecord: 'Disco',
+    iconClassic: 'Anterior',
+    background: 'Estrellas fuera de la figura',
+    backgroundHint: 'Qué hacer con el campo de alrededor',
+    bgShow: 'todas',
+    bgShowHint: 'Mostrar todo el campo',
+    bgFade: 'atenuadas',
+    bgFadeHint: 'El campo se dibuja atenuado',
+    bgHide: 'solo la figura',
+    bgHideHint: 'Dejar solo las estrellas de la figura',
+    grid: 'Cuadrícula',
+    gridNone: 'ninguna',
+
+    sizeClasses: 'Clases de tamaño',
+    pieces: 'ud.',
+    noStars: 'no hay estrellas en el campo',
+
+    presets: 'Ajustes guardados',
+    presetName: 'Nombre del ajuste',
+    save: 'Guardar',
+    presetsHint: 'Guarda las composiciones que te gusten: se quedan en este navegador.',
+    apply: 'aplicar',
+    delete: 'Borrar',
+
+    bodyPlace: 'Zona del cuerpo',
+    uploadPhoto: 'Subir foto…',
+    replacePhoto: 'Cambiar la foto…',
+    removePhoto: 'Quitar',
+    frameSize: 'Tamaño del encuadre',
+    offsetX: 'Desplazamiento X',
+    offsetY: 'Desplazamiento Y',
+    opacity: 'Opacidad',
+    bodyPlaceHint:
+        'Fotografía el lugar donde irá el tatuaje: antebrazo, clavícula, omóplato, '
+        + 'lo que sea. Una regla en el encuadre ayuda a ajustar su ancho '
+        + 'al tamaño real.',
+
+    skyPhoto: 'Imagen del cielo',
+
+    exportTitle: 'Exportar',
+    exportSvg: 'SVG 1:1',
+    exportPng: 'PNG 300 ppp',
+    exportFitting: 'PNG de prueba',
+    exportFittingHint: 'Puntos sobre tu propia foto: sin líneas, nombres ni cuadrícula',
+    exportSpec: 'Especificación .txt',
+    exportBw: 'negro sobre blanco',
+    copyLink: 'Enlace',
+    linkCopied: 'copiado',
+    resetTab: 'reiniciar pestaña',
+    resetTabHint: 'Restaurar solo los ajustes de esta pestaña',
+    resetAll: 'Reiniciar todo',
+    resetAllHint:
+        'Devolver todos los objetos a su vista calculada y olvidar tus cambios',
+    confirmReset: '¿seguro?',
+
+    on: 'sí',
+    off: 'no',
+    show: 'Mostrar',
+    hide: 'Ocultar',
+
+    previewHintTouch: 'Un dedo mueve · dos dedos cambian tamaño y giro',
+    previewHint:
+        'Arrastra para mover · Shift + arrastrar para girar · '
+        + '⌘/Ctrl + rueda para acercar la vista',
+
+    cm: 'cm',
+    mm: 'mm',
+
+    specTitle: 'especificación del boceto del tatuaje',
+    specSheet: 'Hoja',
+    specCoords: 'X se mide desde el borde izquierdo, Y desde el superior.',
+    specStars: 'Estrellas',
+    specData: 'Datos',
+    specSizeClasses: 'Clases de tamaño de los puntos:',
+    specName: 'Nombre',
+};
+
 const is: Record<StringKey, string> = {
     brand: 'Stjörnuflúr',
     tagline: 'Stjörnumerkjaskissur fyrir húðflúr úr Gaia- og Hipparcos-gögnum',
@@ -349,6 +524,9 @@ const is: Record<StringKey, string> = {
     sheetToPattern: 'Fella flöt að mynd',
     stars: 'Stjörnur',
     magLimit: 'Birtumörk',
+    nakedEyeHint: '6ᵐ — sýnileikamörk með berum augum',
+    magFaint: 'dimmar',
+    magBright: 'skærar',
     inField: 'Í sýn',
     inCatalog: 'í skránni',
     starsShort: 'stjörnur',
@@ -427,7 +605,7 @@ const is: Record<StringKey, string> = {
     apply: 'nota',
     delete: 'Eyða',
 
-    wrist: 'Úlnliður',
+    bodyPlace: 'Staður á líkamanum',
     uploadPhoto: 'Hlaða upp mynd…',
     replacePhoto: 'Skipta um mynd…',
     removePhoto: 'Fjarlægja',
@@ -435,8 +613,10 @@ const is: Record<StringKey, string> = {
     offsetX: 'Hliðrun X',
     offsetY: 'Hliðrun Y',
     opacity: 'Gegnsæi',
-    wristHint:
-        'Taktu mynd af innanverðum úlnliðnum (helst með reglustiku í mynd) og stilltu breidd myndar á raunstærð.',
+    bodyPlaceHint:
+        'Taktu mynd af staðnum þar sem flúrið kemur — framhandlegg, viðbeini, '
+        + 'herðablaði, hverju sem er. Reglustika í myndinni hjálpar að stilla '
+        + 'breidd myndarinnar á raunstærð.',
 
     skyPhoto: 'Himinmynd',
 
@@ -502,6 +682,9 @@ const nl: Record<StringKey, string> = {
     sheetToPattern: 'Vel op tekening',
     stars: 'Sterren',
     magLimit: 'Helderheidsgrens',
+    nakedEyeHint: '6ᵐ — de grens van het blote oog',
+    magFaint: 'zwak',
+    magBright: 'helder',
     inField: 'In beeld',
     inCatalog: 'in catalogus',
     starsShort: 'sterren',
@@ -580,7 +763,7 @@ const nl: Record<StringKey, string> = {
     apply: 'toepassen',
     delete: 'Verwijderen',
 
-    wrist: 'Pols',
+    bodyPlace: 'Plek op je lichaam',
     uploadPhoto: 'Foto uploaden…',
     replacePhoto: 'Foto vervangen…',
     removePhoto: 'Verwijderen',
@@ -588,8 +771,10 @@ const nl: Record<StringKey, string> = {
     offsetX: 'Verschuiving X',
     offsetY: 'Verschuiving Y',
     opacity: 'Doorzichtigheid',
-    wristHint:
-        'Fotografeer de binnenkant van je pols (liefst met een liniaal in beeld) en zet de fotobreedte op de echte maat.',
+    bodyPlaceHint:
+        'Fotografeer de plek waar de tattoo komt — onderarm, sleutelbeen, '
+        + 'schouderblad, wat dan ook. Een liniaal in beeld helpt om de '
+        + 'fotobreedte op de echte maat te zetten.',
 
     skyPhoto: 'Hemelfoto',
 
@@ -629,4 +814,4 @@ const nl: Record<StringKey, string> = {
     specName: 'Naam',
 };
 
-export const STRINGS: Record<Lang, Record<StringKey, string>> = { ru, en, is, nl };
+export const STRINGS: Record<Lang, Record<StringKey, string>> = { ru, en, es, is, nl };

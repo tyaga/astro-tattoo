@@ -1,20 +1,16 @@
 import { TARGETS } from './catalog';
 import { detectLang } from '../i18n';
 import { applyTargetPreset } from './model';
-import type { Preset, Settings, WristImage } from './types';
+import type { BodyPhoto, Preset, Settings } from './types';
 
 const SETTINGS_KEY = 'astro-tattoo-settings';
 const PER_TARGET_KEY = 'astro-tattoo-per-target';
-const WRIST_KEY = 'astro-tattoo-wrist';
+const BODY_KEY = 'astro-tattoo-body';
 const PRESETS_KEY = 'astro-tattoo-presets';
 
-// проект раньше назывался pleiades — переносим настройки и фото со старых ключей
-const LEGACY_SETTINGS_KEY = 'pleiades-v3';
-const LEGACY_WRIST_KEY = 'pleiades-wrist-image';
-
 // Дефолты соответствуют «примерочной» компоновке: полотно под весь кадр
-// запястья, фото повёрнуто на 90° (рука горизонтально), масштаб кадра
-// откалиброван по сантиметровой ленте на снимке (16.3 × 21.7 см)
+// снимка места на теле, фото повёрнуто на 90° (рука горизонтально), масштаб
+// откалиброван по сантиметровой ленте в кадре (16.3 × 21.7 см)
 export const DEFAULTS: Settings = {
     targetId: 'pleiades',
     magLimit: 6.1,
@@ -50,12 +46,12 @@ export const DEFAULTS: Settings = {
     exportBw: true,
     showPhoto: false,
     photoOpacity: 0.85,
-    showWrist: true,
-    wristWidthCm: 16.3,
-    wristOffX: 0,
-    wristOffY: 0,
-    wristRotDeg: 90,
-    wristOpacity: 0.75,
+    showBodyPhoto: true,
+    bodyWidthCm: 16.3,
+    bodyOffX: 0,
+    bodyOffY: 0,
+    bodyRotDeg: 90,
+    bodyOpacity: 0.75,
 };
 
 function readJson<T>(key: string): T | null {
@@ -74,17 +70,11 @@ export function mergeSettings(saved: unknown): Settings {
     const clean = Object.fromEntries(
         Object.entries(raw).filter(([, v]) => v !== null && v !== undefined),
     );
-    // раньше приглушение фона было галочкой
-    if (clean.backgroundStars === undefined && 'fadeUnlinked' in clean) {
-        clean.backgroundStars = clean.fadeUnlinked ? 'fade' : 'show';
-    }
-    delete clean.fadeUnlinked;
     return { ...DEFAULTS, ...clean } as Settings;
 }
 
 export function loadSettings(): Settings {
-    const saved =
-        readJson<unknown>(SETTINGS_KEY) ?? readJson<unknown>(LEGACY_SETTINGS_KEY);
+    const saved = readJson<unknown>(SETTINGS_KEY);
     // первый визит — язык берём из браузера, объект показываем как принято
     if (!saved) {
         return applyTargetPreset({ ...DEFAULTS, lang: detectLang() }, DEFAULTS.targetId);
@@ -104,25 +94,22 @@ export function saveSettings(settings: Settings): void {
 
 export function clearSettings(): void {
     localStorage.removeItem(SETTINGS_KEY);
-    localStorage.removeItem(LEGACY_SETTINGS_KEY);
 }
 
-export function loadWrist(): WristImage | null {
-    const img =
-        readJson<WristImage>(WRIST_KEY) ?? readJson<WristImage>(LEGACY_WRIST_KEY);
+export function loadBodyPhoto(): BodyPhoto | null {
+    const img = readJson<BodyPhoto>(BODY_KEY);
     return img && typeof img.url === 'string' && typeof img.aspect === 'number'
         ? img
         : null;
 }
 
-export function saveWrist(img: WristImage | null): void {
+export function saveBodyPhoto(img: BodyPhoto | null): void {
     if (!img) {
-        localStorage.removeItem(WRIST_KEY);
-        localStorage.removeItem(LEGACY_WRIST_KEY);
+        localStorage.removeItem(BODY_KEY);
         return;
     }
     try {
-        localStorage.setItem(WRIST_KEY, JSON.stringify(img));
+        localStorage.setItem(BODY_KEY, JSON.stringify(img));
     } catch {
         // не влезло в квоту localStorage — фото живёт только до перезагрузки
     }
@@ -130,8 +117,8 @@ export function saveWrist(img: WristImage | null): void {
 
 /** Настройки, привязанные к объекту: их запоминаем отдельно для каждого,
  *  чтобы возврат к созвездию возвращал и подобранный для него вид.
- *  Полотно, кожа, чернила, сетка и фото запястья общие — они про место
- *  на теле, а не про объект. */
+ *  Полотно, кожа, чернила, сетка и фото места на теле общие — они
+ *  про примерку, а не про объект. */
 const TARGET_FIELDS = [
     'magLimit', 'fovDeg', 'rotation', 'panX', 'panY',
     'maxMm', 'minMm', 'contrast', 'stepMm', 'quantize',
@@ -171,6 +158,6 @@ export function savePresets(presets: Preset[]): void {
     try {
         localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
     } catch {
-        // квота исчерпана — скорее всего из-за фото запястья
+        // квота исчерпана — скорее всего из-за фото места на теле
     }
 }

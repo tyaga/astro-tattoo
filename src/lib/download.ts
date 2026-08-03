@@ -39,8 +39,8 @@ function toBlackAndWhite(svg: SVGSVGElement): void {
 
 interface ExportOptions {
     blackAndWhite?: boolean;
-    /** Оставить фото тела: получается примерка, а не эскиз для мастера */
-    withWrist?: boolean;
+    /** Оставить фото места на теле: получается примерка, а не эскиз мастеру */
+    withBodyPhoto?: boolean;
     /** Только точки: ни линий фигуры, ни подписей, ни сетки */
     dotsOnly?: boolean;
 }
@@ -51,12 +51,12 @@ export function svgToStandalone(
     svg: SVGSVGElement,
     widthMm: number,
     heightMm: number,
-    { blackAndWhite = false, withWrist = false, dotsOnly = false }: ExportOptions = {},
+    { blackAndWhite = false, withBodyPhoto = false, dotsOnly = false }: ExportOptions = {},
 ): string {
     const clone = svg.cloneNode(true) as SVGSVGElement;
     // снимок неба остаётся служебным всегда, фото тела — по запросу
-    if (withWrist) {
-        clone.querySelectorAll('[data-role="wrist"]').forEach(el =>
+    if (withBodyPhoto) {
+        clone.querySelectorAll('[data-role="body-photo"]').forEach(el =>
             el.removeAttribute('data-export'),
         );
     }
@@ -86,6 +86,11 @@ export function exportPng(
     const url = URL.createObjectURL(
         new Blob([svgString], { type: 'image/svg+xml' }),
     );
+    img.onerror = () => {
+        URL.revokeObjectURL(url);
+        // без сообщения пользователь просто не понимает, почему нет файла
+        console.error('Не удалось отрисовать SVG для PNG-экспорта');
+    };
     img.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = Math.round(widthMm * pxPerMm);

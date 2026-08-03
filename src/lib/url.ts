@@ -5,7 +5,8 @@ import type { BackgroundMode, GridMm, LabelsMode, MarkerIcon, Settings } from '.
 import { LANGS } from '../i18n/strings';
 import type { Lang } from '../i18n/strings';
 
-const ICONS: MarkerIcon[] = ['silhouette', 'schema', 'minimal', 'record', 'classic'];
+const ICONS: MarkerIcon[] =
+    ['silhouette', 'schema', 'minimal', 'faceOn', 'record', 'classic'];
 
 /** Короткие имена параметров: ссылка должна оставаться читаемой */
 const NUM: Record<string, keyof Settings> = {
@@ -24,18 +25,27 @@ const NUM: Record<string, keyof Settings> = {
     io: 'inkOpacity',
 };
 
+/** Флаги: то же самое, но да/нет */
+const BOOL: Record<string, keyof Settings> = {
+    qz: 'quantize',
+    ln: 'showLines',
+    fx: 'flipX',
+    fy: 'flipY',
+};
+
 const round = (v: number) => Math.round(v * 1000) / 1000;
 
 /** Ссылка на текущий вид: объект и все настройки рисунка.
- *  Фото запястья не попадает — оно живёт только в браузере. */
+ *  Фото места на теле не попадает — оно живёт только в браузере. */
 export function settingsToQuery(s: Settings): string {
     const p = new URLSearchParams();
     p.set('t', s.targetId);
     for (const [key, field] of Object.entries(NUM)) {
         p.set(key, String(round(s[field] as number)));
     }
-    p.set('qz', s.quantize ? '1' : '0');
-    p.set('ln', s.showLines ? '1' : '0');
+    for (const [key, field] of Object.entries(BOOL)) {
+        p.set(key, s[field] ? '1' : '0');
+    }
     p.set('bg', s.backgroundStars);
     p.set('lb', s.labels);
     p.set('vi', s.markerIcon);
@@ -56,7 +66,7 @@ const asHex = (v: string | null): string | undefined =>
 /** Настройки из ссылки поверх вида по умолчанию для указанного объекта.
  *  Возвращает null, если объекта в ссылке нет.
  *
- *  Ссылка описывает рисунок, а не примерку: фото запястья с его калибровкой,
+ *  Ссылка описывает рисунок, а не примерку: фото с его калибровкой,
  *  снимок неба и тема остаются такими, как настроены в этом браузере. */
 export function settingsFromQuery(search: string, local: Settings): Settings | null {
     const p = new URLSearchParams(search);
@@ -69,12 +79,12 @@ export function settingsFromQuery(search: string, local: Settings): Settings | n
         theme: local.theme,
         previewZoom: local.previewZoom,
         exportBw: local.exportBw,
-        showWrist: local.showWrist,
-        wristWidthCm: local.wristWidthCm,
-        wristOffX: local.wristOffX,
-        wristOffY: local.wristOffY,
-        wristRotDeg: local.wristRotDeg,
-        wristOpacity: local.wristOpacity,
+        showBodyPhoto: local.showBodyPhoto,
+        bodyWidthCm: local.bodyWidthCm,
+        bodyOffX: local.bodyOffX,
+        bodyOffY: local.bodyOffY,
+        bodyRotDeg: local.bodyRotDeg,
+        bodyOpacity: local.bodyOpacity,
         showPhoto: local.showPhoto,
         photoOpacity: local.photoOpacity,
     };
@@ -87,8 +97,9 @@ export function settingsFromQuery(search: string, local: Settings): Settings | n
             (s[field] as number) = value;
         }
     }
-    if (p.has('qz')) s.quantize = p.get('qz') === '1';
-    if (p.has('ln')) s.showLines = p.get('ln') === '1';
+    for (const [key, field] of Object.entries(BOOL)) {
+        if (p.has(key)) (s[field] as boolean) = p.get(key) === '1';
+    }
 
     const bg = p.get('bg');
     if (bg === 'show' || bg === 'fade' || bg === 'hide') s.backgroundStars = bg as BackgroundMode;

@@ -1,5 +1,7 @@
 import { getCatalog, getLines, getTarget } from './catalog';
+import { dotDiameterMm } from './dots';
 import type { CatalogStar, TargetPreset } from './catalog';
+import type { DotScale } from './dots';
 
 /** Пресет объекта не задан вручную, а выводится из его же данных: какие звёзды
  *  образуют фигуру, как тесно они стоят и насколько различаются по яркости.
@@ -35,7 +37,7 @@ const MAG_MARGIN = 0.3;
 const CLUSTER_STARS = 16;
 
 /** Звёзды, образующие узнаваемую фигуру: вершины линий плюс именованные */
-function figureStars(id: string): CatalogStar[] {
+export function figureStars(id: string): CatalogStar[] {
     const catalog = getCatalog(id);
     const linked = new Set(getLines(id).flat());
     const picked = catalog.filter((s, i) => linked.has(i) || s.name);
@@ -79,12 +81,10 @@ function figureRadiusTan(stars: CatalogStar[]): number {
     return stars.reduce((r, s) => Math.max(r, Math.hypot(s.u, s.v)), 0);
 }
 
-/** Диаметры точек при выбранных max/min/contrast */
-function diameters(stars: CatalogStar[], maxMm: number, minMm: number, contrast: number) {
+/** Диаметры точек при выбранной шкале — той же, что на отрисовке */
+function diameters(stars: CatalogStar[], scale: DotScale): number[] {
     const brightest = Math.min(...stars.map(s => s.mag));
-    return stars.map(s =>
-        Math.min(maxMm, Math.max(minMm, maxMm * Math.pow(10, -0.4 * (s.mag - brightest) * contrast))),
-    );
+    return stars.map(s => dotDiameterMm(scale, s.mag, brightest));
 }
 
 /** Размеры точек для рисунка заданного поперечника: крупная татуировка терпит
@@ -164,7 +164,7 @@ export function autoPreset(id: string): TargetPreset {
     let sizes = dotSizes(patternCm, spread);
     while (patternCm < MAX_PATTERN_CM) {
         const mmPerTan = (patternCm * 10) / (2 * radiusTan);
-        const d = diameters(figure, sizes.maxMm, sizes.minMm, sizes.contrast);
+        const d = diameters(figure, sizes);
         if (fits(mmPerTan, d, pairs)) break;
         patternCm = Math.round((patternCm + PATTERN_STEP_CM) * 10) / 10;
         sizes = dotSizes(patternCm, spread);

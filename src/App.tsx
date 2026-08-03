@@ -14,19 +14,19 @@ import { TABS } from './components/panels/types';
 import type { PanelProps, Tab } from './components/panels/types';
 import { MAIN_TARGETS, ZODIAC_TARGETS, getLines, getTarget } from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
-import { fileToWristImage } from './lib/image';
+import { fileToBodyPhoto } from './lib/image';
 import {
     applyTargetPreset, buildSpec, computeDrawn, computeMarkers, fitFovDeg,
     patternSizeMm, sheetSize, sizeClasses,
 } from './lib/model';
 import {
     DEFAULTS, clearPerTarget, clearSettings, loadPerTarget, loadPresets,
-    loadSettings, loadWrist, pickTargetState, savePerTarget, savePresets,
-    saveSettings, saveWrist,
+    loadSettings, loadBodyPhoto, pickTargetState, savePerTarget, savePresets,
+    saveSettings, saveBodyPhoto,
 } from './lib/state';
 import { resetTab } from './lib/reset';
 import { settingsFromQuery, shareUrl } from './lib/url';
-import type { Preset, Settings, Theme, WristImage } from './lib/types';
+import type { Preset, Settings, Theme, BodyPhoto } from './lib/types';
 import { LANGS, LANG_LABELS, LANG_TITLES, t } from './i18n';
 import type { Lang, StringKey } from './i18n';
 
@@ -67,7 +67,7 @@ export default function App() {
             return settingsFromQuery(window.location.search, local) ?? local;
         },
     );
-    const [wrist, setWrist] = useState<WristImage | null>(loadWrist);
+    const [bodyPhoto, setBodyPhoto] = useState<BodyPhoto | null>(loadBodyPhoto);
     const [presets, setPresets] = useState<Preset[]>(loadPresets);
     const [tab, setTab] = useState<Tab>('draw');
     // на телефоне шторку настроек можно убрать, чтобы видеть весь эскиз
@@ -88,7 +88,7 @@ export default function App() {
         savePerTarget(perTargetRef.current);
     }, [settings]);
 
-    useEffect(() => saveWrist(wrist), [wrist]);
+    useEffect(() => saveBodyPhoto(bodyPhoto), [bodyPhoto]);
     useEffect(() => savePresets(presets), [presets]);
 
     useEffect(() => {
@@ -111,11 +111,11 @@ export default function App() {
         });
     }, []);
 
-    const handleWristFile = async (file: File | undefined) => {
+    const handleBodyPhotoFile = async (file: File | undefined) => {
         if (!file) return;
         try {
-            setWrist(await fileToWristImage(file));
-            setSettings(s => ({ ...s, showWrist: true }));
+            setBodyPhoto(await fileToBodyPhoto(file));
+            setSettings(s => ({ ...s, showBodyPhoto: true }));
         } catch (e) {
             console.error(e);
         }
@@ -158,9 +158,9 @@ export default function App() {
         patternCm,
         hasLines: getLines(target.id).length > 0,
 
-        wrist,
-        onWristFile: handleWristFile,
-        onWristRemove: () => setWrist(null),
+        bodyPhoto,
+        onBodyPhotoFile: handleBodyPhotoFile,
+        onBodyPhotoRemove: () => setBodyPhoto(null),
 
         presets,
         onPresetSave: name =>
@@ -206,7 +206,7 @@ export default function App() {
             if (!svgRef.current) return;
             const { W, H } = sheetSize(settings);
             const svg = svgToStandalone(svgRef.current, W, H, {
-                withWrist: true,
+                withBodyPhoto: true,
                 dotsOnly: true,
             });
             exportPng(svg, W, H, `${target.id}-tattoo-mockup.png`);
@@ -271,7 +271,7 @@ export default function App() {
                     setSettings={setSettings}
                     drawn={drawn}
                     markers={markers}
-                    wrist={wrist}
+                    bodyPhoto={bodyPhoto}
                     svgRef={svgRef}
                 />
                 <SummaryLine

@@ -1,8 +1,8 @@
-import type { WristImage } from './types';
+import type { BodyPhoto } from './types';
 
 /** Читает файл изображения, уменьшает до maxDim по большей стороне
  *  и возвращает jpeg data-URL с пропорциями */
-export function fileToWristImage(file: File, maxDim = 1400): Promise<WristImage> {
+export function fileToBodyPhoto(file: File, maxDim = 1400): Promise<BodyPhoto> {
     return new Promise((resolve, reject) => {
         const url = URL.createObjectURL(file);
         const img = new Image();

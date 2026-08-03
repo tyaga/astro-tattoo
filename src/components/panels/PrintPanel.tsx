@@ -6,7 +6,7 @@ import type { GridMm } from '../../lib/types';
 
 /** Отдать мастеру: лист, сетка, калибры, файлы и ссылка */
 export function PrintPanel({
-    settings, set, lang, tr, classes, presets, linkCopied, wrist,
+    settings, set, lang, tr, classes, presets, linkCopied, bodyPhoto,
     onPresetSave, onPresetLoad, onPresetDelete, onSheetToPattern,
     onExportSvg, onExportPng, onExportFitting, onExportSpec, onCopyLink,
 }: PanelProps) {
@@ -21,7 +21,7 @@ export function PrintPanel({
                     <button className="btn primary" onClick={onExportSvg}>{tr('exportSvg')}</button>
                     <button className="btn primary" onClick={onExportPng}>{tr('exportPng')}</button>
                     {/* примерка есть только тогда, когда фото тела показано */}
-                    {wrist && settings.showWrist && (
+                    {bodyPhoto && settings.showBodyPhoto && (
                         <button
                             className="btn"
                             title={tr('exportFittingHint')}

@@ -13,6 +13,14 @@ interface SliderProps {
     editScale?: number;
     /** Подсказка «нажмите, чтобы ввести значение» на языке интерфейса */
     editHint?: string;
+    /** Магнитные отметки: около них значение прилипает, а на дорожке
+     *  рисуется засечка. Так у шкалы появляется осмысленная опора. */
+    stops?: { value: number; title?: string }[];
+    /** Шкала наоборот: слева большие значения. Для звёздных величин так
+     *  привычнее — вправо становится ярче, а не тусклее. */
+    invert?: boolean;
+    /** Подписи концов шкалы: со звёздными величинами без них не разобраться */
+    ends?: { left: string; right: string };
 }
 
 /** Округляет к сетке шага и держит в границах */
@@ -23,10 +31,23 @@ function snap(value: number, min: number, max: number, step: number): number {
 }
 
 export function Slider({
-    label, value, min, max, step, format, onChange, editScale = 1, editHint,
+    label, value, min, max, step, format, onChange, editScale = 1, editHint, stops, invert,
+    ends,
 }: SliderProps) {
     const [draft, setDraft] = useState<string | null>(null);
     const decimals = Math.max(0, Math.ceil(-Math.log10(step * editScale)));
+    const span = max - min;
+    const marks = (stops ?? []).filter(m => m.value > min && m.value < max);
+    /** Значение на самом ползунке: при перевёрнутой шкале — зеркальное */
+    const mirror = (v: number) => (invert ? min + max - v : v);
+
+    /** Притягивает к отметке, если ползунок подошёл ближе трёх шагов */
+    const magnet = (v: number): number => {
+        for (const mark of marks) {
+            if (Math.abs(v - mark.value) <= step * 3 + 1e-6) return mark.value;
+        }
+        return v;
+    };
 
     const startEdit = () => setDraft((value * editScale).toFixed(decimals));
 
@@ -67,16 +88,34 @@ export function Slider({
                     />
                 )}
             </label>
-            <input
-                type="range"
-                min={min}
-                max={max}
-                step={step}
-                value={value}
-                // доля пройденной шкалы — по ней красится дорожка
-                style={{ '--fill': `${((value - min) / (max - min)) * 100}%` } as CSSProperties}
-                onChange={e => onChange(parseFloat(e.target.value))}
-            />
+            <div className="slider">
+                <input
+                    type="range"
+                    // подпись лежит в соседнем label, поэтому имя даём явно
+                    aria-label={label}
+                    min={min}
+                    max={max}
+                    step={step}
+                    value={mirror(value)}
+                    // доля пройденной шкалы — по ней красится дорожка
+                    style={{ '--fill': `${((mirror(value) - min) / span) * 100}%` } as CSSProperties}
+                    onChange={e => onChange(magnet(mirror(parseFloat(e.target.value))))}
+                />
+                {marks.map(mark => (
+                    <span
+                        key={mark.value}
+                        className="slider-stop"
+                        title={mark.title}
+                        style={{ left: `${((mirror(mark.value) - min) / span) * 100}%` }}
+                    />
+                ))}
+            </div>
+            {ends && (
+                <div className="slider-ends">
+                    <span>{ends.left}</span>
+                    <span>{ends.right}</span>
+                </div>
+            )}
         </div>
     );
 }
@@ -85,11 +124,13 @@ interface CheckProps {
     label: string;
     checked: boolean;
     onChange: (checked: boolean) => void;
+    /** Пояснение на наведении: у галочек часто неочевидные следствия */
+    title?: string;
 }
 
-export function Check({ label, checked, onChange }: CheckProps) {
+export function Check({ label, checked, onChange, title }: CheckProps) {
     return (
-        <label className="check">
+        <label className="check" title={title}>
             <input
                 type="checkbox"
                 checked={checked}

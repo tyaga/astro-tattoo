@@ -3,7 +3,7 @@ import {
     type Dispatch, type ForwardedRef, type SetStateAction,
 } from 'react';
 import { sheetSize } from '../lib/model';
-import type { DrawnStar, Settings, WristImage } from '../lib/types';
+import type { DrawnStar, Settings, BodyPhoto } from '../lib/types';
 import type { DrawnMarker } from '../lib/model';
 import { SheetSvg } from './SheetSvg';
 
@@ -49,11 +49,11 @@ interface Props {
     setSettings: Dispatch<SetStateAction<Settings>>;
     drawn: DrawnStar[];
     markers: DrawnMarker[];
-    wrist: WristImage | null;
+    bodyPhoto: BodyPhoto | null;
     svgRef: ForwardedRef<SVGSVGElement>;
 }
 
-export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }: Props) {
+export function Preview({ settings, setSettings, drawn, markers, bodyPhoto, svgRef }: Props) {
     const wrapRef = useRef<HTMLDivElement>(null);
     const zoomRef = useRef<HTMLDivElement>(null);
     const dragRef = useRef<DragState | null>(null);
@@ -235,7 +235,7 @@ export function Preview({ settings, setSettings, drawn, markers, wrist, svgRef }
                     settings={settings}
                     drawn={drawn}
                     markers={markers}
-                    wrist={wrist}
+                    bodyPhoto={bodyPhoto}
                 />
             </div>
         </div>
