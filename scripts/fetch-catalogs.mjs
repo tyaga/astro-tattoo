@@ -34,6 +34,9 @@ const LINES_URL =
  *  чтобы звёзды не кончались на краю фигуры */
 const BOUNDS_URL =
     'https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.bounds.json';
+/** Сколько дней эфемериды считаются свежими: «Вояджер-1» смещается по небу
+ *  примерно на четверть градуса в год, так что неделя — с большим запасом */
+const VOYAGER_MAX_AGE_DAYS = 7;
 /** Запас к радиусу выборки, градусы */
 const RADIUS_MARGIN = 1.5;
 /** Допуск привязки вершины линии к звезде каталога, градусы */
@@ -375,6 +378,18 @@ function parseHorizons(text) {
     };
 }
 
+/** Сколько дней записанному положению; null — файла нет или он испорчен */
+async function voyagerAgeDays() {
+    if (!existsSync(VOYAGER_PATH)) return null;
+    try {
+        const { epoch } = JSON.parse(await readFile(VOYAGER_PATH, 'utf8'));
+        const days = (Date.now() - Date.parse(epoch)) / 864e5;
+        return Number.isFinite(days) ? Math.floor(days) : null;
+    } catch {
+        return null;
+    }
+}
+
 /** Куда смотреть, чтобы увидеть аппараты: положение считается на день сборки */
 async function fetchVoyagers() {
     const day = new Date().toISOString().slice(0, 10);
@@ -505,11 +520,16 @@ async function main() {
         if (!(await fetchPhoto(target))) failed++;
     }
 
-    // положение аппаратов меняется каждый день — обновляем всегда,
-    // но без него сборка не останавливается: в коде есть запасной снимок
-    if (force || !existsSync(VOYAGER_PATH)) {
+    // положение аппаратов стареет, поэтому обновляем по возрасту файла.
+    // Без сети сборка не останавливается: в коде есть запасной снимок
+    const age = await voyagerAgeDays();
+    if (force || age === null || age >= VOYAGER_MAX_AGE_DAYS) {
         console.log('• «Вояджеры» (JPL Horizons)');
-        await fetchVoyagers();
+        if (!(await fetchVoyagers()) && age !== null) {
+            console.warn(`  ! оставляю прежние данные, им ${age} дн.`);
+        }
+    } else {
+        console.log(`• «Вояджеры»: данным ${age} дн., хватит`);
     }
 
     if (failed) {
