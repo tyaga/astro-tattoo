@@ -1,58 +1,17 @@
 import { TARGETS } from './catalog';
 import { detectLang } from '../i18n';
+import { DEFAULTS, TARGET_FIELDS } from './fields';
 import { applyTargetPreset } from './model';
 import type { BodyPhoto, Preset, Settings } from './types';
+
+// Значения по умолчанию и состав «памяти по объектам» описаны в fields.ts
+export { DEFAULTS } from './fields';
 
 const SETTINGS_KEY = 'astro-tattoo-settings';
 const PER_TARGET_KEY = 'astro-tattoo-per-target';
 const BODY_KEY = 'astro-tattoo-body';
 const PRESETS_KEY = 'astro-tattoo-presets';
 
-// Дефолты соответствуют «примерочной» компоновке: полотно под весь кадр
-// снимка места на теле, фото повёрнуто на 90° (рука горизонтально), масштаб
-// откалиброван по сантиметровой ленте в кадре (16.3 × 21.7 см)
-export const DEFAULTS: Settings = {
-    targetId: 'pleiades',
-    magLimit: 6.1,
-    widthCm: 21.5,
-    heightCm: 16.5,
-    fovDeg: 1.65,
-    rotation: 0,
-    flipX: false,
-    flipY: false,
-    panX: 0,
-    panY: 0,
-    maxMm: 4.0,
-    minMm: 1.0,
-    contrast: 0.5,
-    stepMm: 1.0,
-    quantize: true,
-    labels: 'names',
-    markerIcon: 'silhouette',
-    markerRotDeg: 0,
-    markerMm: 4,
-    voyagerReal: false,
-    voyagerAspect: false,
-    gridMm: 1,
-    showLines: false,
-    lineMm: 0.3,
-    backgroundStars: 'show',
-    previewZoom: 1,
-    theme: 'auto',
-    lang: 'ru',
-    skinTone: '#efcbb0',
-    inkColor: '#1e2127',
-    inkOpacity: 0.92,
-    exportBw: true,
-    showPhoto: false,
-    photoOpacity: 0.85,
-    showBodyPhoto: true,
-    bodyWidthCm: 16.3,
-    bodyOffX: 0,
-    bodyOffY: 0,
-    bodyRotDeg: 90,
-    bodyOpacity: 0.75,
-};
 
 function readJson<T>(key: string): T | null {
     try {
@@ -117,20 +76,13 @@ export function saveBodyPhoto(img: BodyPhoto | null): void {
 
 /** Настройки, привязанные к объекту: их запоминаем отдельно для каждого,
  *  чтобы возврат к созвездию возвращал и подобранный для него вид.
- *  Полотно, кожа, чернила, сетка и фото места на теле общие — они
- *  про примерку, а не про объект. */
-const TARGET_FIELDS = [
-    'magLimit', 'fovDeg', 'rotation', 'panX', 'panY',
-    'maxMm', 'minMm', 'contrast', 'stepMm', 'quantize',
-    'showLines', 'lineMm', 'backgroundStars', 'labels',
-] as const;
-
-export type TargetState = Pick<Settings, (typeof TARGET_FIELDS)[number]>;
+ *  Состав списка задан в fields.ts признаком perTarget. */
+export type TargetState = Partial<Settings>;
 
 export function pickTargetState(s: Settings): TargetState {
-    const out = {} as Record<string, unknown>;
-    for (const key of TARGET_FIELDS) out[key] = s[key];
-    return out as TargetState;
+    const out: TargetState = {};
+    for (const key of TARGET_FIELDS) Object.assign(out, { [key]: s[key] });
+    return out;
 }
 
 export function loadPerTarget(): Record<string, TargetState> {
