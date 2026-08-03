@@ -1,4 +1,4 @@
-import { getCatalog, getLines, getTarget } from './catalog';
+import { getCatalog, getLines, getTarget, isFullCatalog } from './catalog';
 import { dotDiameterMm } from './dots';
 import type { CatalogStar, TargetPreset } from './catalog';
 import type { DotScale } from './dots';
@@ -132,7 +132,10 @@ const cache = new Map<string, TargetPreset>();
 
 /** Пресет объекта, посчитанный по каталогу и линиям фигуры */
 export function autoPreset(id: string): TargetPreset {
-    const cached = cache.get(id);
+    // до подгрузки полного каталога виден только состав фигуры, поэтому
+    // результат кэшируем отдельно — иначе неполный пресет остался бы навсегда
+    const key = `${id}:${isFullCatalog(id) ? 'full' : 'figure'}`;
+    const cached = cache.get(key);
     if (cached) return cached;
 
     const target = getTarget(id);
@@ -188,6 +191,6 @@ export function autoPreset(id: string): TargetPreset {
         ...target.preset,
     };
 
-    cache.set(id, preset);
+    cache.set(key, preset);
     return preset;
 }

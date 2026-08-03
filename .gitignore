@@ -5,6 +5,8 @@ dist/
 src/data/catalogs/
 src/data/photos/
 src/data/lines/
+# выжимка фигур для мгновенного показа — из каталогов
+src/data/figures.json
 # положение «Вояджеров» на день сборки — из JPL Horizons
 src/data/voyager.json
 # превью ссылки рисуется скриптом из каталога

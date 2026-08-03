@@ -1,4 +1,5 @@
 import targetsJson from '../data/targets.json';
+import figuresJson from '../data/figures.json';
 import { VOYAGERS } from './voyager';
 import type { BackgroundMode, LabelsMode } from './types';
 
@@ -113,15 +114,99 @@ export const ZODIAC_TARGETS = TARGETS.filter(t => t.zodiac);
 
 export const rad = (deg: number): number => (deg * Math.PI) / 180;
 
-// Каталоги выгружаются скриптом scripts/fetch-catalogs.mjs и в репозиторий
-// не коммитятся, поэтому подхватываются по маске, а не поимённо
-const catalogFiles = import.meta.glob<RawStar[]>('../data/catalogs/*.json', {
-    eager: true,
+// Полные каталоги весят больше мегабайта на все объекты, поэтому грузятся
+// по требованию. Сразу доступна только выжимка: звёзды фигуры и линии между
+// ними (scripts/make-figures.mjs) — этого хватает и на миниатюры ленты,
+// и на первый показ выбранного объекта.
+const catalogLoaders = import.meta.glob<RawStar[]>('../data/catalogs/*.json', {
+    import: 'default',
+});
+const lineLoaders = import.meta.glob<[number, number][]>('../data/lines/*.json', {
     import: 'default',
 });
 
-function rawStars(id: string): RawStar[] {
-    return catalogFiles[`../data/catalogs/${id}.json`] ?? [];
+interface Source {
+    stars: CatalogStar[];
+    /** Пары индексов в этот же массив звёзд */
+    lines: [number, number][];
+    /** Полный каталог или пока только фигура */
+    full: boolean;
+}
+
+const figures = figuresJson as unknown as
+    Record<string, { stars: RawStar[]; lines: [number, number][] }>;
+
+const sources = new Map<string, Source>();
+
+/** Проецирует и сортирует по яркости — порядок важен: отрисовка обходит
+ *  каталог до первой звезды тусклее предела */
+function prepare(target: Target, raw: RawStar[]): CatalogStar[] {
+    const center = projectionCenter(target);
+    return raw
+        .map(s => {
+            const p = gnomonic(s.ra, s.dec, center);
+            return { ra: s.ra, dec: s.dec, mag: s.mag, name: s.name ?? null, u: p.u, v: p.v };
+        })
+        .sort((a, b) => a.mag - b.mag);
+}
+
+function source(id: string): Source {
+    const have = sources.get(id);
+    if (have) return have;
+    const figure = figures[id] ?? { stars: [], lines: [] };
+    const made: Source = {
+        stars: prepare(getTarget(id), figure.stars),
+        lines: figure.lines,
+        full: false,
+    };
+    sources.set(id, made);
+    return made;
+}
+
+/** Каталог объекта: отсортирован по яркости, спроецирован вокруг его центра.
+ *  Пока полный не подгружен — только звёзды фигуры. */
+export function getCatalog(id: string): CatalogStar[] {
+    return source(id).stars;
+}
+
+/** Линии фигуры: пары индексов в массив, который вернул getCatalog */
+export function getLines(id: string): [number, number][] {
+    return source(id).lines;
+}
+
+/** Полный каталог уже на месте? Кэши расчётов держатся за этот признак */
+export function isFullCatalog(id: string): boolean {
+    return source(id).full;
+}
+
+const listeners = new Set<() => void>();
+
+/** Сообщает, что какой-то каталог дозагрузился — приложение перерисуется */
+export function onCatalogLoaded(fn: () => void): () => void {
+    listeners.add(fn);
+    return () => listeners.delete(fn);
+}
+
+const pending = new Map<string, Promise<void>>();
+
+/** Подгружает полный каталог объекта (и его линии) */
+export function ensureCatalog(id: string): Promise<void> {
+    if (source(id).full) return Promise.resolve();
+    let task = pending.get(id);
+    if (!task) {
+        task = (async () => {
+            const loadStars = catalogLoaders[`../data/catalogs/${id}.json`];
+            const loadLines = lineLoaders[`../data/lines/${id}.json`];
+            const [raw, lines] = await Promise.all([
+                loadStars ? loadStars() : Promise.resolve([]),
+                loadLines ? loadLines() : Promise.resolve([]),
+            ]);
+            sources.set(id, { stars: prepare(getTarget(id), raw), lines, full: true });
+            for (const fn of listeners) fn();
+        })();
+        pending.set(id, task);
+    }
+    return task;
 }
 
 // снимки для предпросмотра рендерит CDS hips2fits — там же, в скрипте выгрузки
@@ -132,17 +217,6 @@ const photoFiles = import.meta.glob<string>('../data/photos/*.jpg', {
 
 export function getPhotoUrl(id: string): string | null {
     return photoFiles[`../data/photos/${id}.jpg`] ?? null;
-}
-
-// линии фигур созвездий: пары индексов в тот же массив звёзд,
-// подготовлены скриптом выгрузки по данным d3-celestial (BSD-3)
-const lineFiles = import.meta.glob<[number, number][]>('../data/lines/*.json', {
-    eager: true,
-    import: 'default',
-});
-
-export function getLines(id: string): [number, number][] {
-    return lineFiles[`../data/lines/${id}.json`] ?? [];
 }
 
 export function getTarget(id: string): Target {
@@ -201,27 +275,6 @@ export function projectPoint(
     dec: number,
 ): { u: number; v: number } {
     return gnomonic(ra, dec, projectionCenter(target));
-}
-
-const cache = new Map<string, CatalogStar[]>();
-
-/** Каталог объекта: отсортирован по яркости, спроецирован вокруг его центра */
-export function getCatalog(id: string): CatalogStar[] {
-    const cached = cache.get(id);
-    if (cached) return cached;
-
-    const target = getTarget(id);
-    const center = projectionCenter(target);
-
-    const stars: CatalogStar[] = rawStars(target.id)
-        .map(s => {
-            const p = gnomonic(s.ra, s.dec, center);
-            return { ra: s.ra, dec: s.dec, mag: s.mag, name: s.name ?? null, u: p.u, v: p.v };
-        })
-        .sort((a, b) => a.mag - b.mag);
-
-    cache.set(id, stars);
-    return stars;
 }
 
 /** Порог яркости, при котором видны N ярчайших звёзд объекта

@@ -1,5 +1,5 @@
 import { autoPreset } from './autopreset';
-import { getCatalog, getLines, getTarget } from './catalog';
+import { getCatalog, getLines, getTarget, isFullCatalog } from './catalog';
 import { computeDrawn, fovForPatternMm } from './model';
 import { DEFAULTS } from './state';
 import type { DrawnStar, Settings } from './types';
@@ -21,7 +21,8 @@ const cache = new Map<string, Thumbnail>();
  *  в квадрат, без поворотов и сдвигов. Поле вокруг фигуры не рисуем —
  *  в мелком размере оно превращает карточку в облако точек. */
 export function thumbnail(id: string): Thumbnail {
-    const cached = cache.get(id);
+    const key = `${id}:${isFullCatalog(id) ? 'full' : 'figure'}`;
+    const cached = cache.get(key);
     if (cached) return cached;
 
     const target = getTarget(id);
@@ -63,6 +64,6 @@ export function thumbnail(id: string): Thumbnail {
         .filter((pair): pair is [DrawnStar, DrawnStar] => Boolean(pair[0] && pair[1]));
 
     const result: Thumbnail = { dots, segments: preset.showLines ? segments : [] };
-    cache.set(id, result);
+    cache.set(key, result);
     return result;
 }

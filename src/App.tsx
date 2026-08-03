@@ -12,7 +12,9 @@ import { LookPanel } from './components/panels/LookPanel';
 import { PrintPanel } from './components/panels/PrintPanel';
 import { TABS } from './components/panels/types';
 import type { PanelProps, Tab } from './components/panels/types';
-import { MAIN_TARGETS, ZODIAC_TARGETS, getLines, getTarget } from './lib/catalog';
+import {
+    MAIN_TARGETS, ZODIAC_TARGETS, ensureCatalog, getLines, getTarget, onCatalogLoaded,
+} from './lib/catalog';
 import { downloadBlob, exportPng, svgToStandalone } from './lib/download';
 import { fileToBodyPhoto } from './lib/image';
 import {
@@ -73,6 +75,10 @@ export default function App() {
     // на телефоне шторку настроек можно убрать, чтобы видеть весь эскиз
     const [sheetOpen, setSheetOpen] = useState(true);
     const [picking, setPicking] = useState(false);
+    // полный каталог объекта подгружается по требованию: пока его нет, эскиз
+    // строится по фигуре. Счётчик заставляет пересчитать точки, когда каталог
+    // доехал — от settings это не зависит
+    const [catalogVersion, setCatalogVersion] = useState(0);
     const [linkCopied, setLinkCopied] = useState(false);
     const perTargetRef = useRef(loadPerTarget());
     const svgRef = useRef<SVGSVGElement>(null);
@@ -87,6 +93,11 @@ export default function App() {
         perTargetRef.current[settings.targetId] = pickTargetState(settings);
         savePerTarget(perTargetRef.current);
     }, [settings]);
+
+    useEffect(() => onCatalogLoaded(() => setCatalogVersion(v => v + 1)), []);
+    useEffect(() => {
+        void ensureCatalog(settings.targetId);
+    }, [settings.targetId]);
 
     useEffect(() => saveBodyPhoto(bodyPhoto), [bodyPhoto]);
     useEffect(() => savePresets(presets), [presets]);
@@ -121,10 +132,13 @@ export default function App() {
         }
     };
 
-    const drawn = useMemo(() => computeDrawn(settings), [settings]);
-    const markers = useMemo(() => computeMarkers(settings), [settings]);
+    const drawn = useMemo(() => computeDrawn(settings), [settings, catalogVersion]);
+    const markers = useMemo(() => computeMarkers(settings), [settings, catalogVersion]);
     const classes = useMemo(() => sizeClasses(drawn), [drawn]);
-    const patternCm = useMemo(() => patternSizeMm(settings) / 10, [settings]);
+    const patternCm = useMemo(
+        () => patternSizeMm(settings) / 10,
+        [settings, catalogVersion],
+    );
 
     const set = <K extends keyof Settings>(key: K) => (value: Settings[K]) =>
         setSettings(s => ({ ...s, [key]: value }));

@@ -6,12 +6,13 @@
   "scripts": {
     "fetch": "node scripts/fetch-catalogs.mjs",
     "fetch:force": "node scripts/fetch-catalogs.mjs --force",
-    "predev": "npm run fetch && node scripts/make-og.mjs",
+    "predev": "npm run fetch && node scripts/make-figures.mjs && node scripts/make-og.mjs",
     "dev": "vite",
-    "prebuild": "npm run fetch && node scripts/make-og.mjs",
+    "prebuild": "npm run fetch && node scripts/make-figures.mjs && node scripts/make-og.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "og": "node scripts/make-og.mjs"
+    "og": "node scripts/make-og.mjs",
+    "figures": "node scripts/make-figures.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
